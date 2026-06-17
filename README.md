@@ -29,6 +29,8 @@ first deploy.
   `src/app/globals.css`.
 - **Supabase** — `@supabase/ssr` clients live in `src/lib/supabase/`
   (`server.ts` for server components/actions, `client.ts` for the browser).
+- **AssoConnect** — server-only client in `src/lib/assoconnect.ts`. See
+  [`docs/assoconnect-api.md`](docs/assoconnect-api.md) for the API reference.
 - **Config-driven** — navigation and site metadata come from
   `src/config/site.ts`.
 
