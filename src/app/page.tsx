@@ -1,15 +1,24 @@
-import { getOrganization } from "@/lib/assoconnect";
+import { getOrganization, getMainAdmin } from "@/lib/assoconnect";
 import { siteConfig } from "@/config/site";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   let organizationName: string | null = null;
+  let adminFirstName: string | null = null;
+
   try {
     const org = await getOrganization();
     organizationName = org.name;
   } catch {
     organizationName = null;
+  }
+
+  try {
+    const admin = await getMainAdmin();
+    adminFirstName = admin?.firstName ?? null;
+  } catch {
+    adminFirstName = null;
   }
 
   return (
@@ -18,6 +27,9 @@ export default async function Home() {
       <p className="text-3xl">Babar</p>
       {organizationName && (
         <p className="text-2xl font-medium">{organizationName}</p>
+      )}
+      {adminFirstName && (
+        <p className="text-xl">Admin : {adminFirstName}</p>
       )}
       <p className="text-lg opacity-70">{siteConfig.description}</p>
     </main>
