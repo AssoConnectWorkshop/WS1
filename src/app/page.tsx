@@ -18,7 +18,7 @@ async function testDatabase(): Promise<{ ok: boolean; tables: string[] }> {
 async function testApi(): Promise<{ ok: boolean; platformName: string | null }> {
   try {
     const org = await getOrganization();
-    return { ok: true, platformName: org.brand ?? org.name };
+    return { ok: true, platformName: org.name };
   } catch {
     return { ok: false, platformName: null };
   }
