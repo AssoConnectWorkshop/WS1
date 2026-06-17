@@ -43,22 +43,25 @@ export function getOrganization(ulid = process.env.ASSOCONNECT_ORGANIZATION_ULID
   return request<Organization>(`/organizations/${ulid}`);
 }
 
-export type User = {
+export type Contact = {
   "@id": string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  roles: string[];
+  "@type": string;
+  type: "person" | "structure";
+  firstname?: string;
+  lastname?: string;
+  email?: string;
 };
 
-type UserCollection = {
-  "hydra:member": User[];
+type ContactCollection = {
+  "hydra:member": Contact[];
 };
 
-export async function getMainAdmin(): Promise<User | null> {
+export async function getFirstContact(): Promise<Contact | null> {
   const ulid = process.env.ASSOCONNECT_ORGANIZATION_ULID;
   if (!ulid) throw new Error("ASSOCONNECT_ORGANIZATION_ULID is not set");
 
-  const data = await request<UserCollection>(`/organizations/${ulid}/users?roles[]=ROLE_ADMIN`);
+  const data = await request<ContactCollection>(
+    `/organizations/${ulid}/contacts?type=person&itemsPerPage=1`
+  );
   return data["hydra:member"]?.[0] ?? null;
 }
