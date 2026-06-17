@@ -1,7 +1,4 @@
 #!/usr/bin/env node
-// Applies pending Supabase migrations via the Management API.
-// Requires SUPABASE_ACCESS_TOKEN and SUPABASE_PROJECT_REF env vars.
-
 import { readFileSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -16,14 +13,14 @@ if (!TOKEN) {
 
 const API = `https://api.supabase.com/v1/projects/${PROJECT_REF}/database/query`;
 
-async function query(sql) {
+async function query(sql, params = []) {
   const res = await fetch(API, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${TOKEN}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ query: sql }),
+    body: JSON.stringify({ query: sql, params }),
   });
   if (!res.ok) {
     const text = await res.text();
@@ -33,7 +30,6 @@ async function query(sql) {
 }
 
 async function main() {
-  // Ensure tracking table exists
   await query(`
     create table if not exists schema_migrations (
       name text primary key,
@@ -46,9 +42,7 @@ async function main() {
 
   const __dir = dirname(fileURLToPath(import.meta.url));
   const migrationsDir = join(__dir, '..', 'supabase', 'migrations');
-  const files = readdirSync(migrationsDir)
-    .filter(f => f.endsWith('.sql'))
-    .sort();
+  const files = readdirSync(migrationsDir).filter(f => f.endsWith('.sql')).sort();
 
   let ran = 0;
   for (const file of files) {
@@ -59,7 +53,7 @@ async function main() {
     console.log(`  apply ${file}`);
     const sql = readFileSync(join(migrationsDir, file), 'utf8');
     await query(sql);
-    await query(`insert into schema_migrations (name) values ('${file.replace(/'/g, "''")}')`);
+    await query('insert into schema_migrations (name) values ($1)', [file]);
     ran++;
   }
 
