@@ -1,4 +1,4 @@
-import { getOrganization, getMainAdmin } from "@/lib/assoconnect";
+import { getOrganization, getFirstContact } from "@/lib/assoconnect";
 import { createClient } from "@/lib/supabase/server";
 import { siteConfig } from "@/config/site";
 
@@ -17,8 +17,8 @@ export default async function Home() {
   }
 
   try {
-    const admin = await getMainAdmin();
-    adminFirstName = admin?.firstName ?? null;
+    const contact = await getFirstContact();
+    adminFirstName = contact?.firstname ?? null;
   } catch {
     adminFirstName = null;
   }
