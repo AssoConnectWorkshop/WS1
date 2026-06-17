@@ -7,13 +7,9 @@ export const dynamic = "force-dynamic";
 async function testDatabase(): Promise<{ ok: boolean; tables: string[] }> {
   try {
     const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("information_schema.tables")
-      .select("table_name")
-      .eq("table_schema", "public")
-      .not("table_name", "like", "pg_%");
+    const { data, error } = await supabase.rpc("get_public_tables");
     if (error) throw error;
-    return { ok: true, tables: data?.map((r) => r.table_name) ?? [] };
+    return { ok: true, tables: data?.map((r: { table_name: string }) => r.table_name) ?? [] };
   } catch {
     return { ok: false, tables: [] };
   }
