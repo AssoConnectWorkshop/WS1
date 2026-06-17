@@ -100,15 +100,23 @@ async function createWorkspace(n) {
   const repoName = name;
   console.log(`\n── ${name} ──────────────────────────`);
 
-  // 1. GitHub repo from template
+  // 1. GitHub repo from template (skip if already exists)
   console.log(`  [1/3] GitHub: creating ${GITHUB_ORG}/${repoName}...`);
-  const repo = await github('POST', `/repos/${GITHUB_ORG}/${TEMPLATE_REPO}/generate`, {
-    owner: GITHUB_ORG,
-    name: repoName,
-    private: false,
-    include_all_branches: false,
-    description: `Workspace ${n}`,
-  });
+  let repo;
+  try {
+    repo = await github('POST', `/repos/${GITHUB_ORG}/${TEMPLATE_REPO}/generate`, {
+      owner: GITHUB_ORG,
+      name: repoName,
+      private: false,
+      include_all_branches: false,
+      description: `Workspace ${n}`,
+    });
+  } catch (e) {
+    if (e.message.includes('Name already exists')) {
+      repo = await github('GET', `/repos/${GITHUB_ORG}/${repoName}`);
+      console.log(`        ↩ already exists`);
+    } else throw e;
+  }
   console.log(`        ✓ ${repo.html_url}`);
 
   // 2. Supabase project (sequential — API enforces it)
@@ -148,10 +156,9 @@ async function createWorkspace(n) {
       repo: `${GITHUB_ORG}/${repoName}`,
     },
     environmentVariables: [
-      { key: 'SUPABASE_URL', value: supabaseUrl, target: ['production', 'preview'] },
-      { key: 'SUPABASE_ANON_KEY', value: anonKey, target: ['production', 'preview'] },
-      { key: 'SUPABASE_PROJECT_REF', value: project.id, target: ['production', 'preview'] },
-      // SUPABASE_ACCESS_TOKEN and ASSOCONNECT_* must be added manually per project
+      { key: 'SUPABASE_URL', value: supabaseUrl, target: ['production', 'preview'], type: 'encrypted' },
+      { key: 'SUPABASE_ANON_KEY', value: anonKey, target: ['production', 'preview'], type: 'encrypted' },
+      { key: 'SUPABASE_PROJECT_REF', value: project.id, target: ['production', 'preview'], type: 'encrypted' },
     ],
   });
   console.log(`        ✓ ${vProject.link?.deployHooks?.[0] ?? vProject.id}`);
