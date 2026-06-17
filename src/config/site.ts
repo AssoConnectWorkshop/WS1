@@ -8,5 +8,6 @@ export const siteConfig = {
   description: "Next.js + Supabase app deployed on Netlify.",
   nav: [
     { label: "Home", href: "/" },
+    { label: "Organization", href: "/organization" },
   ] satisfies NavItem[],
 };
