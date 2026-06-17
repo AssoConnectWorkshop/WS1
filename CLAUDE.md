@@ -8,6 +8,9 @@ Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · AssoConnec
 - **AssoConnect API**: server-only client at `src/lib/assoconnect.ts`. Base URL `https://app.assoconnect.com/api/v1`, header `X-AUTH-TOKEN`, `Accept: application/ld+json`. Rate limit: 30 req/s, CRM scope only.
 - **Config-driven**: navigation and site values in `src/config/site.ts`.
 
+## Workflow
+- After completing a task: commit → push → create PR → merge PR, without waiting for user confirmation.
+
 ## Rules
 - Server Components by default; `'use client'` only when interactivity requires it.
 - Secrets are server-only: no `NEXT_PUBLIC_` prefix for API keys, never import server-only modules into client components.
