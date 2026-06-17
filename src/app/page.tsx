@@ -1,53 +1,82 @@
-import { getOrganization, getFirstContact } from "@/lib/assoconnect";
+import Image from "next/image";
+import { getOrganization } from "@/lib/assoconnect";
 import { createClient } from "@/lib/supabase/server";
-import { siteConfig } from "@/config/site";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  let organizationName: string | null = null;
-  let adminFirstName: string | null = null;
-  let prenoms: string[] = [];
-
-  try {
-    const org = await getOrganization();
-    organizationName = org.name;
-  } catch {
-    organizationName = null;
-  }
-
-  try {
-    const contact = await getFirstContact();
-    adminFirstName = contact?.firstname ?? null;
-  } catch {
-    adminFirstName = null;
-  }
-
+async function testDatabase(): Promise<{ ok: boolean; tables: string[] }> {
   try {
     const supabase = await createClient();
-    const { data } = await supabase.from("prenoms").select("nom").order("id");
-    prenoms = data?.map((r) => r.nom) ?? [];
+    const { data, error } = await supabase
+      .from("information_schema.tables")
+      .select("table_name")
+      .eq("table_schema", "public")
+      .not("table_name", "like", "pg_%");
+    if (error) throw error;
+    return { ok: true, tables: data?.map((r) => r.table_name) ?? [] };
   } catch {
-    prenoms = [];
+    return { ok: false, tables: [] };
   }
+}
+
+async function testApi(): Promise<{ ok: boolean; platformName: string | null }> {
+  try {
+    const org = await getOrganization();
+    return { ok: true, platformName: org.brand ?? org.name };
+  } catch {
+    return { ok: false, platformName: null };
+  }
+}
+
+function StatusIcon({ ok }: { ok: boolean }) {
+  return ok ? (
+    <span className="text-green-500 text-2xl">✓</span>
+  ) : (
+    <span className="text-red-500 text-2xl">✗</span>
+  );
+}
+
+export default async function Home() {
+  const [db, api] = await Promise.all([testDatabase(), testApi()]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">
-      <h1 className="text-4xl font-bold">Welcome Poplico</h1>
-{organizationName && (
-        <p className="text-2xl font-medium">{organizationName}</p>
-      )}
-      {adminFirstName && (
-        <p className="text-xl">Admin : {adminFirstName}</p>
-      )}
-      {prenoms.length > 0 && (
-        <ul className="text-lg">
-          {prenoms.map((nom) => (
-            <li key={nom}>{nom}</li>
-          ))}
-        </ul>
-      )}
-      <p className="text-lg opacity-70">{siteConfig.description}</p>
+    <main className="flex min-h-screen flex-col items-center justify-center gap-10 p-8">
+      <div className="flex flex-col items-center gap-4">
+        <Image src="/mascot.png" alt="Mascot" width={160} height={160} priority />
+        <h1 className="text-4xl font-bold">Welcome young padawan!</h1>
+      </div>
+
+      <div className="flex flex-col gap-6 w-full max-w-md">
+        <div className="border rounded-xl p-6 flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <StatusIcon ok={db.ok} />
+            <h2 className="text-lg font-semibold">Test database connection</h2>
+          </div>
+          {db.ok && (
+            <p className="text-sm text-gray-600">
+              Number of tables: {db.tables.length}
+              {db.tables.length > 0 && (
+                <span className="ml-1 opacity-60">
+                  ({db.tables.slice(0, 3).join(", ")}
+                  {db.tables.length > 3 ? "…" : ""})
+                </span>
+              )}
+            </p>
+          )}
+        </div>
+
+        <div className="border rounded-xl p-6 flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <StatusIcon ok={api.ok} />
+            <h2 className="text-lg font-semibold">Test API connection</h2>
+          </div>
+          {api.ok && api.platformName && (
+            <p className="text-sm text-gray-600">
+              Name of the platform: <span className="font-medium">{api.platformName}</span>
+            </p>
+          )}
+        </div>
+      </div>
     </main>
   );
 }
