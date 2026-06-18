@@ -156,12 +156,30 @@ async function createWorkspace(n) {
       repo: `${GITHUB_ORG}/${repoName}`,
     },
     environmentVariables: [
+      { key: 'NEXT_PUBLIC_SUPABASE_URL', value: supabaseUrl, target: ['production', 'preview'], type: 'plain' },
+      { key: 'NEXT_PUBLIC_SUPABASE_ANON_KEY', value: anonKey, target: ['production', 'preview'], type: 'plain' },
       { key: 'SUPABASE_URL', value: supabaseUrl, target: ['production', 'preview'], type: 'encrypted' },
       { key: 'SUPABASE_ANON_KEY', value: anonKey, target: ['production', 'preview'], type: 'encrypted' },
       { key: 'SUPABASE_PROJECT_REF', value: project.id, target: ['production', 'preview'], type: 'encrypted' },
+      { key: 'SUPABASE_ACCESS_TOKEN', value: process.env.SUPABASE_ACCESS_TOKEN, target: ['production', 'preview'], type: 'encrypted' },
+      { key: 'ASSOCONNECT_API_KEY', value: process.env.ASSOCONNECT_API_KEY, target: ['production', 'preview'], type: 'encrypted' },
+      { key: 'ASSOCONNECT_ORGANIZATION_ULID', value: process.env.ASSOCONNECT_ORGANIZATION_ULID, target: ['production', 'preview'], type: 'encrypted' },
     ],
   });
-  console.log(`        ✓ ${vProject.link?.deployHooks?.[0] ?? vProject.id}`);
+  console.log(`        ✓ ${vProject.id}`);
+
+  // Add canonical domain alias
+  const domain = `assoconnect-${name.toLowerCase()}.vercel.app`;
+  await vercel('POST', `/v10/projects/${vProject.id}/domains`, { name: domain });
+  console.log(`        ✓ domain: ${domain}`);
+
+  // Trigger production deployment
+  await vercel('POST', '/v13/deployments', {
+    name: name.toLowerCase(),
+    target: 'production',
+    gitSource: { type: 'github', org: GITHUB_ORG, repo: repoName, ref: 'main' },
+  });
+  console.log(`        ✓ deployment triggered`);
 
   return { name, repoUrl: repo.html_url, supabaseId: project.id, supabaseUrl, vercelId: vProject.id };
 }
