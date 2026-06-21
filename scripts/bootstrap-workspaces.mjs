@@ -122,23 +122,37 @@ async function createWorkspace(n) {
   // 2. Supabase project (sequential — API enforces it)
   console.log(`  [2/3] Supabase: creating project ${name}...`);
   const dbPass = process.env.SUPABASE_DB_PASS || randomBytes(16).toString('hex');
-  const project = await supabase('POST', '/projects', {
-    name,
-    organization_id: SUPABASE_ORG_ID,
-    db_pass: dbPass,
-    region: SUPABASE_REGION,
-    plan: 'pro',
-  });
+  let project;
+  try {
+    project = await supabase('POST', '/projects', {
+      name,
+      organization_id: SUPABASE_ORG_ID,
+      db_pass: dbPass,
+      region: SUPABASE_REGION,
+      plan: 'pro',
+    });
+  } catch (e) {
+    if (e.message.includes('already exists')) {
+      const all = await supabase('GET', '/projects');
+      project = all.find(p => p.name === name);
+      if (!project) throw e;
+      console.log(`        ↩ already exists`);
+    } else throw e;
+  }
   console.log(`        ✓ ${project.id} (status: ${project.status})`);
-  console.log(`        waiting for project to be ready...`);
+  if (project.status !== 'ACTIVE_HEALTHY') console.log(`        waiting for project to be ready...`);
 
   // Poll until ACTIVE_HEALTHY
-  for (let i = 0; i < 30; i++) {
-    await sleep(10_000);
-    const p = await supabase('GET', `/projects/${project.id}`);
-    if (p.status === 'ACTIVE_HEALTHY') { console.log(`        ✓ ready`); break; }
-    if (i === 29) throw new Error(`Project ${project.id} never became healthy`);
-    process.stdout.write('.');
+  if (project.status !== 'ACTIVE_HEALTHY') {
+    for (let i = 0; i < 30; i++) {
+      await sleep(10_000);
+      const p = await supabase('GET', `/projects/${project.id}`);
+      if (p.status === 'ACTIVE_HEALTHY') { console.log(`        ✓ ready`); break; }
+      if (i === 29) throw new Error(`Project ${project.id} never became healthy`);
+      process.stdout.write('.');
+    }
+  } else {
+    console.log(`        ✓ already healthy`);
   }
 
   // Fetch anon key
