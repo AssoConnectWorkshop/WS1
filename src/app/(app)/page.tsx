@@ -1,82 +1,115 @@
-import Image from "next/image";
-import { getOrganization } from "@/lib/assoconnect";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-async function testDatabase(): Promise<{ ok: boolean; tables: string[] }> {
-  try {
-    const supabase = await createClient();
-    const { data, error } = await supabase.rpc("get_public_tables");
-    if (error) throw error;
-    return { ok: true, tables: data?.map((r: { table_name: string }) => r.table_name) ?? [] };
-  } catch {
-    return { ok: false, tables: [] };
-  }
-}
+const NAV_TILES = [
+  { href: "/clients", label: "Clients" },
+  { href: "/sites", label: "Sites" },
+  { href: "/intervenants", label: "Intervenants" },
+  { href: "/interventions", label: "Interventions" },
+  { href: "/devis", label: "Devis" },
+  { href: "/statistiques", label: "Statistiques" },
+  { href: "/vehicules", label: "Véhicules" },
+  { href: "/parametrage", label: "Paramétrage" },
+];
 
-async function testApi(): Promise<{ ok: boolean; platformName: string | null }> {
-  try {
-    const org = await getOrganization();
-    return { ok: true, platformName: org.name };
-  } catch {
-    return { ok: false, platformName: null };
-  }
-}
+type Compteurs = {
+  a_valider: number | null;
+  a_facturer: number | null;
+  a_definir_direction: number | null;
+  stand_by: number | null;
+  materiel_a_commander: number | null;
+  attente_materiel: number | null;
+  duplicata_total: number | null;
+  duplicata_a_traiter: number | null;
+  duplicata_traitees: number | null;
+  depannage: number | null;
+  maintenances: number | null;
+  devis_sav_acceptes: number | null;
+  en_travaux: number | null;
+  autres: number | null;
+};
 
-function StatusIcon({ ok }: { ok: boolean }) {
-  return ok ? (
-    <span className="text-green-500 text-2xl">✓</span>
-  ) : (
-    <span className="text-red-500 text-2xl">✗</span>
+function Tile({ href, value, label }: { href: string; value: number | null | undefined; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="flex flex-col gap-1 rounded-xl border p-4 hover:bg-black/[0.02] dark:hover:bg-white/[0.03]"
+    >
+      <span className="text-2xl font-bold">{value ?? 0}</span>
+      <span className="text-xs opacity-70">{label}</span>
+    </Link>
   );
 }
 
-export default async function Home() {
-  const [db, api] = await Promise.all([testDatabase(), testApi()]);
-  const wsName = (await import("@/config/site")).siteConfig.name;
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const { data } = await supabase.from("v_tableau_de_bord").select("*").maybeSingle();
+  const c = (data ?? {}) as Partial<Compteurs>;
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-10 p-8">
-      <div className="absolute top-4 left-4 text-sm font-bold bg-black text-white px-3 py-1 rounded-full">
-        {wsName}
-      </div>
-      <div className="flex flex-col items-center gap-4">
-        <Image src="/mascot.png" alt="Mascot" width={160} height={160} priority />
-        <h1 className="text-4xl font-bold">Welcome young Simon!</h1>
-      </div>
+    <div className="mx-auto flex max-w-6xl flex-col gap-8 p-8">
+      <h1 className="text-2xl font-bold">Tableau de bord</h1>
 
-      <div className="flex flex-col gap-6 w-full max-w-md">
-        <div className="border rounded-xl p-6 flex flex-col gap-3">
-          <div className="flex items-center gap-3">
-            <StatusIcon ok={db.ok} />
-            <h2 className="text-lg font-semibold">Test database connection</h2>
-          </div>
-          {db.ok && (
-            <p className="text-sm text-gray-600">
-              Number of tables: {db.tables.length}
-              {db.tables.length > 0 && (
-                <span className="ml-1 opacity-60">
-                  ({db.tables.slice(0, 3).join(", ")}
-                  {db.tables.length > 3 ? "…" : ""})
-                </span>
-              )}
-            </p>
-          )}
-        </div>
+      <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <Tile href="/interventions?vue=a-valider" value={c.a_valider} label="À valider" />
+        <Tile href="/interventions?vue=a-facturer" value={c.a_facturer} label="À facturer" />
+        <Tile href="/interventions?vue=direction" value={c.a_definir_direction} label="À définir par la direction" />
+        <Tile href="/interventions?vue=standby" value={c.stand_by} label="Stand-by" />
+        <Tile href="/interventions?vue=a-commander" value={c.materiel_a_commander} label="Matériel à commander" />
+        <Tile href="/interventions?vue=attente-materiel" value={c.attente_materiel} label="Attente matériel" />
+      </section>
 
-        <div className="border rounded-xl p-6 flex flex-col gap-3">
-          <div className="flex items-center gap-3">
-            <StatusIcon ok={api.ok} />
-            <h2 className="text-lg font-semibold">Test API connection</h2>
-          </div>
-          {api.ok && api.platformName && (
-            <p className="text-sm text-gray-600">
-              Name of the platform: <span className="font-medium">{api.platformName}</span>
-            </p>
-          )}
+      <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-semibold opacity-70">Duplicata (clôturé, devis à faire)</h2>
+        <div className="grid grid-cols-3 gap-3 sm:max-w-md">
+          <Tile href="/interventions?vue=duplicata" value={c.duplicata_total} label="Total" />
+          <Tile href="/interventions?vue=duplicata" value={c.duplicata_a_traiter} label="À traiter" />
+          <Tile href="/interventions?vue=duplicata" value={c.duplicata_traitees} label="Traités" />
         </div>
-      </div>
-    </main>
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-semibold opacity-70">En facturation 1 ou 2, par type</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+          <div className="rounded-xl border p-4">
+            <div className="text-2xl font-bold">{c.depannage ?? 0}</div>
+            <div className="text-xs opacity-70">Dépannage</div>
+          </div>
+          <div className="rounded-xl border p-4">
+            <div className="text-2xl font-bold">{c.maintenances ?? 0}</div>
+            <div className="text-xs opacity-70">Maintenances</div>
+          </div>
+          <div className="rounded-xl border p-4">
+            <div className="text-2xl font-bold">{c.devis_sav_acceptes ?? 0}</div>
+            <div className="text-xs opacity-70">Devis SAV acceptés</div>
+          </div>
+          <div className="rounded-xl border p-4">
+            <div className="text-2xl font-bold">{c.en_travaux ?? 0}</div>
+            <div className="text-xs opacity-70">En travaux</div>
+          </div>
+          <div className="rounded-xl border p-4">
+            <div className="text-2xl font-bold">{c.autres ?? 0}</div>
+            <div className="text-xs opacity-70">Autres</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <h2 className="text-sm font-semibold opacity-70">Navigation</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {NAV_TILES.map((tile) => (
+            <Link
+              key={tile.href}
+              href={tile.href}
+              className="rounded-xl border p-6 text-center font-medium hover:bg-black/[0.02] dark:hover:bg-white/[0.03]"
+            >
+              {tile.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }
