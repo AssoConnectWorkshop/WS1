@@ -236,4 +236,31 @@ Index : `site_id`, `statut_code`, `type_code`, `intervenant_id`, `date_limite`, 
 
 ## État
 
-- [ ] Non commencée
+- [x] Migrations SQL écrites dans `supabase/migrations/` (10 fichiers, ordre du brief respecté :
+  extensions_et_utilitaires, referentiels, tiers, sites, interventions, devis_planification,
+  vehicules, vues, rls, seed_referentiels).
+- [x] `docs/plan/dictionnaire.md` produit (mapping complet source → cible).
+- [x] Migrations validées localement (Postgres 16 + stand-in du schéma `auth` Supabase) :
+  application complète sans erreur, rejeu intégral sans erreur ni doublon (idempotence
+  vérifiée), compteurs de `select count(*)` conformes aux critères d'acceptation
+  (`statuts_intervention`=14, `types_intervention`=12, `pannes`=45, `types_fluide`=13),
+  vues `v_interventions_liste` / `v_sites_liste` / `v_tableau_de_bord` fonctionnelles, RLS
+  activée sur toutes les tables `public.*` hors `ws1_*`.
+- [x] `npx next build` vert (partie Next.js de `npm run build`).
+- [ ] `node scripts/migrate.mjs` **non exécuté contre le vrai projet Supabase** depuis cette
+  session : `SUPABASE_ACCESS_TOKEN` n'est pas disponible dans cet environnement sandboxé (les
+  secrets ne vivent que sur Vercel, cf. CLAUDE.md). Les migrations s'appliqueront
+  automatiquement au prochain build Vercel de cette branche. À vérifier après déploiement
+  avec une requête sur `information_schema.tables`.
+
+### À tester après déploiement
+
+1. Ouvrir le déploiement de la branche `tentative-1` (ou lancer
+   `SUPABASE_ACCESS_TOKEN=... node scripts/migrate.mjs` en local) et vérifier dans les logs
+   que les 10 migrations `2026091512000*` s'appliquent sans erreur.
+2. Dans Supabase, vérifier `select count(*) from statuts_intervention` = 14,
+   `types_intervention` = 12, `pannes` = 45, `types_fluide` = 13.
+3. Vérifier que `select * from v_tableau_de_bord` répond (compteurs à 0, aucune donnée
+   métier chargée à cette étape).
+4. Vérifier que RLS est active sur les tables `public.*` (hors `ws1_*`) et que les
+   référentiels ne sont pas modifiables par un utilisateur non administrateur.
