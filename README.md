@@ -57,6 +57,8 @@ Already configured in Vercel — never commit secrets.
 | `SUPABASE_ACCESS_TOKEN` | Supabase access token (migrations) |
 | `ASSOCONNECT_API_KEY` | AssoConnect API key (server-only) |
 | `ASSOCONNECT_ORGANIZATION_ULID` | AssoConnect organization ULID (server-only) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (server-only) — invitations et changement de rôle, étape 3 |
+| `NEXT_PUBLIC_SITE_URL` | URL publique du site, utilisée pour les liens d'invitation / réinitialisation |
 
 ## AssoConnect API
 
