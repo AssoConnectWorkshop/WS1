@@ -8,6 +8,29 @@ en plus des colonnes listées ci-dessous ; ces trois colonnes ne sont pas répé
 Légende : **détournée** = la colonne source stockait autre chose que ce que son nom suggère
 (voir `docs/CONTEXTE.md` §8). *Ignorée* = non reprise dans le schéma cible.
 
+## Règles de transformation (étape 2)
+
+Ajouté à l'étape 2 (`scripts/migrate-legacy/`) : chaque module de mapping applique l'une des
+règles génériques suivantes, sauf mention contraire dans le tableau de sa table (colonne
+« Remarque »/« Règle de transformation »). Implémentation : `lib/transform.mjs` et
+`lib/dates.mjs`.
+
+| Règle | Colonnes concernées (type source) | Détail |
+|---|---|---|
+| `trim` | tous les `nvarchar`/`varchar`/`ntext`/`text` | espaces de bord retirés, chaîne vide → `null`. |
+| `bool` | `bit` | `0`/`1` → `false`/`true` ; `null` → valeur par défaut du schéma (`false` sauf mention contraire). |
+| `entier`/`numeric` | `int`, `tinyint`, `smallint`, `real`, `float`, `money` | passthrough typé, `null` si non convertible. |
+| `datetime Europe/Paris` | `datetime`, `smalldatetime` → `timestamptz` | la valeur « murale » lue en SQL Server (sans fuseau) est interprétée comme heure de Paris puis convertie en instant UTC (gère le changement heure été/hiver). |
+| `heure seule` | colonnes `datetime` ne portant qu'une heure (souvent sentinelle `1899-12-30`) → `time`/`interval` | seule la partie heure est extraite, la date sentinelle est ignorée. |
+| `date texte libre` | `nvarchar` contenant une date (`Site.datcresit`, `SiteMateriel.DateMiseEnService`) | essaie `yyyy-MM-dd`, `dd/MM/yyyy`, `dd/MM/yy` ; sinon `null` + copie brute dans `<colonne>_brut`. |
+| `HH:MM` | `varchar(5)` horaires d'ouverture (`hor_*_ouv/fer`) | `null` si vide ou `00:00`, sinon `HH:MM:00`. |
+| `code texte → entier` | `typint` (et assimilés) | entier si purement numérique, sinon `null` + `<colonne>_brut`. |
+| `puissance texte → numeric` | `Reference.PuissanceFrigo/PuissanceCalo` | numeric si convertible, sinon `null` + `<colonne>_brut`. |
+| `résolution de FK par legacy_id` | toute colonne `num*`/`cpt*` référençant une autre table | recherche l'`id` cible via `legacy_id` (jamais de reprise d'identifiant source, cf. règle générale étape 1). |
+| `résolution de FK par clé texte` | `Intervention.codint`, `Intervention.codcon`, `Utilisateur.codintuti` | recherche par `intervenants.code` / `contacts.legacy_code`, `null` si introuvable. |
+| `complétion de référentiel` | `staint`, `typint`, `codpan`, `nbrappint`, `imprimeepar` | code absent du référentiel chargé à l'étape 1 → ligne ajoutée avec libellé « Inconnu (code n) » (`actif=false` quand la colonne existe), signalé dans le rapport. Voir `lib/referentiels.mjs`. |
+| `orphelin → sentinelle` | `Site.numcli` sans client existant | rattaché au client sentinelle `legacy_id=-1` « Client inconnu (migration) », signalé dans le rapport. |
+
 ## Référentiels
 
 Toutes ces tables ont `id`, `code integer/smallint unique not null`, `libelle text`,
@@ -39,6 +62,22 @@ office d'identifiant métier stable.
 | `types_evenement_vehicule` | ListeEVVehicule | — | Aucune donnée dans `legacy/referentiels.txt` : table vide, peuplée à l'étape 2. |
 | `etats_vehicule` | ListeEtatVehicule | — | Code 4 = vendu. Aucune donnée dans `legacy/referentiels.txt` : table vide, peuplée à l'étape 2. |
 | `statuts_devis` | valeurs fixes (StatutDevis) | — | 1 à viser, 2 visé/aucun retour, 3 annulé et remplacé, 4 envoyé, 5 refusé, 6 accepté. |
+
+## Référentiels chargés directement depuis la source à l'étape 2
+
+Ces tables étaient vides à l'étape 1 (absentes de `legacy/referentiels.txt`) ; l'étape 2 les
+peuple directement depuis SQL Server (`scripts/migrate-legacy/mapping/*.mjs`), avant les
+tables métier qui les référencent.
+
+| Table cible | Source | Mapping |
+|---|---|---|
+| `marques` | Marque | `nummar`→`code`, `nommar`→`libelle`. |
+| `reperes` | Repere | `id`→`code`, `Repere`→`libelle`, `CtrlEtancheite`→`controle_etancheite`. |
+| `types_telecommande` | TypeTel | `id`→`code`, `TypeTelecommande`→`libelle`. |
+| `jours_feries` | JoursFeries | `datjoufer`→`date_jour` (pas de `legacy_id` sur cette table, la date est la clé). |
+| `types_evenement_vehicule` | ListeEVVehicule | `Numero`→`code`, `Evenement_Vehicule`→`libelle`. |
+| `etats_vehicule` | ListeEtatVehicule | `Numero`→`code`, `EtatVehicule`→`libelle`. |
+| `references_materiel` | Reference | mapping complet dans `supabase/migrations/20260915120001_referentiels.sql` ; `Nommar`/`Fluide` résolus par libellé vers `marques`/`types_fluide` (pas de FK déclarée en source). |
 
 ## Tiers
 
