@@ -32,4 +32,52 @@ Fermer l'application aux anonymes, connecter les gestionnaires FMC par e-mail et
 
 ## État
 
-- [ ] Non commencée
+- [x] `src/middleware.ts` : toute route hors `/login`, `/reset-password`, `/auth/*` exige une
+  session (rafraîchie via `@supabase/ssr`) ; anonyme → redirigé vers `/login?next=...`.
+- [x] `src/app/(auth)/login/page.tsx`, `src/app/(auth)/reset-password/page.tsx` (gère les deux
+  phases : demande de lien puis saisie du nouveau mot de passe), `src/app/auth/callback/route.ts`.
+- [x] `src/lib/auth.ts` (`getCurrentUser`), `src/lib/supabase/client.ts` (client navigateur,
+  absent jusqu'ici malgré la mention dans `CLAUDE.md`), `src/lib/supabase/admin.ts` (client
+  service role, jamais exposé au navigateur).
+- [x] `src/app/(app)/layout.tsx` : en-tête, nom + rôle, déconnexion, navigation (liens vides
+  vers les futures pages étape 4), page « compte non rattaché » si l'auth Supabase existe
+  sans ligne `utilisateurs` correspondante. Pages existantes (`/`, `/organization`) déplacées
+  sous `(app)` pour hériter du layout.
+- [x] `src/app/(app)/parametrage/utilisateurs/page.tsx` + `actions.ts` (administrateur
+  seulement) : liste des gestionnaires, invitation (`auth.admin.inviteUserByEmail` via le
+  client service role), changement de rôle. Lien « Paramétrage » masqué dans la nav pour un
+  non-administrateur.
+- [x] `scripts/bootstrap-admin.mjs` : amorçage du tout premier administrateur (un script, pas
+  une Server Action, pour éviter le problème de l'œuf et la poule décrit dans le brief).
+- [x] Migration `20260916090000_utilisateurs_rls_administrateur.sql` : durcissement au-delà du
+  brief — la politique générique de l'étape 1 laissait n'importe quel utilisateur reconnu
+  écrire sur `utilisateurs` (donc s'auto-élever administrateur via l'API publique).
+  Écriture désormais réservée au rôle administrateur. Validée idempotente sur Postgres local.
+- [x] Testé avec un vrai navigateur (Playwright, Supabase non disponible dans cette session) :
+  anonyme sur `/`, `/organization`, `/parametrage/utilisateurs` → redirigé vers `/login` ;
+  échec de connexion → message français affiché sans crasher (a révélé et corrigé un import
+  incomplet dans les Server Actions : les appels Supabase sont maintenant protégés par
+  `try/catch` pour ne jamais faire planter la page si le service est indisponible) ; demande
+  de réinitialisation → message de confirmation neutre (pas d'énumération de comptes).
+- [x] `npx next build` et `npx next lint` verts.
+- [ ] **Non fait par cette session** (accès Supabase Auth réel requis) :
+  - Lancer `scripts/bootstrap-admin.mjs` pour créer le premier administrateur.
+  - Configurer dans Supabase Auth l'URL de redirection
+    `https://assoconnect-ws1.vercel.app/auth/callback`.
+  - Ajouter `SUPABASE_SERVICE_ROLE_KEY` et `NEXT_PUBLIC_SITE_URL` sur Vercel.
+  - Vérifier le critère d'acceptation complet (connexion, invitation d'un collègue,
+    réception du mail, définition du mot de passe, connexion en gestionnaire).
+
+### À faire par l'utilisateur
+
+1. Sur Vercel (projet `ws-1`) : ajouter `SUPABASE_SERVICE_ROLE_KEY` (clé service role
+   Supabase, *jamais* `NEXT_PUBLIC_`) et `NEXT_PUBLIC_SITE_URL=https://assoconnect-ws1.vercel.app`.
+2. Sur Supabase (Authentication → URL Configuration) : ajouter
+   `https://assoconnect-ws1.vercel.app/auth/callback` aux Redirect URLs.
+3. Lancer une fois, avec `SUPABASE_SERVICE_ROLE_KEY` en variable d'environnement locale :
+   `node scripts/bootstrap-admin.mjs --email=<ton-email> --nom=... --prenom=...`
+4. Vérifier l'e-mail reçu, définir le mot de passe, se connecter sur le site : le nom et
+   « administrateur » doivent apparaître dans l'en-tête, et `/parametrage/utilisateurs` doit
+   lister les gestionnaires transférés à l'étape 2 (si le transfert a été fait).
+5. Depuis cette page, inviter un collègue et vérifier qu'il se connecte en « gestionnaire »
+   sans voir le lien « Paramétrage ».
