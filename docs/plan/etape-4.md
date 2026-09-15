@@ -70,4 +70,46 @@ Une page par référentiel, tableau simple. Écriture à l'étape 5.
 
 ## État
 
-- [ ] Non commencée
+- [x] Toutes les pages livrées : 4.1 tableau de bord, 4.2/4.3 interventions (liste + fiche à
+  onglets), 4.4/4.5 sites (liste + fiche à onglets), 4.6 clients/donneurs d'ordre (liste +
+  fiche), 4.7 intervenants (liste + fiche), 4.8 devis (3 familles), 4.9 planification,
+  4.10 paramétrage (index + une page par référentiel).
+- [x] Composants partagés `src/components/ui/` : `DataTable`, `FilterBar`, `Badge`, `Tabs`,
+  `KeyValue`, `EmptyState`. Filtres dans l'URL, pagination serveur 50 lignes, tri par colonne
+  (Server Components, pas de JS client nécessaire).
+- [x] Migration `20260916100000_vues_etape4.sql` : `v_interventions_liste`/`v_sites_liste`
+  complétées (zone_id, donneur d'ordre, sous-type, particulier, retard paiement, ne plus
+  intervenir, investissement, chargé d'affaire) — colonnes nécessaires aux filtres du brief
+  absentes des vues de l'étape 1. Vues recréées (`drop`+`create`, pas `create or replace`,
+  qui interdit de réordonner les colonnes existantes). Testée idempotente sur Postgres local.
+- [x] `npx next build` et `npx next lint` verts.
+- [ ] **Non testé en conditions réelles** : pas d'accès à un projet Supabase (PostgREST) dans
+  cette session, seulement à une base Postgres brute (schéma validé aux étapes 1-2, mais
+  l'API REST que ces pages consomment ne peut pas tourner ici). Vérifié à la place par lecture
+  croisée systématique de chaque nom de table/colonne référencé dans le code contre les
+  migrations réelles, et `build`/`lint` stricts (TypeScript ne peut pas détecter une erreur de
+  nom de colonne ici : aucun type `Database` généré n'est présent dans le repo — à envisager
+  plus tard avec `supabase gen types`).
+- [ ] **Simplifications documentées à vérifier avec FMC** (règles VBA non relues en détail,
+  approximations raisonnables retenues) :
+  - « Entretien proche » (`/interventions`) : type Entretien + statut À planifier + date
+    limite dans les 30 jours, plutôt que la règle exacte avec `ecarts_visites`
+    (legacy/analysis/02_interventions.md §8.1).
+  - « Garantie en cours » (fiches intervention et site) : `date_mise_en_service` +
+    max(garanties pièces/MO/compresseur) > aujourd'hui, plutôt que la règle exacte
+    (legacy/analysis/03_clients_sites_materiel_intervenants.md §8.4).
+  - « Ne plus intervenir » sur `/sites` utilise directement `sites.ne_plus_intervenir`
+    plutôt que « via interventions statut 17 » (site plus simple et cohérent avec la donnée).
+- [ ] Critères chiffrés (5 interventions/sites/devis connus, compteurs égaux à Access, < 2 s
+  sur 70 000 lignes) non vérifiables sans les vraies données (étape 2) ni un vrai déploiement.
+
+### À faire par l'utilisateur
+
+1. Après un transfert de données réel (étape 2), ouvrir chaque page et comparer 5
+   interventions, 5 sites et 3 devis connus avec Access.
+2. Comparer les compteurs du tableau de bord à ceux d'Access le même jour.
+3. Tester les temps de réponse des listes sur le volume réel.
+4. Confirmer ou corriger les trois simplifications listées ci-dessus avec FMC ; les ajuster
+   dans le code si besoin (recherche des commentaires « simplification documentée » dans
+   `src/app/(app)/interventions/page.tsx`, `src/app/(app)/interventions/[id]/page.tsx`,
+   `src/app/(app)/sites/[id]/page.tsx`).
