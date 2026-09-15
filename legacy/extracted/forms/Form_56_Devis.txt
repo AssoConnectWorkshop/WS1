@@ -1,0 +1,30 @@
+[Devis].[NumeroDevisInterne]
+Devis
+192.168.0.247
+EntêteFormulaire
+Étiquette0
+Numéro Devis
+Étiquette1
+Etat
+Étiquette2
+Nom Fichier Devis
+Étiquette18
+Envoyé par
+Étiquette19
+Envoyé le
+Détail
+NumeroDevis
+NumeroDevisInterne
+NomFichierDevis
+[Event Procedure]
+StatutDevis
+Value List
+1;"Devis à viser";2;"Visé, à envoyer";3;"Envoyé";4;"Devis accepté par le client";5;"Devis refusé par le client"
+0;2835
+"";"";"";"";"10";"0"
+EnvoyePar
+Table/Query
+SELECT Utilisateur.numuti, [nomuti] & " " & [preuti] AS Gestionnaire, Utilisateur.typuti FROM Utilisateur WHERE (((Utilisateur.typuti)=1)) ORDER BY [nomuti] & " " & [preuti];
+0;2268
+DateEnvoiDevis
+PiedFormulaire

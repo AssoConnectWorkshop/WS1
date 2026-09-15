@@ -1,0 +1,183 @@
+[Event Procedure]
+Microsoft XPS Document Writer
+XPSPort:
+Détail
+Ug1
+imgClient
+serre la main.jpg
+Étiquette3
+CLIENTS
+imgParametrage
+interventions.jpg
+Étiquette7
+PARAMETRAGE
+Image8
+statistiques.jpg
+Étiquette9
+STATISTIQUES
+ImgEntretien
+Ì¨~
+Ì~
+boîte à outilq.jpg
+Étiquette11
+ENTRETIEN / DEPANNAGE DEVIS ACCEPTES
+imgDevis
+bonhomme site internet.gif
+Étiquette15
+DEVIS SAV
+ImgDonneur
+Ìxx
+Ìx
+donneur.jpg
+Étiquette19
+INTERVENANTS
+Image25
+téléchargement.jpg
+Étiquette26
+SITES
+Image31
+calendrier2.jpg
+Étiquette32
+Intervalle de dates à afficher sur tablette
+Image33
+InterventionAValider.jpg
+Étiquette34
+Fiches d'interventions à valider
+ImgNotification
+Ì13
+Ì3
+Rouge.png
+lblNotification
+Nombre d'interventions à valider
+imgDevisTravaux
+Étiquette46
+DEVIS Travaux
+Img_DevisContratDeMaintenance
+13097458-3d-homme-avec-l-39-affiche-blanche.jpg
+Étiquette48
+Contrat de Maintenance
+Image52
+Euros.jpg
+Étiquette53
+Fiches d'interventions à Facturer
+ImgNotificationRouge
+lblNotificationRouge
+Devis SAV accept
+ImgNotificationVert
+Vert.png
+lblNotificationVert
+Dépannage
+ImgNotificationBleu
+Bleu.png
+lblNotificationBleu
+Maintenances
+ImgNotificationOrange
+Orange.png
+lblNotificationOrange
+En travaux
+ImgNotificationNoir
+Violet.png
+lblNotificationNoir
+Autres types
+Commande157
+MAJ
+Image65
+Duplicata.jpg
+Étiquette66
+Duplicata
+Image67
+A Commander.jpg
+Étiquette68
+Materiel à
+Commander
+Image69
+Camion.png
+Étiquette70
+Attente
+Materiel
+ImageNotifDuplicata
+RoZE.png
+lblNotifDuplicataTotal
+Nombre de duplicata Total
+ImageNotifMatosCommande
+lblNotifMatosCommande
+Nombre de Materiel à commander
+ImageNotifMatosAttente
+lblNotifMatosAttente
+Nombre de Materiel en attente
+Image78
+logo clim access
+Image79
+logo maintenance
+Image81
+lblNotifDuplicataTrait
+A traiter
+Image83
+lblNotifDuplicataafaire
+Attente offre de prix
+Image85
+site-web-fotomelia-images-gratuites-cc0-38-1560x1560.jpg
+Étiquette86
+A Valider Par le Boss
+ImgNotificationBoss
+lblNotificationBoss
+Nombre d'interventions à valider par fabien
+Image89
+Étiquette90
+Vehicules
+ImgNotifCT
+Ìpo
+Ìo
+Rond_1.png
+lblNotificationCT
+Probleme de Controle Technique
+ImgNotifCC
+Ìsr
+Ìr
+Rond_2.png
+lblNotificationCC
+Probleme de Controle Complementaire
+ImgNotifLeasing
+Ìst
+Ìt
+Rond_4.png
+lblNotificationLeasing
+Probleme de Leasing
+ImgNotifGarantie
+Ìut
+Rond_5.png
+lblNotificationGarantie
+Probleme de Garantie
+ImgNotifRevision
+Rond_3.png
+lblNotificationRevision
+Probleme de Revision
+ImageNotifStandBy
+Stand By
+lblNotificationStandby
+Image107
+Étiquette108
+Filtre Extraction
+Image110
+Kadi.jpg
+Kadi
+KADI IDENTIFIEE
+Étiquette112
+Mot de Passe Kadi
+Image113
+Gaz.PNG
+Étiquette114
+Utilisation FF
+"";"";"";"";"10";"0"
+ChoixGest
+Table/Query
+SELECT Utilisateur.numuti, [preuti] & " " & [nomuti] AS Expr1, Utilisateur.typuti, Utilisateur.codintuti, Utilisateur.numsoc FROM Utilisateur WHERE (((Utilisateur.typuti)=1) AND ((Utilisateur.codintuti)<>"") AND ((Utilisateur.numsoc)<>1)) ORDER BY [preuti] & " " & [nomuti];
+0;2162
+MessageChoixGest
+Merci de bien vouloir choisir l'utilisateur afin d'acceder aux boutons
+MessageChoixFait
+Utilisateur Choisi: XXXXXXXXXXXXXXXXXXXXXXX
+Image118
+Acces Bonhome.PNG
+Étiquette119
+Voir Tables

@@ -1,0 +1,33 @@
+Rechercher un site
+BROUILLON
+Echantillon nº 1
+Canon MG5500 series Printer WS
+WSD-0ff131c2-8f99-454b-90a1-5161b6ba1f99.006c
+Détail
+nomsit
+Nom du site
+Étiquette0
+vilsit
+Ville
+Étiquette2
+CmdRechercher
+Rechercher
+[Event Procedure]
+numsit
+Étiquette5
+N° du site
+depsit
+lbldepsit
+Département
+Cadre12
+Étiquette13
+Mise à jour du registre de sécurit
+Option15
+Étiquette16
+Cochée
+Option17
+Étiquette18
+Non cochée
+Option19
+Étiquette20
+Indifférent

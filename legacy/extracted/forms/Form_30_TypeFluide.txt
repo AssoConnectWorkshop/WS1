@@ -1,0 +1,8 @@
+TypeFluide
+EntêteFormulaire
+libelle_Étiquette
+Types de fluides
+DetachedLabel
+Détail
+libelle
+PiedFormulaire

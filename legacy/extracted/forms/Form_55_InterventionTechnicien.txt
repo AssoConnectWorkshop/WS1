@@ -1,0 +1,12 @@
+InterventionTechnicien
+192.168.0.52_1
+EntêteFormulaire
+Détail
+"";"";"";"";"10";"0"
+numuti
+Table/Query
+SELECT Utilisateur.numuti, [nomuti] & " " & [preuti] AS Nom, Utilisateur.nomsocuti, Utilisateur.typuti FROM Utilisateur WHERE (((Utilisateur.nomsocuti)=Formulaires!Intervention!codint) And ((Utilisateur.typuti)=2)) ORDER BY [nomuti] & " " & [preuti];
+0;2835
+Étiquette3
+Technicien(s) intervenu(s)
+PiedFormulaire

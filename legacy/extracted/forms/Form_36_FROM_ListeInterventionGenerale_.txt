@@ -1,0 +1,129 @@
+SELECT ListeInterventionGenerale.mntst
+FROM ListeInterventionGenerale;
+[Event Procedure]
+A4 (210 x 297 mm
+192.168.0.252
+Détail
+ListeInterventionGenerale sous-formulaire
+Form.ListeInterventionGenerale sous-formulaire
+ListeInterventionGenerale_sous_formulaire
+"";"";"";"";"10";"100"
+cboTypeIntervention
+Table/Query
+SELECT dbo_TypeInterv.IndexLigne, dbo_TypeInterv.TypeInter
+FROM dbo_TypeInterv
+WHERE (((dbo_TypeInterv.OrdreAffichage)<>-1))
+ORDER BY dbo_TypeInterv.OrdreAffichage;
+0;1441
+Type Intervention_Étiquette
+Type Inter.
+Type_Intervention_Étiquette
+cboStatut
+SELECT dbo_StatusInterv.IndexLigne, dbo_StatusInterv.StatutInter FROM dbo_StatusInterv   where dbo_StatusInterv.OrdreAffichage>0 order by  dbo_StatusInterv.OrdreAffichage;
+0;1442
+Étiquette5
+Statut Intervention
+"";"";"";"";"10";"510"
+cboClient
+select 0 as numcli, " A sélectionner" as nomcli from client UNION select numcli,nomcli from client where affcli=1 ORDER BY nomcli;
+0;1440
+"select 0 as numcli, "" A sélectionner"" as nomcli from client UNION select numcli,nomcli from client where affcli=1 ORDER BY nomcli;";"client";"client";""
+Client_Étiquette
+Client
+CmdNouvelleIntervention
+Nouvelle intervention
+ChkShowArchived
+False
+Étiquette14
+Afficher les clôturées
+cmdFermer
+Commande15
+Fermer formulaire
+CboNumSit
+Étiquette10
+N° Site ou Nom du site
+Texte17
+Short Date
+00/00/00;0;_
+Étiquette18
+Entre le
+CmdImprimerListeInterventions
+Imprimer les interventions à réaliser
+CboIntervenant
+select 0 as codint, " A sélectionner" as nomint from intervenant UNION select codint,nomint from intervenant Where 1=1
+"select 0 as codint, "" A sélectionner"" as nomint from intervenant UNION select codint,nomint from intervenant Where 1=1";"intervenant";"intervenant";""
+Étiquette23
+Intervenant
+CboDonneur
+select 0 as donneurid, " A sélectionner" as nomdonneur from donneur UNION select donneurid,nomdonneur from donneur where 1=1 ORDER BY nomdonneur;
+"select 0 as donneurid, "" A sélectionner"" as nomdonneur from donneur UNION select donneurid,nomdonneur from donneur where 1=1 ORDER BY nomdonneur;";"donneur";"donneur";""
+Étiquette25
+Donneur d'ordres
+CboZone
+select 0 as numzon, " A sélectionner" as nomzon from zonegeographique UNION select numzon,nomzon from zonegeographique where 1=1 ORDER BY nomzon;
+0;1443
+"select 0 as numzon, "" A sélectionner"" as nomzon from zonegeographique UNION select numzon,nomzon from zonegeographique where 1=1 ORDER BY nomzon;";"zonegeographique";"zonegeographique";""
+Étiquette27
+Zone
+ChkAudit
+Étiquette29
+Audit
+ChkPhoto
+Étiquette31
+Photo
+ChkMajRegSec
+Étiquette33
+MàJ Registre de sécurit
+ChkControleEtancheite
+Étiquette35
+Contrôle d'étanchéit
+Texte36
+Étiquette37
+et
+LstZone
+SELECT ZoneGeographique.numzon, ZoneGeographique.nomzon FROM ZoneGeographique where 1=1
+nomzon_Étiquette
+CmdRechercher
+Rechercher
+CmdExporter
+&Exporter clients
+txtFichierExporte
+Ouvrir fichier export
+c:\Export.xls
+ChkModificationAutorisée
+ChkModification
+Modification
+Cocher pour autoriser les modifications dans le tableau ci-dessous
+mntst
+Étiquette48
+mntst:
+Texte49
+Étiquette50
+CheckSousType
+Étiquette52
+SousType Vide
+StatutFact
+SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture WHERE (((dbo_StatutFacture.OrdreAffichage)<>-1)) ORDER BY dbo_StatutFacture.OrdreAffichage;
+Étiquette54
+Statut Facturation
+CheckDevisAFaire
+Étiquette57
+Devis à Faire
+CheckParticulier
+Particulier
+Commande60
+Export Saisie Heures
+NbExport
+0/0
+Somme
+Temps Total Telephone:
+CheckDateReele
+No
+Étiquette66
+sur date réelle
+Étiquette67
+Filtre
+Cadre68
+CheckEntretienProche
+Étiquette72
+Recherche Entretien 'Proche'

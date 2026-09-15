@@ -1,0 +1,19 @@
+00 - Statistiques Clients
+pdfcmon
+Détail
+"";"";"";"";"10";"100"
+cboClient
+Table/Query
+SELECT numcli, nomcli FROM client WHERE affcli=1 ORDER BY nomcli;
+0;1441
+Client_Étiquette
+Client
+cmdFermer
+Commande24
+[Event Procedure]
+Fermer formulaire
+CmdRechercher
+Export Excel Materiel
+Label_Export
+Commande40
+Stop Export

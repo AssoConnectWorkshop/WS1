@@ -1,0 +1,192 @@
+numintint=340945
+ListeInterventionGenerale
+Fiche Intervention
+RICOH Aficio MP C2000 PCL 6
+LPT1:
+Default
+[Event Procedure]
+000 PCL 6
+A4 (210 x 297 mm)
+192.168.0.250
+ZoneEntêtePage
+Détail
+Étiquette144
+NOM ET SIGNATURE DES TECHNICIENS
+Image533
+sigtecimg
+Boîte115
+Boîte114
+Boîte113
+Image5
+Ìw
+top.jpg
+Étiquette16
+FICHE D'INTERVENTION
+Texte19
+numintint
+Étiquette20
+Fiche d'intervention N° :
+Texte21
+numsit
+Étiquette22
+N° Site :
+Texte23
+datint
+Étiquette24
+Date :
+Texte25
+=[nomcli]+' / '+[nomsit]
+Étiquette26
+CLIENT / SITE :
+Texte27
+=[adrsit]
+Étiquette28
+ADRESSE :
+Texte31
+=[codpossit]+" "+[vilsit]
+Étiquette33
+TEMPS DE TRAJET
+Texte35
+tpsallint
+Medium Time
+Étiquette36
+TEMPS ALLER :
+Texte37
+tpsretint
+Étiquette38
+TEMPS RETOUR :
+Texte39
+=[tpsretint]-[tpsallint]
+Étiquette40
+TEMPS TRAJET :
+Étiquette41
+TEMPS SUR SITE
+Texte42
+heuarrint
+Short Time
+Étiquette43
+HEURE ARRIVEE :
+Texte44
+heudepint
+Étiquette45
+HEURE DEPART :
+Texte46
+Étiquette47
+DUREE INTERVENTION :
+Texte48
+=[nbrtecint]
+Étiquette49
+NBR TECHNICIENS :
+typint2
+Étiquette53
+A -           DEPANNAGE (cochez le type de panne(s))
+typint1
+Étiquette55
+B -         ENTRETIEN
+entcli
+Étiquette68
+CLIMATISATION
+entrac
+Étiquette74
+RIDEAUX D'AIR CHAUD
+entext
+Étiquette76
+EXTRACTION
+typint3
+Étiquette78
+C -        DEVIS ACCEPTE
+Étiquette116
+MISE A JOUR DU REGISTRE DE SECURITE
+regsecoui
+majregsec
+Étiquette118
+OUI
+regsecnon
+Étiquette121
+NON
+Étiquette122
+PRESTATIONS EFFECTUEES
+Étiquette123
+A PREVOIR / RESTE A FAIRE
+Étiquette129
+COMMENTAIRE
+Étiquette141
+CACHET DU CLIENT
+Étiquette142
+NOM DU CLIENT
+Étiquette143
+SIGNATURE CLIENT
+Étiquette145
+LES MENTIONS A REMPLIR CI-DESSOUS SONT OBLIGATOIRES
+Étiquette146
+FMC Maintenance
+Étiquette147
+Siège social : ZA de la Morandière rue Galilée 33185 le Haillan
+Étiquette148
+Tel : 05.33.89.12.40 - Fax : 05.56.97.38.19 - Mail : contact@fmc-climatisation.fr
+Étiquette524
+Installation - Dépannage
+Étiquette525
+Climatisation - Ventilation
+Texte526
+sigsit
+pan1
+Étiquette83
+01           PB. SUR ORGANES ELEC.
+pan2
+Étiquette86
+02           PB. SUR ORGANES FRIGO.
+pan3
+Étiquette88
+03           PB. DE REGULATION
+pan4
+Étiquette90
+04           FUITE(S) D'EAU CONDENSATS
+pan5
+Étiquette92
+05           MAUVAISE UTILISATION
+pan6
+Étiquette94
+06           PB. D'ALIMENTATION ELEC.
+pan7
+Étiquette96
+07           ENTRETIEN SUPPLEMENTAIRE
+pan8
+Étiquette100
+08           PB. D'ALIMENTATION HYDRO.
+pan9
+Étiquette102
+09           AUTRES "DEFAUT MATERIEL"
+pan10
+Étiquette104
+10           P.O. (PORTE OUVERTE A L'ARRIVEE)
+pan11
+Étiquette106
+11           REARMEMENT DI
+pan12
+Étiquette108
+12           AUGMENTER FREQUENCE VISITES
+pan13
+Étiquette110
+13          AUTRES ORIGINES EXTERNES
+pan14
+Étiquette112
+14           PB. AERAULIQUE
+Texte528
+typint
+Texte530
+SIGTEC
+Texte531
+codpan
+imagesigcli
+sigcliimg
+Texte534
+sigtec2
+Texte536
+sigcli2
+Texte537
+sigsitimg
+ImgSgSitImg
+Texte539
+comtec
+ZonePiedPage

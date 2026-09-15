@@ -1,0 +1,136 @@
+numintint=406779
+ListeInterventionGenerale
+Fiche Intervention
+Microsoft XPS Document Writer
+[Event Procedure]
+cument Writer
+XPSPort:
+ZoneEntêtePage
+Détail
+Étiquette144
+NOM ET SIGNATURE DES TECHNICIENS
+Image533
+sigtecimg
+Image5
+FMC Climatisation.png
+Étiquette16
+RAPPORT D'INTERVENTION
+Texte19
+numintint
+Étiquette20
+Fiche d'intervention N° :
+Texte21
+=[numsit] & [codsit]
+Étiquette22
+N° Site :
+Texte23
+datint
+Étiquette24
+Date :
+Texte25
+=[nomsit]
+Étiquette26
+CLIENT / SITE :
+Texte27
+=[adrsit]
+Étiquette28
+ADRESSE :
+Texte31
+=[codpossit]+" "+[vilsit]
+Étiquette33
+TEMPS DE TRAJET
+txttpsallint
+tpsallint
+Short Time
+Étiquette36
+TEMPS ALLER :
+txttpsretint
+tpsretint
+Étiquette38
+TEMPS RETOUR :
+txttpstrajet
+=[tpsretint]+[tpsallint]
+Étiquette40
+TEMPS TRAJET :
+Étiquette41
+TEMPS SUR SITE
+txtheuarrint
+heuarrint
+Étiquette43
+HEURE ARRIVEE :
+txtheudepint
+heudepint
+Étiquette45
+HEURE DEPART :
+txtdurint
+=[heudepint]-[heuarrint]
+Étiquette47
+DUREE INTERVENTION :
+Texte48
+=[nbrtecint]
+Fixed
+Étiquette49
+NBR TECHNICIENS :
+Étiquette116
+MISE A JOUR DU REGISTRE DE SECURITE
+regsecoui
+majregsec
+Étiquette118
+OUI
+regsecnon
+Étiquette121
+NON
+Étiquette122
+PRESTATIONS EFFECTUEES
+Étiquette123
+A PREVOIR / RESTE A FAIRE
+Étiquette129
+COMMENTAIRE
+Étiquette141
+CACHET DU CLIENT
+Étiquette142
+NOM DU CLIENT
+Étiquette143
+SIGNATURE CLIENT
+Étiquette145
+LES MENTIONS A REMPLIR CI-DESSOUS SONT OBLIGATOIRES
+Étiquette146
+FMC Maintenance
+Étiquette147
+Siège social : ZA de la Morandière rue Galilée 33185 le Haillan
+Étiquette148
+Tel : 05.33.89.12.40 - Fax : 05.56.97.38.19 - Mail : contact@fmc-climatisation.fr
+Étiquette524
+Installation - Dépannage
+Étiquette525
+Climatisation - Ventilation
+Texte526
+sigsit
+Texte528
+typint
+Texte530
+SIGTEC
+Texte531
+codpan
+imagesigcli
+sigcliimg
+Texte534
+sigtec2
+Texte536
+sigcli2
+Texte537
+sigsitimg
+ImgSgSitImg
+Texte539
+comtec
+Étiquette541
+TYPE D'INTERVENTION
+"";"";"";"";"10";"100"
+Table/Query
+SELECT dbo_TypeInterv.IndexLigne, dbo_TypeInterv.TypeInter FROM dbo_TypeInterv where 1=1
+0;2835
+heuvis
+True/False
+Texte544
+=[donneurid]
+ZonePiedPage

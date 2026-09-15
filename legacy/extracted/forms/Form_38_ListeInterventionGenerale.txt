@@ -1,0 +1,110 @@
+ListeInterventionGenerale
+Géocoder un site
+[Event Procedure]
+Microsoft XPS Document Writer
+cument Writer
+XPSPort:
+EntêteFormulaire
+Détail
+CmdResetMap
+Réinitialiser la carte
+txtdebut
+Short Date
+00/00/00;0;_
+Étiquette61
+à réaliser entre le
+Image58
+marker-icon-grey.png
+Étiquette57
+Désenfumage
+Image53
+marker-icon-green.png
+Image52
+marker-icon-red.png
+Image51
+marker-icon-blue.png
+Étiquette49
+Tx selon devis
+Étiquette48
+Dépannages
+Étiquette46
+Entretiens
+CboIntervenant
+Table/Query
+SELECT codint, nomint FROM intervenant ORDER BY nomint;
+0;1445
+Étiquette23
+Intervenant
+Cadre44
+Étiquette45
+Légendes
+CboZone
+SELECT numzon, nomzon FROM zonegeographique ORDER BY nomzon;
+0;1448
+Étiquette27
+Zone
+cboClient
+SELECT client.numcli, client.nomcli FROM client WHERE (((client.affcli)=True)) ORDER BY client.nomcli;
+0;1444
+Client_Étiquette
+Client
+cboStatut
+Value List
+-1;"Matériel à commander";1;"A planifier";5;"En cours chez le sous-traitant";6;"Effectuée en attente retour fiche intervention";7;"Clôturée";9;"Réalisée - à valider";10;"Résolue par téléphone";8;"Annulée avec accord client"
+0;1446
+Étiquette5
+Statut Intervention
+cboTypeIntervention
+0;Toutes;1;Entretien;2;Dépannage;3;Devis accepté;7;Désenfumage;9;Audit;4;Autre;8;Inter. réalisée en attente devis signé client;5;En travaux;6;En création
+Type Intervention_Étiquette
+Type Intervention
+Type_Intervention_Étiquette
+Rect1
+lbl9
+Critères de filtre
+CmdFermer
+Commande43
+Fermer formulaire
+"";"";"";"";"10";"510"
+CboDonneur
+select 0 as donneurid, " A sélectionner" as nomdonneur from donneur UNION select donneurid,nomdonneur from donneur ORDER BY nomdonneur;
+"select 0 as donneurid, "" A sélectionner"" as nomdonneur from donneur UNION select donneurid,nomdonneur from donneur ORDER BY nomdonneur;";"donneur";"donneur";""
+Étiquette25
+Donneur d'ordres
+Texte17
+Étiquette18
+et le
+CboNumSit
+Étiquette10
+N° Site ou Nom du site
+ChkShowArchived
+Étiquette14
+Afficher les clôturées
+CmdAfficher
+Afficher les sites/interventions
+Actualiser
+WebBrowser
+Root Entry
+CONTENTS
+AccessObjSiteData
+Users
+@shell32.dll,-21813
+Utilisateur
+Microsoft Web Browser
+Shell.Explorer.2
+Image67
+marker-icon-yellow.png
+Étiquette68
+Attente de matériel
+Image69
+marker-icon-black.png
+Étiquette70
+Audit
+Image71
+Ì
+cone.png
+Étiquette72
+En travaux
+PiedFormulaire
+CmdHideDisplay
+Afficher / Masquer

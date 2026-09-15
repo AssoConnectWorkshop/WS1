@@ -1,0 +1,19 @@
+SELECT [AuditRegulationCommande].[numeroregulationcommande], [AuditRegulationCommande].[numaudit], [AuditRegulationCommande].[TypeTelecommande], [AuditRegulationCommande].[NbreTelecommande], [AuditRegulationCommande].[EmplacementTelecommande], [AuditRegulationCommande].[EtatTelecommande], [AuditRegulationCommande].[HauteurTelecommande] FROM AuditRegulationCommande;
+AuditRegulationCommande sous-formulaire
+EntêteFormulaire
+Détail
+numeroregulationcommande
+numeroregulationcommande_Étiquette
+numaudit
+numaudit_Étiquette
+TypeTelecommande
+TypeTelecommande_Étiquette
+NbreTelecommande
+NbreTelecommande_Étiquette
+EmplacementTelecommande
+EmplacementTelecommande_Étiquette
+EtatTelecommande
+EtatTelecommande_Étiquette
+HauteurTelecommande
+HauteurTelecommande_Étiquette
+PiedFormulaire

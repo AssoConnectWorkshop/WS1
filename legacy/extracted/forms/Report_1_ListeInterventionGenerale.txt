@@ -1,0 +1,119 @@
+[numcli]=211 AND [typint]='1' AND [staint]=1 AND [staint]<> 7 AND  nomsit like '%%' AND  numcli=211 AND [numzonsit]=74 or [numcli]=211 AND [typint]='1' AND [staint]=1 AND [staint]<> 7 AND  nomsit like '%%' AND  numcli=211 AND [numzonsit]=83
+ListeInterventionGenerale
+RICOH Aficio MP C2000 PCL 6
+LPT1:
+Default
+[Event Procedure]
+000 PCL 6
+A4 (210 x 297 mm)
+192.168.0.250
+EntêteÉtat
+ZoneEntêtePage
+nomcli_Étiquette
+Client
+DetachedLabel
+nomsit_Étiquette
+Site
+typint_Étiquette
+Type
+staint_Étiquette
+Statut
+numsit_Étiquette
+Code Site
+numzonsit_Étiquette
+Zone
+codint_Étiquette
+Intervenant
+Étiquette47
+Adresse
+Étiquette49
+Nb Visite
+Étiquette48
+Secteur
+Étiquette42
+Liste des interventions à réaliser
+Image45
+Ì5x
+Ìx
+fmc.jpg
+Auto_Date
+=Date() & " - " & Time()
+Long Date
+donneurid_Étiquette
+Entreprise référente
+Étiquette61
+Contrôle étanchéit
+Étiquette59
+Photos
+Étiquette58
+Audit
+datheulim_Étiquette
+Date limite
+Étiquette63
+MàJ Registre de sécurit
+Étiquette148
+Commentaire
+Étiquette159
+N° Tél
+Étiquette174
+Devis en cours
+Étiquette217
+A FAIRE
+Étiquette220
+Dernière visite
+d'entretien
+Étiquette231
+Commentaire général du site
+Étiquette245
+Devis N
+Détail
+nomcli
+nomsit
+numsit
+datheulim
+txtadrsit
+=[adrsit] & " " & [codpossit] & " " & [vilsit]
+typint
+Value List
+0;Toutes;1;Entretien;2;Dépannage;3;Devis accepté;7;Désenfumage;4;Autre;8;Inter. réalisée en attente devis signé client;5;En travaux;6;En création
+0;2835
+"";"";"";"";"10";"200"
+nomdonneur
+donneurid
+Table/Query
+SELECT Donneur.donneurid, Donneur.nomdonneur FROM Donneur;
+"SELECT Donneur.donneurid, Donneur.nomdonneur FROM Donneur; ";"Donneur";"";"donneurid";"nomdonneur";"PK_Donneur"
+"Code intervenant";"";"0";"0"
+codint
+"Intervenant";"Intervenant";"";"codint";"nomint";"PK_Intervenant"
+staint
+1;"A planifier";2;"Planifiée";3;"Attente de matériel";4;"En cours";5;"En cours chez le sous-traitant";6;"Effectuée en attente retour fiche intervention";7;"Clôturée";8;"Annulée avec accord client"
+vilsit
+nbrentsit
+Cocher57
+auditafaire
+Cocher60
+photoafaire
+Cocher62
+controleetancheiteafaire
+Cocher64
+majregistresecuriteafaire
+comint
+telsit
+[telsit]
+DevisEnCours
+=IIf(IsNull([NomFichierDevis]),"",Left([NomFichierDevis],InStr([NomFichierDevis],"#")-4))
+datedernierevisiteentretien
+comsit
+NumeroDevis
+numdevacc
+numzonsit
+nomzon
+ZonePiedPage
+Texte43
+=Now()
+Texte44
+="Page " & [Page] & " sur " & [Pages]
+Étiquette46
+Document confidentiel - propriété exclusive de FMC Climatisation
+PiedÉtat

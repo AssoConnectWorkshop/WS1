@@ -1,0 +1,76 @@
+[Site sous-formulaire Client].[nomsit], [Site sous-formulaire Client].[numsit]
+SELECT Site.CptSit, Site.numcli, Site.codsit, Site.nomsit, Site.sitsit, Site.typsit, Site.adrsit, Site.codpossit, Site.vilsit, Site.telsit, Site.faxsit, Site.civres, Site.nomres, Site.preres, Site.surven, Site.surtot, Site.nbrentsit, Site.datdervisdes, Site.comsit, Site.telcencom, Site.datcresit, Site.mntredev, Site.datprisencharge, Site.misajoursecurite, Site.numsit FROM Site;
+Site sous-formulaire Client
+EntêteFormulaire
+Détail
+numcli
+numcli_Étiquette
+codsit
+numsit
+codsit_Étiquette
+N° de magasin
+nomsit
+[Event Procedure]
+nomsit_Étiquette
+Site
+sitsit
+sitsit_Étiquette
+Situation
+typsit
+typsit_Étiquette
+Type
+adrsit
+adrsit_Étiquette
+Adresse
+codpossit
+codpossit_Étiquette
+CP
+vilsit
+vilsit_Étiquette
+Ville
+telsit
+telsit_Étiquette
+Téléphone
+faxsit
+faxsit_Étiquette
+Fax
+civres
+civres_Étiquette
+Civilit
+nomres
+nomres_Étiquette
+Nom
+preres
+preres_Étiquette
+Prénom
+surven
+surven_Étiquette
+Surface Vente
+surtot
+surtot_Étiquette
+Surface Totale
+nbrentsit
+nbrentsit_Étiquette
+Nbre Entretien
+datdervisdes
+datdervisdes_Étiquette
+Dernière visite désenfumage
+comsit
+comsit_Étiquette
+Commentaire
+telcencom
+telcencom_Étiquette
+Tel. centre co.
+datcresit
+datcresit_Étiquette
+Créé le
+mntredev
+mntredev_Étiquette
+Redevance
+datprisencharge
+datprisencharge_Étiquette
+Pris en charge le
+misajoursecurite
+misajoursecurite_Étiquette
+MàJ registre sécurit
+PiedFormulaire

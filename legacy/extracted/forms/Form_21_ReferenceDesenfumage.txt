@@ -1,0 +1,19 @@
+ReferenceDesenfumage
+Référence Désenfumage
+EntêteFormulaire
+Détail
+nomrefdes
+nomref
+nomref_Étiquette
+Référence
+"N°";"";"Marque";"";"10";"100"
+nummardes
+Table/Query
+MarqueDesenfumage
+0;2835
+nummar_Étiquette
+Marque
+desref
+Étiquette6
+Désignation:
+PiedFormulaire

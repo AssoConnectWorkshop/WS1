@@ -1,0 +1,244 @@
+SELECT SiteMateriel.NumeroSiteMateriel, SiteMateriel.NumeroSite, SiteMateriel.RepereSurSite, SiteMateriel.Repere, SiteMateriel.Emplacement, SiteMateriel.Quantite, SiteMateriel.Marque, SiteMateriel.Type, SiteMateriel.Reference, SiteMateriel.NumeroSerie, SiteMateriel.Reversible, SiteMateriel.ResistanceElectrique, SiteMateriel.PuissanceFrigo, SiteMateriel.PuissanceCalo, SiteMateriel.FluideQuantite, SiteMateriel.DateMiseEnService, SiteMateriel.TypeTelecommande, SiteMateriel.NbreTelecommande, SiteMateriel.EmplacementTelecommande, SiteMateriel.Disjoncteurs, SiteMateriel.DisjoncteurPrincipal, SiteMateriel.DisjoncteurArmoirePrincipale, SiteMateriel.DisjoncteurCoffretIndependant, SiteMateriel.AccessibiliteGroupe, SiteMateriel.AccessibiliteCassettes, SiteMateriel.SupportGroupes, SiteMateriel.EtatSupports, SiteMateriel.NbreFiltreRoofTop, SiteMateriel.ReferenceFiltreRoofTop, SiteMateriel.NbreCourroiesRoofTop, SiteMateriel.ReferenceCourroiesRoofTop, SiteMateriel.AppointChauffageSurRoof, SiteMateriel.NbreAerotherme, SiteMateriel.AerothermeGazElec, SiteMateriel.RideauAir, SiteMateriel.NbreRideauType, SiteMateriel.PuissanceRideau, SiteMateriel.TypeDisjoncteurRideau, SiteMateriel.SasEntree, SiteMateriel.ClimLocauxSociauxEmplacement, SiteMateriel.ClimLocauxSociauxEmplacementGroupeExterieur, SiteMateriel.ClimLocauxSociauxMarque, SiteMateriel.ClimLocauxSociauxType, SiteMateriel.ClimLocauxSociauxReference, SiteMateriel.ClimLocauxSociauxNumeroSerie, SiteMateriel.ClimLocauxSociauxDateMiseService, SiteMateriel.ClimLocauxSociauxReversible, SiteMateriel.ClimLocauxSociauxFluideQuantite, SiteMateriel.Radiateurs, SiteMateriel.NbreRadiateurs, SiteMateriel.LocalisationRadiateurs, SiteMateriel.DisjoncteurRadiateursTypeIntensite, SiteMateriel.VMC, SiteMateriel.LocalisationVMC, SiteMateriel.Photos, SiteMateriel.RapportsMaintenance, SiteMateriel.DevisEnCours, SiteMateriel.DevisValide, SiteMateriel.ControleEtancheite, SiteMateriel.Observations, SiteMateriel.DateCE, SiteMateriel.CE_Edite, SiteMateriel.NumeroInter, SiteMateriel.DateAchat FROM SiteMateriel;
+SiteMateriel sous-formulaire
+EntêteFormulaire
+<d5
+NumeroSiteMateriel_Étiquette
+NumeroSiteMateriel
+NumeroSite_Étiquette
+NumeroSite
+RepereSurSite_Étiquette
+RepereSurSite
+Repere_Étiquette
+Repere
+Emplacement_Étiquette
+Emplacement
+Quantite_Étiquette
+Quantite
+Marque_Étiquette
+Marque
+Type_Étiquette
+Type
+Reference_Étiquette
+Référence
+NumeroSerie_Étiquette
+N° de Série
+Reversible_Étiquette
+Réversible
+ResistanceElectrique_Étiquette
+Résistance électrique
+PuissanceFrigo_Étiquette
+Frigo (kW)
+PuissanceCalo_Étiquette
+Calo (kW)
+FluideQuantite_Étiquette
+Fluide + Quantit
+DateMiseEnService_Étiquette
+Date MES
+TypeTelecommande_Étiquette
+Type Télécommande
+NbreTelecommande_Étiquette
+Nbre Télécommande
+EmplacementTelecommande_Étiquette
+EmplacementTelecommande
+Disjoncteurs_Étiquette
+Disjoncteurs
+DisjoncteurPrincipal_Étiquette
+DisjoncteurPrincipal
+DisjoncteurArmoirePrincipale_Étiquette
+DisjoncteurArmoirePrincipale
+DisjoncteurCoffretIndependant_Étiquette
+DisjoncteurCoffretIndependant
+AccessibiliteGroupe_Étiquette
+AccessibiliteGroupe
+AccessibiliteCassettes_Étiquette
+AccessibiliteCassettes
+SupportGroupes_Étiquette
+SupportGroupes
+EtatSupports_Étiquette
+EtatSupports
+NbreFiltreRoofTop_Étiquette
+NbreFiltreRoofTop
+ReferenceFiltreRoofTop_Étiquette
+ReferenceFiltreRoofTop
+NbreCourroiesRoofTop_Étiquette
+NbreCourroiesRoofTop
+ReferenceCourroiesRoofTop_Étiquette
+ReferenceCourroiesRoofTop
+AppointChauffageSurRoof_Étiquette
+AppointChauffageSurRoof
+NbreAerotherme_Étiquette
+NbreAerotherme
+AerothermeGazElec_Étiquette
+AerothermeGazElec
+RideauAir_Étiquette
+RideauAir
+NbreRideauType_Étiquette
+NbreRideauType
+PuissanceRideau_Étiquette
+PuissanceRideau
+TypeDisjoncteurRideau_Étiquette
+TypeDisjoncteurRideau
+SasEntree_Étiquette
+SasEntree
+ClimLocauxSociauxEmplacement_Étiquette
+ClimLocauxSociauxEmplacement
+ClimLocauxSociauxEmplacementGroupeExterieur_Étiquette
+ClimLocauxSociauxEmplacementGroupeExterieur
+ClimLocauxSociauxMarque_Étiquette
+ClimLocauxSociauxMarque
+ClimLocauxSociauxType_Étiquette
+ClimLocauxSociauxType
+ClimLocauxSociauxReference_Étiquette
+ClimLocauxSociauxReference
+ClimLocauxSociauxNumeroSerie_Étiquette
+ClimLocauxSociauxNumeroSerie
+ClimLocauxSociauxDateMiseService_Étiquette
+ClimLocauxSociauxDateMiseService
+ClimLocauxSociauxReversible_Étiquette
+ClimLocauxSociauxReversible
+ClimLocauxSociauxFluideQuantite_Étiquette
+ClimLocauxSociauxFluideQuantite
+Radiateurs_Étiquette
+Radiateurs
+NbreRadiateurs_Étiquette
+NbreRadiateurs
+LocalisationRadiateurs_Étiquette
+LocalisationRadiateurs
+DisjoncteurRadiateursTypeIntensite_Étiquette
+DisjoncteurRadiateursTypeIntensite
+VMC_Étiquette
+VMC
+LocalisationVMC_Étiquette
+LocalisationVMC
+Photos_Étiquette
+Photos
+RapportsMaintenance_Étiquette
+Rapports maintenance
+DevisEnCours_Étiquette
+Devis en cours
+DevisValide_Étiquette
+Devis valid
+ControleEtancheite_Étiquette
+Contrôle d'étanchéit
+Observations_Étiquette
+Observations
+Détail
+|m7
+Repère sur site
+Repère_sur_site
+Qt
+Reference
+N° Série
+NumeroSerie
+N°_Série
+P.Fr.(W)
+PuissanceFrigo
+P_Fr__W_
+P.Ch.(W)
+PuissanceCalo
+P_Ch__W_
+DateMiseEnService
+Date_MES
+NbreTelecommande
+Qté FF
+Qté_FF
+RapportsMaintenance
+DevisEnCours
+DevisValide
+ControleEtancheite
+CelluleVide189
+CelluleVide191
+CelluleVide192
+CelluleVide195
+CelluleVide196
+CelluleVide197
+CelluleVide198
+CelluleVide199
+CelluleVide200
+CelluleVide201
+CelluleVide202
+CelluleVide203
+CelluleVide204
+CelluleVide205
+CelluleVide206
+CelluleVide207
+CelluleVide208
+CelluleVide209
+CelluleVide210
+CelluleVide211
+CelluleVide212
+CelluleVide213
+CelluleVide214
+CelluleVide215
+CelluleVide216
+CelluleVide217
+CelluleVide218
+CelluleVide219
+CelluleVide220
+CelluleVide221
+CelluleVide222
+CelluleVide223
+CelluleVide224
+CelluleVide225
+CelluleVide226
+CelluleVide227
+CelluleVide228
+CelluleVide229
+CelluleVide230
+CelluleVide231
+CelluleVide232
+CelluleVide233
+CelluleVide234
+CelluleVide235
+CelluleVide236
+CelluleVide237
+CelluleVide238
+CelluleVide239
+CelluleVide240
+CelluleVide241
+CelluleVide242
+CelluleVide243
+CelluleVide244
+CelluleVide245
+CelluleVide246
+CelluleVide247
+CelluleVide248
+CelluleVide249
+CelluleVide250
+CelluleVide254
+"";"";"";"";"10";"100"
+Table/Query
+SELECT Marque.nummar, Marque.nommar FROM Marque where 1=1 ORDER BY Marque.nommar;
+0;1448
+SELECT TypeAudit.id, TypeAudit.Type FROM TypeAudit order by type;
+0;1449
+Repère
+SELECT Repere.id, Repere.Repere FROM Repere where 1=1 ORDER BY Repere.Repere;
+[Event Procedure]
+Fluide
+FluideQuantite
+SELECT TypeFluide.id, TypeFluide.libelle FROM TypeFluide order by libelle;
+TypeTelecommande
+SELECT TypeTel.id, TypeTel.TypeTelecommande FROM TypeTel;
+0;1451
+ResistanceElectrique
+Value List
+NC;OUI;NON
+Résistance_électrique
+Reversible
+Cocher448
+CE_EDITE
+Étiquette449
+CE Annuel edit
+Texte18
+DateCE
+Étiquette19
+Texte269
+numerointer
+Étiquette270
+Inter Associée
+Texte272
+DateAchat
+Étiquette273
+Date Achat
+PiedFormulaire

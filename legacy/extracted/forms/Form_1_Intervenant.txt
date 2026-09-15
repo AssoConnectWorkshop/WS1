@@ -1,0 +1,37 @@
+Intervenant
+EntêteFormulaire
+Détail
+codint
+codint_Étiquette
+Code
+nomint
+nomint_Étiquette
+Nom
+"";"";"";"";"10";"100"
+numzonint
+Table/Query
+ZoneGeographique
+0;2835
+"ZoneGeographique";"ZoneGeographique";"";"numzon";"nomzon";"PK_ZoneGeographique"
+numzonint_Étiquette
+Zone géographique
+Intervenant Sous-formulaire sous-formulaire
+Form.Intervenant Sous-formulaire sous-formulaire
+Intervenant_Sous_formulaire_sous_formulaire
+Intervenant Sous-formulaire sous-formulaireÉtiquette
+Interventions
+Intervenant_Sous_formulaire_sous_formulaireÉtiquette
+adrint
+Étiquette8
+Adresse:
+codposint
+Étiquette9
+CP/Ville
+vilint
+telint
+Étiquette11
+Téléphone
+faxint
+Étiquette12
+Fax
+PiedFormulaire

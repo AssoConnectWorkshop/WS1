@@ -1,0 +1,12 @@
+[Event Procedure]
+192.168.0.247
+Détail
+ClientListe
+Form.ClientListe
+Cocher2
+Étiquette3
+Afficher tous les clients
+Commande4
+Fermer formulaire
+CmdPlanifier
+Planifier les entretiens

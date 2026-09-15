@@ -1,0 +1,40 @@
+SELECT [Intervenant Sous-formulaire].codint, [Intervenant Sous-formulaire].[prévue le], [Intervenant Sous-formulaire].[effectuée le], [Intervenant Sous-formulaire].nomsit, [Intervenant Sous-formulaire].vilsit, [Intervenant Sous-formulaire].typsit, [Intervenant Sous-formulaire].numsit FROM [Intervenant Sous-formulaire];
+Intervenant Sous-formulaire sous-formulaire
+EntêteFormulaire
+codint_Étiquette
+Code
+DetachedLabel
+prévue le_Étiquette
+Prévue le
+prévue_le_Étiquette
+effectuée le_Étiquette
+Effectuée le
+effectuée_le_Étiquette
+nomsit_Étiquette
+Nom du site
+vilsit_Étiquette
+Ville
+Étiquette11
+N° du site:
+Étiquette10
+Type du site:
+Détail
+codint
+prévue le
+Date d'intervention prévisionnelle
+prévue_le
+effectuée le
+00/00/0000
+effectuée_le
+nomsit
+Nom_du_site
+vilsit
+Type
+typsit
+Value List
+H;F;H et F
+Type du site
+N
+numsit
+N° du site
+PiedFormulaire

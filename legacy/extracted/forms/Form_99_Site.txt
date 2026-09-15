@@ -1,0 +1,129 @@
+Site
+Microsoft XPS Document Writer
+[Event Procedure]
+XPSPort:
+EntêteFormulaire
+lblSite
+Modification Vehicule
+Auto_LogoCelluleVide
+Auto_EnTeteCelluleVide
+Auto_Date
+=Date()
+Short Date
+Auto_Heure
+=Time()
+Long Time
+Détail
+"";"";"";"";"10";"60"
+EtatVehicule
+Table/Query
+SELECT dbo_ListeEtatVehicule.Numero, dbo_ListeEtatVehicule.EtatVehicule FROM dbo_ListeEtatVehicule where 1=1
+0;1440
+Étiquette332
+Conducteur:
+Étiquette331
+EtatVehicule:
+Étiquette343
+KM à l'achat:
+KM_a_l_achat
+Étiquette348
+Date Mise En Circulation:
+DateMiseCirculation
+00/00/00;_
+Étiquette354
+Numero:
+NumVehicule
+Immat
+Étiquette361
+Immatriculation:
+"";"";"";"";"10";"0"
+Conducteur
+SELECT Utilisateur.numuti, Utilisateur.[Nomuti]+' '+[Preuti] AS Expr1, Utilisateur.preuti FROM Utilisateur WHERE (((Utilisateur.numsoc)=1 Or (Utilisateur.numsoc)=111 Or (Utilisateur.numsoc)=112 Or (Utilisateur.numsoc)=113) AND ((Utilisateur.codintuti)<>'') AND ((Utilisateur.typuti)=2)) ORDER BY Utilisateur.Nomuti;
+Quitter (SANS SAUVEGARDE)
+Quitter__SANS_SAUVEGARDE_
+Bp_Ajout
+Cadre
+Étiquette383
+Revision(2):
+Étiquette371
+Km Entre 2 Revisions:
+Km_Inter_Revision
+titifj
+Temps Entre 2 Revisions (Mois)
+Temps_Mois_Inter_Revision
+Étiquette384
+Date Dernier Entretien:
+Date_Dernier_Entretien
+Étiquette386
+KM Dernier Entretien:
+Km_Dernier_Entretien
+Cadre388
+Étiquette390
+Garantie:
+Étiquette391
+Km Garantie:
+Nb_KM_Garantie
+Étiquette393
+Temps Garantie (Mois)
+Temps_Mois_Garantie
+Cadre401
+Étiquette404
+Leasing:
+Étiquette405
+Km Leasing:
+Nb_Km_Leasing
+Étiquette407
+Temps Leasing (Mois)
+Temps_Mois_Leasing
+Étiquette409
+Date Fin Leasing:
+Date_Fin_Leasing
+Cadre411
+Étiquette414
+Controle Tech.(3)/Controle Compl.(4)/Km(1/5):
+Étiquette415
+Date Dernier Controle Technique
+Date_Dernier_CT
+Étiquette417
+Date Dernier Releve Km:
+Date_Dernier_Releve_KM
+Étiquette419
+Releve Km:
+Dernier_Releve_KM
+Cadre421
+Étiquette423
+Divers:
+Étiquette424
+Numéro télépéage:
+NumTelepeage
+Étiquette426
+Code Carte Essence
+CodeCarteEssence
+Étiquette428
+Numéro Carte Essence:
+NumCarteEssence
+Garantie
+False
+Leasing
+Étiquette436
+Date Dernier Controle Complem.
+Date_Dernier_CC
+Étiquette438
+Marque
+Étiquette440
+Modele
+Étiquette442
+Société:
+societe
+Value List
+0;FMC CLIM;1;FMC MAINT
+0;1441
+critair
+Étiquette445
+Crit'Air
+CheminPC
+Déposer ici le raccourci vers le dossier du pc
+Cadre446
+Étiquette447
+Raccourci vers le PC:
+PiedFormulaire

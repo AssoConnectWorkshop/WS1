@@ -1,0 +1,13 @@
+Détail
+cmdValider
+Valider
+[Event Procedure]
+"";"";"";"";"10";"100"
+LstZoneGeographique
+Table/Query
+SELECT [ZoneGeographique].[numzon], [ZoneGeographique].[nomzon] FROM ZoneGeographique ORDER BY [nomzon];
+0;1440
+"SELECT [ZoneGeographique].[numzon], [ZoneGeographique].[nomzon] FROM ZoneGeographique ORDER BY [nomzon]; ";"ZoneGeographique";"";"numzon";"nomzon";"PK_ZoneGeographique"
+Sélectionner une zone géographique_Étiquette
+Sélectionner une zone géographique
+Sélectionner_une_zone_géographique_Étiquette

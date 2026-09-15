@@ -1,0 +1,11 @@
+ChampRepertoireTechnique
+EntêteFormulaire
+nomcha_Étiquette
+Nom du champ
+DetachedLabel
+nomintcha_Étiquette
+Nom interne du champ
+Détail
+nomcha
+nomintcha
+PiedFormulaire

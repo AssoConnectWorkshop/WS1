@@ -1,0 +1,34 @@
+SELECT ListeInterventionGenerale.mntst
+FROM ListeInterventionGenerale;
+Microsoft XPS Document Writer
+A4 (210 x 297 mm
+XPSPort:
+Détail
+ListeInterventionGenerale sous-formulaire
+Form.ResultatListeKM
+ListeInterventionGenerale_sous_formulaire
+"";"";"";"";"10";"0"
+cboClient
+Table/Query
+SELECT DISTINCT Utilisateur.numuti, [nomuti]+' '+[preuti] AS Nom FROM Utilisateur INNER JOIN DBO_HeuresTech ON Utilisateur.numuti = DBO_HeuresTech.numerotech WHERE (((DBO_HeuresTech.[TypeInterv])=60));
+0;1440
+"SELECT DISTINCT Utilisateur.numuti, [nomuti]+' '+[preuti] AS Nom FROM Utilisateur INNER JOIN DBO_HeuresTech ON Utilisateur.numuti = DBO_HeuresTech.numerotech WHERE (((DBO_HeuresTech.[TypeInterv])=60));";"Utilisateur";"DBO_HeuresTech";""
+Techniciens
+cmdFermer
+Commande15
+[Event Procedure]
+Fermer formulaire
+Texte17
+Short Date
+00/00/00;0;_
+Étiquette18
+Entre le
+Texte36
+Étiquette37
+et
+CmdRechercher
+Rechercher
+Texte49
+mntst
+Étiquette50
+mntst:

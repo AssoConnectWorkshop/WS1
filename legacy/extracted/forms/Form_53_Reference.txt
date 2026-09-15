@@ -1,0 +1,45 @@
+Reference
+Reference sous-formulaire
+Microsoft XPS Document Writer
+XPSPort:
+EntêteFormulaire
+Détail
+nomref
+[Event Procedure]
+nomref_Étiquette
+Référence
+Texte12
+TypeTel
+Étiquette13
+Type Telecommande
+Texte14
+Reversible
+Étiquette15
+Texte16
+Resistance
+Étiquette17
+Texte18
+PuissanceFrigo
+Étiquette19
+Puiss. Frigo (W)
+Texte20
+PuissanceCalo
+Étiquette21
+Puiss. Calo (W)
+Texte22
+QteGaz
+Étiquette23
+Qté Gaz (Kg)
+"";"";"";"";"10";"100"
+Marque
+Nommar
+Table/Query
+SELECT Marque.nummar, Marque.nommar FROM Marque Order by nommar;
+0;1441
+Type
+SELECT TypeAudit.id, TypeAudit.Type FROM TypeAudit order by Type;
+Repere
+SELECT Repere.id, Repere.Repere FROM Repere order by Repere;
+Fluide
+SELECT TypeFluide.id, TypeFluide.libelle FROM TypeFluide Order by libelle;
+PiedFormulaire

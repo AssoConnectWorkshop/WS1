@@ -1,0 +1,17 @@
+dbo_StatusInterv
+Statut Interv sous-formulaire
+EntêteFormulaire
+Détail
+libelle
+StatutInter
+libelle_Étiquette
+Type
+Texte6
+OrdreAffichage
+Étiquette7
+Ordre Affichage
+Texte8
+IndexLigne
+Étiquette9
+Numero Interne (Ne pas toucher)
+PiedFormulaire

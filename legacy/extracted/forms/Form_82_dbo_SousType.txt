@@ -1,0 +1,9 @@
+dbo_SousType
+TypeFluide sous-formulaire
+EntêteFormulaire
+Détail
+libelle
+SousType
+libelle_Étiquette
+Type
+PiedFormulaire

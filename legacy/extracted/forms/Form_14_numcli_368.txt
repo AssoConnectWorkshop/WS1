@@ -1,0 +1,81 @@
+numcli=368
+[Client].[numcli]
+Client
+[Event Procedure]
+pdfcmon
+EntêteFormulaire
+Détail
+nomcli
+nomcli_Étiquette
+Nom
+adrcli
+adrcli_Étiquette
+Adresse
+codposcli
+codposcli_Étiquette
+Code postal
+vilcli
+vilcli_Étiquette
+Ville
+telcli
+telcli_Étiquette
+Téléphone
+faxcli
+faxcli_Étiquette
+Fax
+concli
+concli_Étiquette
+Contact principal
+melcli
+melcli_Étiquette
+E-mail
+Trait23
+cmdFermer
+Commande24
+Fermer formulaire
+CtlTab25
+Page27
+Sites
+Site sous-formulaire Client
+Form.Site sous-formulaire Client
+numcli
+Site_sous_formulaire_Client
+Page26
+Contacts
+Contact sous-formulaire
+Form.Contact sous-formulaire
+Contact_sous_formulaire
+Page35
+Devis
+Étiquette36
+A Développer si nécessaire
+lstClient
+cboClient_Étiquette
+Rechercher (N° de site ou Nom de client)
+cmdAddCustomer
+Créer un nouveau client
+cmdPlanIntervention
+Planifier les entretiens
+Étiquette40
+numcli:
+CmdMap
+Voir sur Maps
+CmdAddSite
+Créer un nouveau site
+coutheuremainoeuvre
+#,##0.00
+;-#,##0.00
+Étiquette44
+Tarif heure Main oeuvre
+coutdeplacement
+Étiquette45
+Tarif d'un déplacement
+Texte46
+cheminpla
+Étiquette47
+Numéro Esa Clim
+Texte48
+cheminpho
+Étiquette49
+Numéro Esa Maint
+PiedFormulaire

@@ -1,0 +1,11 @@
+Panne
+Panne sous-formulaire
+EntêteFormulaire
+Détail
+codpan
+codpan_Étiquette
+Code Panne
+libpan
+libpan_Étiquette
+Libellé Panne
+PiedFormulaire

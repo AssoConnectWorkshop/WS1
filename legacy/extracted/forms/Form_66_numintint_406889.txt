@@ -1,0 +1,499 @@
+numintint=406889
+Intervention
+[Event Procedure]
+192.168.0.252
+EntêteFormulaire
+Détail
+titre
+Création et Clôture d'intervention - En Travaux
+CmdEnvoyerMail
+Envoyer un mail au contact
+CmdNouvelleIntervention
+Nouvelle intervention
+CmdCloturerIntervention
+Clôturer l'intervention
+CmdDecloturer
+Déclôturer l'intervention
+CmdHistorique
+&Historique
+CmdEnregistrer
+Enregistrer
+Texte109
+cptsit
+numintint
+cmdFermer
+Commande24
+Fermer formulaire
+cmdEnvoyerMailPartenaire
+Envoyer un mail au partenaire
+Onglets
+Création d'intervention
+Création_d_intervention
+"";"";"";"";"";"";"10";"100"
+LstClient
+Table/Query
+SELECT Client.numcli, Client.nomcli, Client.vilcli FROM Client where 1=1 ORDER BY Client.nomcli;
+0;1445;0
+LstClient_Étiquette
+Client
+InformationsDemandes
+Boîte332
+Boîte384
+"";"";"";"";"";"";"";"";"4";"4"
+lstSite
+SELECT Site.cptsit, Site.numsit, Site.nomsit, Site.VilSit, Client.nomcli FROM Client INNER JOIN Site ON Client.numcli = Site.numcli WHERE (((Site.numcli)=[Formulaires]![Intervention]![LstClient])) ORDER BY Site.nomsit;
+0;1701;3402;1701;1701
+"SELECT Site.cptsit, Site.numsit, Site.nomsit, Site.VilSit, Client.nomcli FROM Client INNER JOIN Site ON Client.numcli = Site.numcli WHERE (((Site.numcli)=[Formulaires]![Intervention]![LstClient])) ORDER BY Site.nomsit;";"Client";"Site";""
+numsit_Étiquette
+Réf. Site
+nomsit
+Étiquette27
+Nom Site
+adrsit
+Étiquette29
+CP-Ville
+refcliint
+Étiquette70
+N° de DI CLIENT
+numdevacc
+Étiquette243
+N° Devis accept
+datheuapp
+General Date
+=Date()
+00/00/00;0;_
+lbldatheuapp
+Date demande
+objint
+Étiquette92
+Objet demande
+natureintervention
+Value List
+1;Visite Technique;2;Visite Filtres;3;Visite Maintenance Général
+0;2835
+Étiquette236
+Nature intervention
+"";"";"";"";"10";"0"
+codcon
+SELECT Contact.codcon, Contact.precon & " " & Contact.nomcon AS Expr1, Contact.numcli, Contact.adrmelcon FROM Contact WHERE (((Contact.numcli)=[Forms]![Intervention]![LstClient]));
+codcon_Étiquette
+Contact
+"";"";"";"";"";"";"10";"20"
+codint
+SELECT Intervenant.codint, Intervenant.nomint, Intervenant.adrmelint FROM Intervenant where 1=1 ORDER BY Intervenant.nomint;
+567;1701;0
+codint_Étiquette
+Intervenant
+numerodemandesoustraitant
+Étiquette148
+N° demande du sous-traitant
+envoisoustraitantpar
+SELECT Utilisateur.numuti, [preuti] & " " & [nomuti] AS Expr1, Utilisateur.typuti FROM Utilisateur WHERE (((Utilisateur.typuti)=1)) ORDER BY [preuti] & " " & [nomuti];
+Étiquette147
+Envoi au sous-traitant par
+dirint
+Directive d'intervention pour les intervenants
+Étiquette72
+Directives d'intervention (demande intiale du client)
+Ce texte n'apparaît pas sur le bon d'intervention destiné au client
+"";"";"";"";"10";"100"
+typint
+SELECT dbo_TypeInterv.IndexLigne, dbo_TypeInterv.TypeInter
+FROM dbo_TypeInterv
+WHERE (((dbo_TypeInterv.OrdreAffichage)<>-1))
+ORDER BY dbo_TypeInterv.OrdreAffichage;
+Étiquette53
+Type
+Modifiable347
+imprimeepar
+SELECT dbo_SousType.id, dbo_SousType.SousType FROM dbo_SousType where 1=1
+Étiquette348
+Sous-Type
+Modifiable96
+traitepar
+SELECT Utilisateur.numuti, [nomuti] & " " & [preuti] AS Expr1, Utilisateur.typuti, Utilisateur.codintuti, Utilisateur.numsoc FROM Utilisateur WHERE (((Utilisateur.typuti)=1) AND ((Utilisateur.codintuti)<>"")) ORDER BY Utilisateur.numsoc DESC,[nomuti] & " " & [preuti];
+0;2161
+Traité par_Étiquette
+Chargé d'affaire référent:
+Traité_par_Étiquette
+TxtHeuLim
+datheulim
+Short Date
+lblTxtHeuLim
+Date limite d'intervention
+datintpre
+Date d'intervention prévisionnelle
+Étiquette57
+Date prévue
+CmdTechnicienPrevu
+numutipre
+SELECT Utilisateur.numuti, [nomuti] & " " & [preuti] AS Expr1, Utilisateur.typuti, Utilisateur.nomsocuti FROM Utilisateur WHERE (((Utilisateur.typuti)=2) AND ((Utilisateur.nomsocuti)=[Formulaires]![Intervention]![codint])) ORDER BY Utilisateur.nomuti, [nomuti] & " " & [preuti];
+Texte59
+heuintpre
+Short Time
+00:00;0;_
+Étiquette60
+Heure prévue
+Modifiable241
+staint
+SELECT dbo_StatusInterv.IndexLigne, dbo_StatusInterv.StatutInter FROM dbo_StatusInterv   where dbo_StatusInterv.OrdreAffichage>0 order by  dbo_StatusInterv.OrdreAffichage;
+Étiquette242
+Statut
+prediagpar
+SELECT Utilisateur.numuti, [nomuti] & " " & [preuti] AS Expr1, Utilisateur.typuti, Utilisateur.codintuti, Utilisateur.numsoc FROM Utilisateur WHERE (((Utilisateur.typuti)=1) AND ((Utilisateur.codintuti)<>"")) ORDER BY Utilisateur.numsoc DESC , [nomuti] & " " & [preuti];
+Étiquette146
+Effectué par
+chkprediagres
+prediagres
+Étiquette155
+Résolu
+refint
+Étiquette56
+N° de demande interne
+N° de demande qui apparaît en haut à droite des demandes d'intervention
+comint
+comint_Étiquette
+Commentaire interne sur la demande (imprimé sur les documents pour les techniciens)
+qui apparaît sur la fiche d'intervention
+Commande90
+btnLoupe
+Commande91
+CmdAfficherUnSite
+Afficher le site
+Texte229
+cheficdemcli
+Étiquette230
+DI CLIENT
+comsit
+Étiquette259
+Commentaire général du site
+mntfmc
+Étiquette321
+Montant FMC
+mntst
+Étiquette322
+Montant Sous-Traitant
+Texte323
+=[mntfmc]-[mntst]
+Étiquette324
+Différence
+Commande342
+Creer Fiche Excel
+Texte344
+commajregsec
+Modifiable386
+nbrappint
+SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture WHERE (((dbo_StatutFacture.OrdreAffichage)<>-1)) order by dbo_StatutFacture.OrdreAffichage;
+Étiquette387
+datesignaturecontrat
+Étiquette352
+Date
+Cocher362
+rappel24h
+Étiquette363
+Rappel Auto 24H
+Cocher364
+rappel48h
+Étiquette365
+Rappel Auto 48H
+Cocher367
+rappel72h
+Étiquette368
+Rappel Auto 72H
+Cocher369
+rappelsemaine
+Étiquette370
+Rappel Auto Semaine
+Texte373
+dateenvoimail
+Texte374
+nbrpagfax
+Étiquette375
+Nb Heures Vendues
+CalculHeures
+Calculer
+Commande381
+Export Heures Excel
+AnneeExport
+Étiquette383
+Année Export
+LblInformations
+INFORMATIONS DEMANDES D'INTERVENTION
+Étiquette319
+Technicien prévu
+Étiquette336
+Facturation
+Étiquette346
+Chemin Facture Sous-Traitant
+Étiquette372
+Date dernier rappel:
+Étiquette377
+Nb Heures Totales Passées:
+Étiquette385
+Heures Chantier
+LabelNbHeures
+0H  0Mn
+ImgPasInterven
+sans-titre.png
+Texte400
+sigcli
+Étiquette401
+Chemin Facture FMC:
+Commande413
+MAJ Liste Tech
+Commande414
+Creation Inter Partie Suivante
+NbMinTel
+retourficheinterventionpar
+General Number
+LabelMnTel
+Nb Minutes passées:
+TextePreDiag
+numerocommande
+Boîte432
+Étiquette433
+Pré-Diagnostic Telephone
+Texte681
+mnthtdevpartenaire
+Étiquette682
+Montant Devis
+Clôture de l'intervention en cours
+Clôture_de_l_intervention_en_cours
+<j2
+intfac
+Trait200
+Boîte190
+Trait240
+datint
+numint
+Étiquette120
+N° de bon
+Cocher183
+retourficheoriginal
+Étiquette184
+Original
+Cocher181
+retourfichecopie
+Étiquette182
+Copie
+Cocher178
+retourfichecopieordi
+Étiquette179
+Copie dans ordinateur
+auditfait
+Étiquette238
+Audit
+photofaite
+Étiquette237
+Photo
+Cocher234
+controleetancheite
+Étiquette235
+Contrôle d'étanchéité annuel
+Chkmajreg
+majregsec
+Étiquette105
+Mise à jour du registre de sécurité
+InterventionTechnicien
+Form.InterventionTechnicien
+tpsallint
+Étiquette222
+Temps aller
+tpsretint
+Étiquette223
+Temps retour
+heuarrint
+Étiquette224
+Heure arrivée sur site
+heudepint
+Étiquette225
+Heure de départ du site
+saisiepar
+Étiquette143
+Saisie par
+Texte308
+comintposint
+Étiquette309
+Commentaire interne post intervention
+txtsigsit
+sigsit
+Étiquette227
+Prestations réalisées (saisie par un technicien)
+Texte310
+comtec
+Étiquette311
+Commentaire (saisie par technicien)
+Étiquette54
+Modifiable388
+SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture WHERE (((dbo_StatutFacture.OrdreAffichage)<>-1)) ORDER BY dbo_StatutFacture.OrdreAffichage;
+Étiquette389
+Statut Facturation
+chkDevisAFaire
+devisafaire
+Étiquette158
+Devis à faire
+devisfait
+Étiquette228
+Devis fait
+Cocher202
+duplicatafait
+Étiquette203
+Traité / Attente offre de prix
+sigtec
+Étiquette226
+Commentaire de clôture sur panne (lié au devis à faire)
+codpan
+Select * from Panne where 1=1
+codpan_Étiquette
+Panne
+pannoncli
+lblpannoncli
+Panne d'origine externe
+Texte325
+comdevisinterne
+Cocher231
+devisanepasfaire
+Étiquette232
+Devis ne sera pas fait
+comdevis
+CmdValiderFermer
+Texte204
+cheficdemint
+Étiquette205
+Bon intervention numéris
+Cocher297
+controleetancheiteponctuel
+Étiquette298
+Contrôle d'étanchéité ponctuel
+CmdApercu
+Commande300
+Ouvrir l'état
+chkFaireAppaitreHeures
+heuvis
+False
+Étiquette313
+Ne pas faire apparaître les heures
+Commande339
+Generer le PDF
+Texte340
+Étiquette341
+Dossier Site
+Texte361
+datefintech
+Étiquette196
+Retour fiche d'intervention
+datint_Étiquette
+Date réelle d'inter.
+LblCloture
+SAISIE CLOTURE D'INTERVENTION
+lblintfac
+Intervention faite et non facturable
+Étiquette326
+Commentaire interne sur le devis à réaliser
+Étiquette360
+Date réelle de saisie:
+Modifiable394
+stadev
+SELECT Utilisateur.numuti, [preuti] & " " & [nomuti] AS Expr1, Utilisateur.typuti, Utilisateur.codintuti FROM Utilisateur WHERE (((Utilisateur.typuti)=1) AND ((Utilisateur.codintuti)<>"" And (Utilisateur.codintuti)<>"XX")) ORDER BY [preuti] & " " & [nomuti];
+Étiquette395
+Duplicata à traiter par:
+Cadre396
+Étiquette397
+Commande399
+PDF
+Commande402
+Generer le CE
+Modifiable403
+nummodres
+SELECT TypeFluide.ID, TypeFluide.Libelle FROM TypeFluide where 1=1 ORDER BY TypeFluide.Libelle;
+Étiquette404
+Gaz:
+Texte406
+mnthtdevis
+Étiquette407
+Qté Gaz:
+Texte410
+CheminDossEtanch
+Modifiable422
+devisepar
+1;Faible;2;Moyenne;3;Forte
+Étiquette423
+Urgence Devis
+CaptionGarantie
+!!!!!!!!!  GARANTIE ENCORE EN COURS  !!!!!
+CaptionMultiInter
+!!PLUSIEURS INTER CE JOUR!!
+Commande434
+CocherNacelle
+intafact
+Étiquette684
+Location Nacelle
+Nacelle
+!!NACELLE LOUEE!!
+Devis SAV
+Devis_SAV
+Boîte214
+Étiquette215
+INFORMATIONS SUR LE DEVIS
+Devis
+Form.DevisListe
+NumeroInterventionInterne;NumeroSite;NumeroClient
+numintint;cptsit;lstClient
+Page162
+Devis Travaux
+Devis_Travaux
+Boîte678
+Étiquette679
+Fille680
+Form.DevisListeTravaux
+pageSignature
+Signatures
+Image245
+sigsitimg
+imagesigcli
+sigcliimg
+imagesigtec
+sigtecimg
+Étiquette255
+Cachet du site
+Étiquette256
+Signature du client
+Étiquette257
+Signature du technicien
+Texte301
+Texte303
+Texte304
+Texte305
+sigcli2
+Texte306
+sigsit2
+Texte307
+sigtec2
+txtnbrtecint
+nbrtecint
+Étiquette328
+Nombre de techniciens
+Étiquette331
+Mise à jour du registre de sécurit
+BtcMailClient
+Envoyer un mail au client
+Dernier enregistrement
+Étiquette343
+CELIO ANTIBES
+CheckClim
+True
+Étiquette109
+Climatisation
+CheckChauff
+Étiquette112
+Chauffage
+CheckAutre
+Étiquette115
+Autres
+Étiquette354
+Liste Sous Traitants Possibles
+Intervenant Sous-formulaire Clim
+Form.Intervention Sous-formulaire Clim
+Intervenant_Sous_formulaire_Clim
+Étiquette359
+PiedFormulaire

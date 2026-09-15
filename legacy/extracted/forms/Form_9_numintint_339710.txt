@@ -1,0 +1,290 @@
+[Event Procedure]
+numintint=339710
+Intervention
+192.168.0.248
+EntêteFormulaire
+Détail
+titre
+Création et Clôture d'intervention - ENTRETIEN
+CmdEnvoyerMail
+Envoyer un mail au contact
+CmdNouvelleIntervention
+Nouvelle intervention
+CmdCloturerIntervention
+Clôturer l'intervention
+CmdDecloturer
+Déclôturer l'intervention
+CmdHistorique
+&Historique
+CmdEnregistrer
+Enregistrer
+Texte109
+cptsit
+numintint
+cmdFermer
+Commande24
+Fermer formulaire
+cmdEnvoyerMailPartenaire
+Envoyer un mail au partenaire
+Onglets
+Création d'intervention
+Création_d_intervention
+"";"";"";"";"";"";"10";"100"
+LstClient
+Table/Query
+SELECT Client.numcli, Client.nomcli, Client.vilcli FROM Client ORDER BY Client.nomcli;
+0;1445;0
+"SELECT Client.numcli, Client.nomcli, Client.vilcli FROM Client ORDER BY Client.nomcli; ";"Client";"";"numcli";"nomcli";"PK_Client"
+LstClient_Étiquette
+Client
+"";"";"";"";"";"";"";"";"4";"4"
+lstSite
+SELECT Site.cptsit, Site.numsit, Site.nomsit, Site.VilSit, Client.nomcli FROM Client INNER JOIN Site ON Client.numcli = Site.numcli WHERE (((Site.numcli)=[Formulaires]![Intervention]![LstClient])) ORDER BY Site.nomsit;
+0;1701;3402;1701;1701
+"SELECT Site.cptsit, Site.numsit, Site.nomsit, Site.VilSit, Client.nomcli FROM Client INNER JOIN Site ON Client.numcli = Site.numcli WHERE (((Site.numcli)=[Formulaires]![Intervention]![LstClient])) ORDER BY Site.nomsit; ";"Client";"Site";""
+numsit_Étiquette
+Réf. Site
+nomsit
+Étiquette27
+Nom Site
+adrsit
+Étiquette29
+CP-Ville
+refcliint
+Étiquette70
+N° de DI CLIENT
+numdevacc
+Étiquette243
+N° Devis accept
+datheuapp
+General Date
+=Date()
+00/00/00;0;_
+lbldatheuapp
+Date demande
+objint
+Étiquette92
+Objet demande
+natureintervention
+Value List
+1;Visite Technique;2;Visite Filtres;3;Visite Maintenance Général
+0;2835
+Étiquette236
+Nature intervention
+"";"";"";"";"10";"0"
+codcon
+SELECT Contact.codcon, Contact.precon & " " & Contact.nomcon AS Expr1, Contact.numcli, Contact.adrmelcon FROM Contact WHERE (((Contact.numcli)=[Forms]![Intervention]![LstClient]));
+codcon_Étiquette
+Contact
+"";"";"";"";"";"";"10";"20"
+codint
+SELECT Intervenant.codint, Intervenant.nomint, Intervenant.adrmelint FROM Intervenant ORDER BY Intervenant.nomint;
+567;1701;0
+codint_Étiquette
+Intervenant
+numerodemandesoustraitant
+Étiquette148
+N° demande du sous-traitant
+envoisoustraitantpar
+SELECT Utilisateur.numuti, [preuti] & " " & [nomuti] AS Expr1, Utilisateur.typuti FROM Utilisateur WHERE (((Utilisateur.typuti)=1)) ORDER BY [preuti] & " " & [nomuti];
+Étiquette147
+Envoi au sous-traitant par
+dirint
+Directive d'intervention pour les intervenants
+Étiquette72
+Directives d'intervention (demande intiale du client)
+Ce texte n'apparaît pas sur le bon d'intervention destiné au client
+typint
+1;Entretien;2;Dépannage;3;Devis accepté;7;Désenfumage;4;Autre;5;En travaux;6;En création
+Étiquette53
+Type
+Modifiable96
+traitepar
+0;2161
+Traité par_Étiquette
+Traité par
+Traité_par_Étiquette
+TxtHeuLim
+datheulim
+Short Date
+lblTxtHeuLim
+Date limite d'intervention
+datintpre
+Date d'intervention prévisionnelle
+Étiquette57
+Date prévue
+Texte59
+heuintpre
+Short Time
+00:00;0;_
+Étiquette60
+Heure prévue
+Modifiable241
+staint
+1;"A planifier";2;"Planifiée";3;"Attente de matériel";4;"En cours";5;"En cours chez le sous-traitant";6;"Effectuée en attente retour fiche intervention";7;"Clôturée";8;"Annulée avec accord client"
+Étiquette242
+Statut
+prediagpar
+Étiquette146
+Pré-diagnostic tél.effectué par
+intfactok
+lblintfactok
+Facturée
+chkprediagres
+prediagres
+Étiquette155
+Résolu
+refint
+Étiquette56
+N° de demande interne
+N° de demande qui apparaît en haut à droite des demandes d'intervention
+"";"";"";"";"10";"510"
+nummodres
+SELECT ModeResolution.nummodres, ModeResolution.libmodres FROM ModeResolution ORDER BY ModeResolution.libmodres;
+"SELECT ModeResolution.nummodres, ModeResolution.libmodres FROM ModeResolution ORDER BY ModeResolution.libmodres; ";"ModeResolution";"";"nummodres";"libmodres";"PK_ModeResolution"
+lblnummodres
+Mode de résolution
+comint
+comint_Étiquette
+Commentaire interne sur la demande (imprimé sur les documents pour les techniciens)
+qui apparaît sur la fiche d'intervention
+intafact
+lblintafac
+à facturer
+Commande90
+btnLoupe
+Commande91
+CmdAfficherUnSite
+Afficher le site
+Texte229
+cheficdemcli
+Étiquette230
+DI CLIENT
+InformationsDemandes
+LblInformations
+INFORMATIONS DEMANDES D'INTERVENTION
+Clôture de l'intervention en cours
+Clôture_de_l_intervention_en_cours
+$j2
+intfac
+Trait200
+Boîte190
+Trait240
+datint
+numint
+Étiquette120
+N° de bon
+Cocher183
+retourficheoriginal
+Étiquette184
+Original
+Cocher181
+retourfichecopie
+Étiquette182
+Copie
+Cocher178
+retourfichecopieordi
+Étiquette179
+Copie dans ordinateur
+auditfait
+Étiquette238
+Audit
+photofaite
+Étiquette237
+Photo
+Cocher234
+controleetancheite
+Étiquette235
+Contrôle d'étanchéit
+Chkmajreg
+majregsec
+Étiquette105
+Mise à jour du registre de sécurité
+tpsallint
+Étiquette222
+Temps aller
+tpsretint
+Étiquette223
+Temps retour
+heuarrint
+Étiquette224
+Heure arrivée sur site
+heudepint
+Étiquette225
+Heure de départ du site
+saisiepar
+Étiquette143
+Saisie par
+sigsit
+Étiquette227
+Commentaires divers sur l'intervention
+Étiquette54
+chkDevisAFaire
+devisafaire
+Étiquette158
+Devis à faire
+devisfait
+Étiquette228
+Devis fait
+Cocher202
+duplicatafait
+Étiquette203
+Impression d'un duplicata
+"";"";"";"";"10";"100"
+codpan
+Panne
+"Panne";"Panne";"";"codpan";"libpan";"PK_Panne"
+codpan_Étiquette
+pannoncli
+lblpannoncli
+Panne d'origine externe
+sigtec
+Étiquette226
+Commentaire de clôture sur panne (lié au devis à faire)
+Cocher231
+devisanepasfaire
+Étiquette232
+Devis ne sera pas fait
+comdevis
+CmdValiderFermer
+Texte204
+cheficdemint
+Étiquette205
+Bon intervention numéris
+InterventionTechnicien
+Form.InterventionTechnicien
+Étiquette196
+Retour fiche d'intervention
+Étiquette198
+datint_Étiquette
+Date réelle d'inter.
+LblCloture
+SAISIE CLOTURE D'INTERVENTION
+lblintfac
+Facturable (non facturée)
+Devis réalis
+Devis_réalis
+Boîte214
+Étiquette215
+INFORMATIONS SUR LE DEVIS
+Devis
+Form.DevisListe
+NumeroInterventionInterne;NumeroSite;NumeroClient
+numintint;cptsit;lstClient
+Page162
+Page163
+pageSignature
+Signatures
+Image245
+sigsit2
+Image247
+sigcli2
+Image248
+sigtec2
+Étiquette255
+Cachet du site
+Étiquette256
+Signature du client
+Étiquette257
+Signature du technicien
+PiedFormulaire

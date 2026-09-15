@@ -1,0 +1,104 @@
+[Lookup_Texte6].[Expr1]
+SELECT * from dbo_vehicules
+EntêteFormulaire
+Détail
+NumVehicule
+nomuti_Étiquette
+Numero
+preuti
+Immatriculation
+[Event Procedure]
+preuti_Étiquette
+"";"";"";"";"10";"0"
+Texte6
+Conducteur
+Table/Query
+SELECT Utilisateur.numuti, Utilisateur.[Nomuti]+' '+[Preuti] AS Expr1, Utilisateur.preuti FROM Utilisateur WHERE (((Utilisateur.numsoc)=1 Or (Utilisateur.numsoc)=111 Or (Utilisateur.numsoc)=112 Or (Utilisateur.numsoc)=113) AND ((Utilisateur.codintuti)<>'') AND ((Utilisateur.typuti)=2)) ORDER BY Utilisateur.Nomuti;
+0;2835
+Étiquette7
+Texte11
+Km_Inter_Revision
+Étiquette12
+KM entre 2 révisions
+Texte13
+Temps_Mois_Inter_Revision
+Étiquette14
+Temps entre 2 révision (mois)
+Texte15
+KM_a_l_achat
+Étiquette16
+KM à l'achat
+Texte18
+DateMiseCirculation
+Étiquette19
+Date Mise En Circulation
+Cocher22
+Garantie
+Étiquette23
+Texte22
+Nb_KM_Garantie
+Étiquette24
+KM Garantie
+Texte25
+Temps_Mois_Garantie
+Étiquette26
+Temps Garantie (mois)
+Cocher27
+Leasing
+Étiquette28
+Texte29
+Nb_Km_Leasing
+Étiquette30
+NB KM Leasing
+Texte31
+Temps_Mois_Leasing
+Étiquette32
+Temps Leasing (mois)
+Texte33
+Date_Fin_Leasing
+Étiquette34
+Date Fin Leasing
+Texte47
+NumTelepeage
+Étiquette48
+Numéro Telepeage
+Texte49
+CodeCarteEssence
+Étiquette50
+Code Carte Essence
+Texte51
+NumCarteEssence
+Étiquette52
+Numero Carte Essence
+"";"";"";"";"10";"60"
+Modifiable58
+EtatVehicule
+SELECT dbo_ListeEtatVehicule.Numero, dbo_ListeEtatVehicule.EtatVehicule FROM dbo_ListeEtatVehicule;
+"SELECT dbo_ListeEtatVehicule.Numero, dbo_ListeEtatVehicule.EtatVehicule FROM dbo_ListeEtatVehicule;";"dbo_ListeEtatVehicule";"";"Numero";"EtatVehicule";"PK_ListeEtatVehicule"
+Étiquette59
+Etat Vehicule
+Texte60
+Modele
+Étiquette61
+Texte62
+Marque
+Étiquette63
+Cocher67
+CritAir
+Étiquette68
+Crit'Air
+Modifiable71
+Societe
+Value List
+0;FMC_CLIM;1;FMC MAINT
+Étiquette72
+Texte248
+Champ_Libre
+Déposer ici le raccourci vers le dossier du site
+Étiquette249
+Lien vers PC
+Texte73
+Dernier_KM
+Étiquette74
+Dernier KM
+PiedFormulaire

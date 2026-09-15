@@ -1,0 +1,104 @@
+SELECT [Site Sous-formulaire].cptsit, [Site Sous-formulaire].codint, [Site Sous-formulaire].[prévue le], [Site Sous-formulaire].[effectuée le], [Site Sous-formulaire].typint, [Site Sous-formulaire].Statut, [Site Sous-formulaire].numintint, [Site Sous-formulaire].datheuapp, [Site Sous-formulaire].devisfait, [Site Sous-formulaire].devisafaire, [Site Sous-formulaire].datheulim, [Site Sous-formulaire].numint, [Site Sous-formulaire].refint, [Site Sous-formulaire].refcliint, [Site Sous-formulaire].numdevacc, [Site Sous-formulaire].NumeroDevis, [Site Sous-formulaire].NumeroDevisInterne, [Site Sous-formulaire].Intervention.cheficdemint, [Site Sous-formulaire].cheficdemcli, [Site Sous-formulaire].StatutDevis, [Site Sous-formulaire].NomFichierDevis, [Site Sous-formulaire].[Statut Facturation], dbo_TypeInterv.TypeInter, dbo_StatusInterv.StatutInter, [Site Sous-formulaire].CheminDossEtanch, [Site Sous-formulaire].mnthtdevis, [Site Sous-formulaire].nummodres, [Site Sous-formulaire].sigtec, [Site Sous-formulaire].devisepar, [Site Sous-formulaire].comint, [Site Sous-formulaire].comint, [Site Sous-formulaire].mnthtdevpartenaire FROM ([Site Sous-formulaire] INNER JOIN dbo_TypeInterv ON [Site Sous-formulaire].typint = dbo_TypeInterv.IndexLigneSTRING) INNER JOIN dbo_StatusInterv ON [Site Sous-formulaire].Statut = dbo_StatusInterv.IndexLigne WHERE ((([Site Sous-formulaire].Statut)<>7 And ([Site Sous-formulaire].Statut)<>10 And ([Site Sous-formulaire].Statut)<>8 And ([Site Sous-formulaire].Statut)<>20)) ORDER BY [Site Sous-formulaire].[prévue le] DESC , [Site Sous-formulaire].[effectuée le] DESC;
+Site Sous-formulaire sous-formulaire
+[Event Procedure]
+RICOH Aficio MP C2000 PCL 6
+LPT1:
+Default
+192.168.0.250
+EntêteFormulaire
+numsit_Étiquette
+N° du site
+DetachedLabel
+codint_Étiquette
+Code
+prévue le_Étiquette
+Date limite d'intervention
+prévue_le_Étiquette
+effectuée le_Étiquette
+Effectuée le
+effectuée_le_Étiquette
+typint_Étiquette
+Type
+Statut_Étiquette
+Statut
+Étiquette13
+Date et heure d'appel:
+Étiquette16
+N° Bon
+Détail
+numsit
+cptsit
+Intervenant
+codint
+datheulim
+Date d'intervention prévisionnelle
+Date_limite_d_intervention
+effectuée le
+00/00/0000
+effectuée_le
+date demande
+datheuapp
+Short Date
+date_demande
+devisfait
+Étiquette14
+Devis fait
+devisafaire
+Étiquette15
+Devis à faire
+N° Devis Accept
+numdevacc
+N°_Devis_Accept
+Devis SAV Fait
+NumeroDevisInterne
+Devis_SAV_Fait
+N° DI
+refcliint
+N°_DI
+Commande25
+Dernier enregistrement
+DI Client
+cheficdemcli
+DI_Client
+Étiquette27
+DI Client:
+Type Intervention
+TypeInter
+Type_Intervention
+Statut Intervention
+StatutInter
+Statut_Intervention
+"";"";"";"";"10";"100"
+Statut Facturation
+Table/Query
+SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture;
+0;2835
+Statut_Facturation
+"SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture;";"dbo_StatutFacture";"";"IndexLigne";"Statut";"PK_StatutFacture"
+Doss.Etanch.
+CheminDossEtanch
+Doss_Etanch_
+Étiquette35
+Bon
+Qté Gaz
+mnthtdevis
+Qté_Gaz
+TypeGaz
+nummodres
+SELECT TypeFluide.ID, TypeFluide.Libelle FROM TypeFluide order by TypeFluide.Libelle;
+"SELECT TypeFluide.ID, TypeFluide.Libelle FROM TypeFluide order by TypeFluide.Libelle;";"TypeFluide";"";"ID";"Libelle";"PK_typefluide"
+Urgence Devis
+devisepar
+Value List
+1;Faible;2;Moyenne;3;Forte
+Urgence_Devis
+Comm.Inter.
+comint
+Comm_Inter_
+Numero Inter
+numintint
+Numero_Inter
+Texte49
+mnthtdevpartenaire
+Montant Devis
+PiedFormulaire

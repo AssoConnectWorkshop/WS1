@@ -1,0 +1,10 @@
+SELECT DISTINCTROW Site.numcli, Site.nbrentsit, Count(*) AS [Compte De Site] FROM Site GROUP BY Site.numcli, Site.nbrentsit;
+Détail
+numcli
+nbrentsit
+Étiquette1
+Nb d'entretiens
+Compte De Site
+Compte_De_Site
+Étiquette2
+Nb de sites

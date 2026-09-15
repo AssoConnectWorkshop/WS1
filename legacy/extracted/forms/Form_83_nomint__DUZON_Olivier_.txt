@@ -1,0 +1,326 @@
+nomint='DUZON Olivier'
+Intervenant
+[Event Procedure]
+192.168.0.252
+EntêteFormulaire
+Détail
+zm7
+codint
+codint_Étiquette
+Code
+nomint
+nomint_Étiquette
+Nom
+"";"";"";"";"10";"100"
+numzonint
+Table/Query
+ZoneGeographique
+0;2835
+"ZoneGeographique";"ZoneGeographique";"";"numzon";"nomzon";"PK_ZoneGeographique"
+adrint
+Étiquette8
+Adresse:
+codposint
+Étiquette9
+CP/Ville
+vilint
+telint
+Étiquette11
+Téléphone
+faxint
+Étiquette12
+Fax
+Cadre337
+Étiquette338
+Infos Intervenant
+Texte14
+adrmelint
+Étiquette15
+Mail
+Cadre16
+Étiquette17
+Infos Dirigeant
+Texte18
+NomDirigeant_Interv
+Étiquette19
+Texte20
+TelDirigeant_Interv
+Étiquette21
+Texte23
+Mail_Dirigeant_Interv
+Étiquette24
+Cadre25
+Étiquette26
+Infos Interlocuteur
+Texte27
+NomInterlocuteur_Interv
+Étiquette28
+Texte29
+TelInterlocuteur_Interv
+Étiquette30
+Cadre35
+Étiquette36
+Informations Diverses
+Texte37
+Info_Interv
+Cadre38
+Étiquette39
+Zone Géographique
+Modifiable40
+numzonint_2_Interv
+Modifiable41
+numzonint_3_Interv
+Modifiable42
+numzonint_4_Interv
+Texte45
+VillesInterventions_Interv
+Étiquette46
+Villes ou CP (Si plusieurs séparer par VIRGULE)
+Cadre47
+Étiquette48
+Activités
+"";"";"";"";"10";"102"
+Modifiable51
+Activite_1
+Activites
+"Activites";"Activites";"";"Numactivite";"Nomactivite";"PK_Activites"
+Texte53
+MO_Activite_1
+Texte55
+Depl_Activite_1
+Modifiable58
+Activite_2
+Texte59
+MO_Activite_2
+Texte61
+Depl_Activite_2
+Modifiable63
+Activite_3
+Texte64
+MO_Activite_3
+Texte66
+Depl_Activite_3
+Modifiable68
+Activite_4
+Texte69
+MO_Activite_4
+Texte71
+Depl_Activite_4
+Modifiable73
+Activite_5
+Texte74
+MO_Activite_5
+Texte76
+Depl_Activite_5
+Modifiable78
+Activite_6
+Texte79
+MO_Activite_6
+Texte81
+Depl_Activite_6
+Texte83
+Provenance_Interv
+Étiquette84
+Provenance:
+"";"";"";"";"10";"0"
+Modifiable90
+ChargeAffaireFMC_Interv
+SELECT Utilisateur.numuti, [nomuti] & " " & [preuti] AS Expr1, Utilisateur.typuti, Utilisateur.codintuti, Utilisateur.numsoc FROM Utilisateur WHERE (((Utilisateur.typuti)=1) AND ((Utilisateur.codintuti)<>"")) ORDER BY Utilisateur.numsoc DESC , [nomuti] & " " & [preuti];
+0;1443
+Étiquette91
+Interlocuteur FMC:
+Modifiable92
+CreePar_Interv
+0;1444
+Étiquette93
+Cree par:
+Intervenant Sous-formulaire Clim
+Form.Intervenant Sous-formulaire Clim
+NumSousTraitClim
+numintervenant
+Intervenant_Sous_formulaire_Clim
+Texte107
+CheckClim
+True
+Étiquette109
+Sites Clim
+CheckChaudiere
+False
+Étiquette112
+Sites Chaudiere
+CheckDesen
+Étiquette115
+Sites Desenfumage
+Intervenant Sous-formulaire Chaudiere
+Form.Intervenant Sous-formulaire Chaudiere
+NumSousTraitChaudiere
+Intervenant_Sous_formulaire_Chaudiere
+Intervenant Sous-formulaire Desenfum
+Form.Intervenant Sous-formulaire Desenfum
+NumSousTraitDesenfum
+Intervenant_Sous_formulaire_Desenfum
+txtLatitude
+Latitude_Interv
+lbl26
+Latitude
+txtLongitude
+Longitude_Interv
+lbl28
+Longitude
+txtAccuracy
+Rooftop_Interv
+lbl30
+Précision
+Cadre413
+Étiquette414
+Geolocalisation
+indvetust
+IndMaint_Interv
+Value List
+;"";1;"µ««««";2;"µµ«««";3;"µµµ««";4;"µµµµ«";5;"µµµµµ"
+Indicateur de Vétusté (1 à 5 étoiles)
+Wingdings
+Étiquette57
+Maintenance
+Cadre94
+Étiquette95
+Qualité Sous-Traitant
+Modifiable96
+Ind_Depann_Interv
+0;1445
+Étiquette97
+Dépannage
+Modifiable98
+Ind_Travaux_Interv
+Étiquette99
+Travaux
+Modifiable100
+Ind_React_Interv
+Étiquette101
+Reactivit
+Cadre122
+Étiquette123
+NE PLUS FAIRE INTERVENIR
+TextePasInterv
+TexteNeplusInterv
+ImgPasInterven
+sans-titre.png
+Cadre124
+Étiquette125
+Raccourci vers le dossier
+Texte248
+DossierOrdi_Interv
+Déposer ici le raccourci vers le dossier du site
+Commande297
+Fermer formulaire
+Commande298
+Actualiser
+Cadre138
+Étiquette139
+Provenance
+Texte140
+Date_Activite_1
+Short Date
+00/00/00;_
+Étiquette141
+Date
+Texte142
+Date_Activite_2
+Texte143
+Date_Activite_3
+Texte144
+Date_Activite_4
+Texte145
+Date_Activite_5
+Texte146
+Date_Activite_6
+Étiquette147
+MO
+Étiquette148
+DP
+Cadre149
+Étiquette150
+Statut de l'intervenant
+Étiquette151
+Prospect
+Étiquette154
+Sous traitant FMC
+Étiquette156
+Sous traitant FMC (Ponctuel)
+Étiquette158
+Activité possible ST
+Étiquette159
+Activité à donner au ST (Par FMC)
+Étiquette160
+Étiquette161
+Étiquette162
+Étiquette166
+Étiquette167
+Étiquette168
+Cocher172
+NePlusIntervenir
+Étiquette173
+Ne plus intervenir
+Cocher175
+EstTech
+Étiquette176
+TECHNICIEN (Sinon Intervenant)
+Cocher177
+Status_Act_Poss_Maint
+Cocher179
+Status_Act_Poss_Depan
+Cocher180
+Status_Act_Poss_Travaux
+Cocher181
+Status_Act_Donn_Maint
+Cocher182
+Status_Act_Donn_Depan
+Cocher183
+Status_Act_Donn_Travaux
+Cocher184
+Status_Prospect
+Cocher185
+Status_ST_FMC
+Cocher186
+Status_ST_FMC_Ponctuel
+Cocher187
+Zone_Nationale
+Étiquette188
+Zone Nationale
+Form.Intervenant Sous-formulaire Maintenance
+CheckTravaux
+Étiquette201
+CheckDepann
+Étiquette199
+Depannage
+CheckMaint
+Étiquette197
+Étiquette203
+Magasins confiés en maintenance au ST
+Étiquette204
+Historique des sites où ils sont intervenus
+Depann
+Form.Intervenant Sous-formulaire Depannage
+CheckDevis
+Étiquette207
+Devis Accepte
+Devis
+Form.Intervenant Sous-formulaire Devis Accepte
+Form.Intervenant Sous-formulaire Travaux
+Texte212
+SiteInternet
+Étiquette213
+Site Internet
+Texte214
+MailFacturation
+Étiquette215
+Mail Facture:
+CheckExiste
+ExistePlus
+Étiquette217
+N'existe Plus
+Cocher219
+AutoLiquidation
+Étiquette220
+Autoliquidation
+PiedFormulaire

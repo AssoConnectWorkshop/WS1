@@ -1,0 +1,9 @@
+TypeTel
+TypeFluide sous-formulaire
+EntêteFormulaire
+Détail
+libelle
+TypeTelecommande
+libelle_Étiquette
+Type de Telecommande
+PiedFormulaire

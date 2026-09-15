@@ -1,0 +1,17 @@
+dbo_StatutFacture
+Statut Fact sous-formulaire
+EntêteFormulaire
+Détail
+libelle
+Statut
+libelle_Étiquette
+Type
+Texte6
+OrdreAffichage
+Étiquette7
+Ordre Affichage
+Cocher7
+QueKadi
+Étiquette8
+Visible Que par Kadi
+PiedFormulaire

@@ -1,0 +1,17 @@
+Reference
+EntêteFormulaire
+Détail
+nomref
+nomref_Étiquette
+Référence
+"";"";"";"";"10";"100"
+nummar
+Table/Query
+Marque
+0;2835
+"Marque";"Marque";"";"nummar";"nommar";"PK_Marque"
+nummar_Étiquette
+desref
+Étiquette6
+Désignation:
+PiedFormulaire

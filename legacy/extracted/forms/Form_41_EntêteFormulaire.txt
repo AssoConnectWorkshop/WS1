@@ -1,0 +1,20 @@
+SELECT PanneMaterielSite.numintint, PanneMaterielSite.dateDebut, PanneMaterielSite.dateFin, SiteMarqueReference.nomref, Marque.nommar, SiteMarqueReference.numsitmarref FROM (PanneMaterielSite INNER JOIN SiteMarqueReference ON PanneMaterielSite.numsitmarref=SiteMarqueReference.numsitmarref) INNER JOIN Marque ON SiteMarqueReference.nummar=Marque.nummar;
+EntêteFormulaire
+Étiquette12
+Date début
+Étiquette13
+Date fin
+Détail
+numsitmarref
+numintint
+nommar
+nomref
+dateDebut
+Short Date
+00/00/0000;0;_
+dateFin
+Commande11
+Supprimer
+[Event Procedure]
+Dernier enregistrement
+PiedFormulaire

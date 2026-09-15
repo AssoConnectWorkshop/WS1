@@ -1,0 +1,22 @@
+Intervention
+Statistiques
+SHARP MX-4140N PS
+dd****d
+222222
+192.168.0.14
+EntêteFormulaire
+Étiquette12
+Détail
+typint
+typint_Étiquette
+datint
+datint_Étiquette
+codpan
+codpan_Étiquette
+staint
+staint_Étiquette
+datheuapp
+datheuapp_Étiquette
+cptsit
+cptsit_Étiquette
+PiedFormulaire

@@ -1,0 +1,72 @@
+Donneur
+Client
+[Event Procedure]
+Ricoh Aficio MP C2000 PCL5c
+192.168.1.250
+EntêteFormulaire
+Détail
+nomcli
+nomdonneur
+nomcli_Étiquette
+Nom
+adrcli
+adrdonneur
+adrcli_Étiquette
+Adresse
+codposcli
+codposdonneur
+codposcli_Étiquette
+Code postal
+vilcli
+vildonneur
+vilcli_Étiquette
+Ville
+telcli
+teldonneur
+telcli_Étiquette
+Téléphone
+faxcli
+faxdonneur
+faxcli_Étiquette
+Fax
+concli
+condonneur
+concli_Étiquette
+Contact principal
+melcli
+meldonneur
+melcli_Étiquette
+E-mail
+hormaxintcli
+hormaxintdonneur
+Étiquette18
+Délai d'intervention
+Étiquette19
+en heures
+Trait23
+cmdFermer
+Commande24
+Fermer formulaire
+CtlTab25
+Page26
+Contacts
+Contact sous-formulaire
+Form.Contact sous-formulaire
+numdonneur
+donneurid
+Contact_sous_formulaire
+ImageFrame
+cmdAddCustomer
+Créer un nouveau donneur
+numcli
+Étiquette40
+numcli:
+CmdMap
+Voir sur Maps
+cheminpho
+Étiquette42
+Logo donneur
+sairapdonneur
+Étiquette44
+Saisie simplifiée sur tablette
+PiedFormulaire

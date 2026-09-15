@@ -1,0 +1,25 @@
+SELECT Donneur.donneurid, Donneur.nomdonneur, Donneur.sairapdonneur, Donneur.meldonneur, Donneur.cheminpho, Donneur.cheminpla FROM Donneur;
+Donneur sous-formulaire
+EntêteFormulaire
+Détail
+donneurid
+donneurid_Étiquette
+nomdonneur
+nomdonneur_Étiquette
+Donneur d'ordres
+sairapdonneur
+Étiquette5
+Saisie simplifiée sur tablette
+Texte6
+meldonneur
+Étiquette7
+Ligne 1 Pied de page
+Texte9
+cheminpho
+Étiquette10
+Ligne 2 Pied de page
+Texte11
+cheminpla
+Étiquette12
+Ligne 3 Pied de page
+PiedFormulaire

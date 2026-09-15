@@ -1,0 +1,35 @@
+SELECT parametre.datfinpla FROM parametre;
+[Event Procedure]
+IBM Network Printer 17 (PCL)
+IP_192.168.0.240
+Détail
+Cadre4
+Étiquette5
+Planification des entretiens
+CmdGenerer
+Générer les interventions d'entretien
+"";"";"";"";"10";"100"
+lstClient
+Table/Query
+SELECT Client.numcli, Client.nomcli FROM Client WHERE Client.affcli=1 ORDER BY [nomcli];
+0;2835
+Client :_Étiquette
+Client :
+Client___Étiquette
+txtDatFin
+datfinpla
+00/00/0000;0;_
+Étiquette14
+Jusqu'au
+BtGenerer
+Générer les interventions d'entretien ARMAND THIERY et  TOSCAN
+Dernier enregistrement
+Commande16
+Générer les interventions d'entretien TOSCAN
+DateDebut
+Short Date
+Date()
+Étiquette18
+A partir du
+Commande19
+compteur

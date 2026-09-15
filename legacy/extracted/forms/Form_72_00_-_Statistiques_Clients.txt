@@ -1,0 +1,75 @@
+00 - Statistiques Clients
+pdfcmon
+Détail
+"";"";"";"";"10";"100"
+cboClient
+Table/Query
+SELECT numcli, nomcli FROM client WHERE affcli=1 ORDER BY nomcli;
+0;1441
+Client_Étiquette
+Client
+Date_Deb
+Short Date
+00/00/00;0;_
+Étiquette18
+Entre le
+Date_Fin
+Étiquette37
+et
+cmdFermer
+Commande24
+[Event Procedure]
+Fermer formulaire
+CmdRechercher
+Export Excel 'Fabien'
+Mois
+Value List
+0;Tous;1;Janvier;2;Fevrier;3;Mars;4;Avril;5;Mai;6;Juin;7;Juillet;8;Aout;9;Septembre;10;Octobre;11;Novembre;12;Decembre
+0;1443
+Étiquette8
+Annee
+General Number
+La saisie de l'année est prioritaire sur la periode de Temps
+Étiquette10
+Année
+Commande11
+Export Excel 'Pierre'
+LstTypeIntervention
+1;Entretien;2;Dépannage;3;Devis accepté;7;Désenfumage;9;Audit;4;Autre;8;Inter. réalisée en attente devis signé client;5;En travaux;6;En création
+nomzon_Étiquette
+Type Intervention:
+ListeStatut
+SELECT dbo_StatusInterv.IndexLigne, dbo_StatusInterv.StatutInter FROM dbo_StatusInterv   where dbo_StatusInterv.OrdreAffichage>0 order by  dbo_StatusInterv.OrdreAffichage;
+0;1442
+Étiquette13
+Statut:
+ListeNature
+SELECT id, soustype FROM dbo_soustype
+Étiquette15
+Nature:
+CocherNom
+False
+CheckNom
+Recherche Par Nom
+Texte18
+"CREMATORIUM"
+Étiquette20
+La recherche par nom est effectuée sur tous les sites du client et ne donne une somme pour tous les sites corrrespondants (Sert pour OGF ,Crematorium,Point de vente,etc)
+Texte21
+"POINT DE VENTE"
+Texte22
+"CHAMBRE FUNÉRAIRE"
+Texte23
+"DÉPÔT"
+Check_Degroup_Nature
+Degroup_Nature
+Degrouper les natures
+Check_Degroup_Interv
+Étiquette28
+Degrouper les Interventions
+Check_Degroup_Statut
+Étiquette30
+Degrouper les Statuts
+Label_Stats_Fabien_2
+Texte pour stats fabien
+Label_Export_Fabien

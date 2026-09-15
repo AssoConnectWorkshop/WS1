@@ -1,0 +1,8 @@
+ZoneGeographique
+ZoneGeographique sous-formulaire
+EntêteFormulaire
+Détail
+nomzon
+nomzon_Étiquette
+Zone géographique
+PiedFormulaire

@@ -1,0 +1,33 @@
+[Liste_EVVehiculesSousForm].[DateEv] DESC, [Liste_EVVehiculesSousForm].[Km] DESC
+[Event Procedure]
+SELECT dbo_EvVehicules.DateEv, dbo_EvVehicules.Immat, [Utilisateur.Nomuti]+' '+[Utilisateur.Preuti] AS NomComplet, dbo_EvVehicules.Km, dbo_ListeEVVehicule.Evenement_Vehicule, dbo_EvVehicules.NumEV, dbo_EvVehicules.TypeEv FROM ((dbo_EvVehicules INNER JOIN Utilisateur ON dbo_EvVehicules.Conducteur = Utilisateur.numuti) INNER JOIN dbo_ListeEVVehicule ON dbo_EvVehicules.TypeEv = dbo_ListeEVVehicule.Numero) INNER JOIN dbo_Vehicules ON dbo_EvVehicules.Immat = dbo_Vehicules.Immatriculation WHERE (((dbo_Vehicules.EtatVehicule)<>4)) ORDER BY dbo_EvVehicules.DateEv DESC;
+ListeInterventionGenerale sous-formulaire
+192.168.0.247
+EntêteFormulaire
+Détail
+Dateev
+DateEv
+nomcli_Étiquette
+Date
+km
+Km
+nomsit_Étiquette
+"";"";"";"";"10";"20"
+Immat
+Table/Query
+SELECT dbo_Vehicules.NumVehicule, dbo_Vehicules.Immatriculation FROM dbo_Vehicules where 1=1
+0;2835
+staint_Étiquette
+"";"";"";"";"10";"100"
+typev
+Evenement_Vehicule
+SELECT dbo_ListeEVVehicule.Numero, dbo_ListeEVVehicule.Evenement_Vehicule FROM dbo_ListeEVVehicule where 1=1
+Étiquette444
+Evenement
+"";"";"";"";"10";"0"
+Conduc
+NomComplet
+SELECT Utilisateur.numuti, Nomuti+" "+preuti AS Expr1 FROM Utilisateur WHERE (((Utilisateur.numsoc)=1 Or (Utilisateur.numsoc)=111 Or (Utilisateur.numsoc)=112 Or (Utilisateur.numsoc)=113) AND ((Utilisateur.typuti)=2) ) ORDER BY Utilisateur.Nomuti;
+Étiquette446
+Conducteur
+PiedFormulaire

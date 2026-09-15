@@ -1,0 +1,59 @@
+[Event Procedure]
+([Lookup_numsoc].[nomsoc] Like "*fmc*")
+[Utilisateur sous-formulaire].[nomuti], [Lookup_numsoc].[nomsoc], [Lookup_Société].[nomint] DESC, [Utilisateur sous-formulaire].[typuti]
+SELECT Utilisateur.numuti, Utilisateur.nomuti, Utilisateur.preuti, Utilisateur.typuti, Utilisateur.nomsocuti, Utilisateur.mdputi, Utilisateur.numsoc, Utilisateur.loguti, Utilisateur.codintuti, Utilisateur.Mail, Utilisateur.KmARenseigner, Utilisateur.Immat, Utilisateur.nummod FROM Utilisateur;
+Utilisateur sous-formulaire
+EntêteFormulaire
+Détail
+nomuti
+nomuti_Étiquette
+Nom utilisateur
+preuti
+preuti_Étiquette
+Prénom utilisateur
+Texte6
+typuti
+Value List
+1;"Gestionnaire";2;"Technicien";3;"Gestionnaire(Tech)"
+0;2835
+Étiquette7
+Type utilisateur
+"Code intervenant";"";"Nom intervenant";"";"10";"100"
+Sociét
+nomsocuti
+Table/Query
+SELECT Intervenant.codint, Intervenant.nomint FROM Intervenant ORDER BY Intervenant.nomint;
+"SELECT Intervenant.codint, Intervenant.nomint FROM Intervenant ORDER BY Intervenant.nomint; ";"Intervenant";"";"codint";"nomint";"IX_Codint"
+Étiquette8
+Intervenant
+mdputi
+Étiquette9
+Code Sous traitant
+"";"";"";"";"10";"100"
+numsoc
+Societe
+"Societe";"Societe";"";"numsoc";"nomsoc";"PK_Societe"
+Étiquette10
+Texte11
+codintuti
+Étiquette12
+Code FMC
+Texte13
+loguti
+Étiquette14
+Login FMC
+Texte15
+Mail
+Étiquette16
+Texte18
+Immat
+Étiquette19
+Cocher22
+KmARenseigner
+Étiquette23
+KM A Renseigner
+Texte22
+nummod
+Étiquette24
+NB Heures Semaine
+PiedFormulaire

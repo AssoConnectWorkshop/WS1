@@ -1,0 +1,12 @@
+Alain
+ALAIN-PC18
+BRN001BA9864611
+Détail
+Commande1
+Commande0
+[Event Procedure]
+Dernier enregistrement
+Commande2
+essai2
+Commande4
+Fermer formulaire

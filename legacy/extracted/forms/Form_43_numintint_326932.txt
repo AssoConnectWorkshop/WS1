@@ -1,0 +1,97 @@
+[Event Procedure]
+numintint=326932
+SELECT Intervention.traitepar, Intervention.numintint, Intervention.numint, Intervention.cptsit, Intervention.codint, Intervention.typint, Intervention.datintpre, Intervention.heuintpre, Intervention.datint, Intervention.tpsallint, Intervention.tpsretint, Intervention.heuarrint, Intervention.heudepint, Intervention.codpan, Intervention.comint, Intervention.dirint, Intervention.intfac, Intervention.intfactok, Intervention.codcon, Intervention.staint, Intervention.refint, Intervention.refcliint, Intervention.nbrappint, Intervention.mntfac, Intervention.datheuapp, Intervention.pannoncli, Intervention.nbrpagfax, Intervention.nummodres, Intervention.numdev, Intervention.datheulim, Intervention.intafact, Intervention.objint, Intervention.majregsec FROM Intervention ORDER BY Intervention.cptsit;
+Intervention entretient
+BROUILLON
+Echantillon nº 1
+Canon MG5500 series Printer WS
+WSD-0ff131c2-8f99-454b-90a1-5161b6ba1f99.006c
+EntêteFormulaire
+Détail
+titre
+Interventions d'entretien planifiées
+"Code intervenant";"";"Nom intervenant";"";"10";"20"
+codint
+Table/Query
+Intervenant
+567;1701
+codint_Étiquette
+nomsit
+Étiquette27
+Nom Site
+adrsit
+Étiquette29
+CP-Ville
+CmdAfficherSite
+Commande30
+Voir les sites
+staint
+Value List
+1;En cours;9;Clôturée
+0;2835
+Étiquette54
+Statut
+CmdImprimerFax
+Imprimer le Fax pour l'intervenant
+datintpre
+Short Date
+Date d'intervention prévisionnelle
+00/00/0000;0;_
+Étiquette57
+Date prévue
+CmdRechercherSite
+Commande61
+Rechercher un site
+typsit
+Étiquette63
+Type
+CmdNouvelleIntervention
+Nouvelle intervention
+CmdCloturerIntervention
+Clôturer l'intervention
+CmdImprimerFaxClient
+Imprimer le Fax pour le client
+CmdHistorique
+&Historique
+CmdAfficherUnSite
+Afficher le site
+CmdEnregistrer
+Enregistrer
+"";"";"";"";"10";"100"
+numcli
+SELECT Client.numcli, Client.nomcli FROM Client WHERE (((Client.numcli)=Formulaires!MenuPrincipal!LstClient));
+0;1440
+LstClient_Étiquette
+Client
+Modifiable96
+traitepar
+SELECT Climserv.id, Climserv.NomPrenom FROM Climserv ORDER BY [NomPrenom];
+0;2160
+Traité par_Étiquette
+Traité par
+Traité_par_Étiquette
+Cadre98
+Chkmajreg
+majregsec
+Étiquette105
+Mise à jour du registre de sécurité
+FicheIntervention
+Form.FicheInterventionEntretien sous-formulaire
+numIntint
+numintint
+FicheInterventionÉtiquette
+TbCptsit
+cptsit
+datint
+datint_Étiquette
+Date réelle d'inter.
+numint
+Étiquette120
+N° de bon
+typint
+Cptsit
+Étiquette137
+Réf. site
+BtReplanifier
+Replanifier les entretiens
+PiedFormulaire

@@ -1,0 +1,11 @@
+Repere
+TypeFluide sous-formulaire
+EntêteFormulaire
+Détail
+libelle
+libelle_Étiquette
+Cocher6
+CtrlEtancheite
+Étiquette7
+Controle Etancheite
+PiedFormulaire

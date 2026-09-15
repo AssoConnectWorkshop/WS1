@@ -1,0 +1,59 @@
+[Event Procedure]
+A4 (210 x 297 mm
+192.168.0.252
+Détail
+"";"";"";"";"10";"100"
+cboInterv
+Table/Query
+SELECT Intervenant.codint, Intervenant.nomint FROM Intervenant where 1=1 ORDER BY Intervenant.nomint;
+0;1440
+Client_Étiquette
+Intervenant
+cmdFermer
+Commande15
+Fermer formulaire
+InfosInterv
+Étiquette10
+Infos Intervenant (Nom,Adresse,ville,CP)
+ListeIntervenant
+Form.Intervenant sous-formulaire
+ChkSansLongitudeLatitude
+Étiquette24
+Interv sans géoloc
+coche_intervenir
+Étiquette49
+Ne pas intervenir
+LstZone
+SELECT ZoneGeographique.numzon, ZoneGeographique.nomzon FROM ZoneGeographique where 1=1
+0;1441
+Étiquette58
+Zones d'intervention
+CP_Inter
+Étiquette61
+Ville, CP d'intervention
+Lst_Activ
+SELECT activites.Numactivite, activites.Nomactivite FROM activites where 1=1
+0;1442
+Étiquette63
+Activités
+CmdRechercher
+Rechercher
+ChkNonRooftop
+Étiquette65
+Interv Non Rooftop
+Info_Div
+Étiquette67
+Infos Diverses
+Prospect
+Étiquette69
+STFMCPONCT
+Étiquette72
+Sous Traitant FMC (Ponctuel)
+STFMC
+text456
+Sous Traitant FMC
+Tech
+Technicien
+CocherExistePus
+ExistePlus
+N'Existe Plus

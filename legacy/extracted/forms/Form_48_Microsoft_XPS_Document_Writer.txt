@@ -1,0 +1,173 @@
+Microsoft XPS Document Writer
+[Event Procedure]
+XPSPort:
+Détail
+?h1
+CmdOuvrirIntervenant
+Intervenant
+CmdOuvrirZone
+Zone géographique
+ZoneGeographique sous-formulaire
+Form.ZoneGeographique sous-formulaire
+ZoneGeographique_sous_formulaire
+Intervenant sous-formulaire
+Form.Intervenant sous-formulaire
+Intervenant_sous_formulaire
+Panne sous-formulaire
+Form.Panne sous-formulaire
+Panne_sous_formulaire
+Marque sous-formulaire
+Form.Marque sous-formulaire
+Marque_sous_formulaire
+Reference sous-formulaire
+Form.Reference sous-formulaire
+Reference_sous_formulaire
+TypeFluide sous-formulaire
+Form.TypeFluide sous-formulaire
+TypeFluide_sous_formulaire
+cmdFermer
+Commande24
+Fermer formulaire
+cmdUtilisateurs
+Utilisateurs && Techniciens
+CmdDonneurs
+Donneurs d'ordres
+Donneur sous-formulaire
+Form.Donneur sous-formulaire
+Donneur_sous_formulaire
+Utilisateur sous-formulaire
+Form.Utilisateur sous-formulaire
+Utilisateur_sous_formulaire
+CmdImporter
+Export Audit Materiel (Qte Fluide)
+CmdSociete
+Sociétés
+Societe sous-formulaire
+Form.Societe sous-formulaire
+Societe_sous_formulaire
+Societe sous-formulaireÉtiquette
+Societe_sous_formulaireÉtiquette
+ZoneSociete sous-formulaire
+Form.ZoneSociete sous-formulaire
+ZoneSociete_sous_formulaire
+ZoneSociete sous-formulaireÉtiquette
+ZoneSociete_sous_formulaireÉtiquette
+Commande35
+Panne
+Commande55
+Reperes
+Commande56
+Type Telecommande
+Commande57
+References
+Commande58
+Marque
+Commande59
+Fluide
+Commande61
+Type
+Type_Telecommande Sous_Form
+Form.Type_Telecommande Sous_Form
+Type_Telecommande_Sous_Form
+Type_Telecommande Sous_FormÉtiquette
+Type_Telecommande_Sous_FormÉtiquette
+Repere_Sous_Form
+Form.Repere_Sous_Form
+Type_Audit_Sous_Form
+Form.Type_Audit_Sous_Form
+Commande126
+Ajouter Une Reference
+Commande135
+Sous Type Inter
+SousType
+Form.Sous_Type_Sous_Form
+Étiquette140
+!!!!!!!!!!!!!!!!  IMPORTANT    !!!!!!!!!!!!!!!!
+Attention,pour tous les paramétres:
+-Suppression impossible de données
+-Etre prudent pour une modification d'un element existant:
+-Exemple :
+1) Si vous remplacez le nom d'un technicien ,toutes les interventions
+effectuées par l'ancien technicien seront affectées au nouveau.
+2) Idem pour les autres boutons parametres:
+La nouvelle donnée remplacera l'anciennne partout ou elle existait
+déjà.
+Commande141
+Activites
+Activite sous-formulaire
+Form.Activite sous-formulaire
+Activite_sous_formulaire
+Commande143
+Importer Fichier Audit
+CptLignes
+En Cours OK:
+CptKo
+Commande148
+MAJ Login Efface MDP Acien Site FMC
+Commande150
+MAJ Mot de passe  (Tout les Utilisateurs FMC)
+Commande152
+Envoi Mail Mot de passe
+Commande153
+Access Gestion Mot de passe
+LstTech
+Table/Query
+SELECT Utilisateur.numuti, [Nomuti]+' '+[preuti] AS NOMCOMPLET FROM Utilisateur WHERE (((Utilisateur.numsoc)=112 Or (Utilisateur.numsoc)=113 Or (Utilisateur.numsoc)=111) AND ((Utilisateur.codintuti)<>"")) ORDER BY Utilisateur.typuti, Utilisateur.nomuti;
+0;1441
+nomzon_Étiquette
+Liste
+CocherAll
+Étiquette155
+Envoi à tout le monde
+Étiquette156
+Si Suppression Technicien :
+Penser à supprimer LE MAIL et LE MOT DE PASSE
+Commande157
+Statut Facturation
+FormFact
+Form.statut Fact Sous Form
+Étiquette160
+Fille159:
+FormStatusInterv
+Form.statut Interv Sous Form
+Étiquette162
+Commande163
+Statut Interventions
+Étiquette164
+Attention Pour toute Modification voir avec Pierre
+Si ordre=-1 alors invisible dans liste deroulante
+Commande165
+Liste Vehicules
+Commande168
+Import Audit Materiel (Qte Fluide)
+Vehicules
+Form.Vehicules
+Commande173
+Convertion Saisie Opérateur
+Commande175
+Evements Vehicules
+Commande176
+Etats Vehicules
+Type_Etat_Vehicule Sous_Form
+Form.Type_Etat_Vehicule Sous_Form
+Type_Etat_Vehicule_Sous_Form
+Type_EV_Vehicule Sous_Form
+Form.Type_EV_Vehicule Sous_Form
+Type_EV_Vehicule_Sous_Form
+Étiquette185
+ATTENTION:
+Penser également à modifier l'Immatriculation dans la table "Utilisateur"
+(Voir Pierre si besoin)
+Commande190
+Classif Gaz
+ClassifGaz
+Form.ClassifGaz sous-formulaire
+TypeInter
+Form.Type Interv Sous Form
+Commande194
+Type Intervention
+Commande199
+Ecart Mini Maintenance
+Visites_Maint_Sous_Form
+Form.Visites_Maint_Sous_Form
+Étiquette200

@@ -1,0 +1,20 @@
+SELECT Client.nomcli AS Client, Site.nomsit AS Site, Count(Intervention.numintint) AS Qté, Year([datint]) AS Année, Intervention.typint AS Type FROM (Client INNER JOIN Site ON Client.numcli = Site.numcli) INNER JOIN Intervention ON Site.cptsit = Intervention.cptsit WHERE (((Client.numcli)=[Formulaires]![00 - Statistiques Clients]![cboClient])) GROUP BY Client.nomcli, Site.nomsit, Year([datint]), Intervention.typint HAVING (((Intervention.typint)="2" Or (Intervention.typint)="3")) ORDER BY Client.nomcli, Site.nomsit, Year([datint]) DESC;
+Détail
+Client
+Étiquette0
+Client:
+Site
+Étiquette1
+Site:
+Qt
+Étiquette2
+Qté:
+Année
+Étiquette3
+Année:
+Type
+Value List
+1;Entretien;2;Dépannage;3;Devis accepté;7;Désenfumage;4;Autre;8;Inter. réalisée en attente devis signé client;5;En travaux;6;En création
+0;2835
+Étiquette4
+Type:

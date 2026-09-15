@@ -1,0 +1,49 @@
+typint='2' and staint<9 and intafact=true and numcli=4
+ListeInterventionAttente
+[Event Procedure]
+Letter
+IP_192.168.0.12
+EntêteFormulaire
+numsit_Étiquette
+N° du site
+DetachedLabel
+nomsit_Étiquette
+Nom du site
+typsit_Étiquette
+Type
+vilsit_Étiquette
+Ville
+Étiquette8
+Date et heure d'appel
+Titre
+Liste des interventions de dépannage en cours (à facturer)
+Étiquette10
+Date Prévue
+Étiquette11
+Heure Prévue
+Étiquette12
+Référence Clim'Tech
+LblHeuLim
+Heure Limite
+Détail
+numsit
+nomsit
+typsit
+Value List
+H;F;H et F
+Type du site
+vilsit
+datheuapp
+CmdOuvrirDetail
+détail
+datintpre
+Date d'intervention prévisionnelle
+heuintpre
+Heure d'intervention prévisionnelle
+00:00;0;_
+refcliint
+refint
+TxtHeuLim
+=CalculerHeureLimite([datheuapp])
+General Date
+PiedFormulaire

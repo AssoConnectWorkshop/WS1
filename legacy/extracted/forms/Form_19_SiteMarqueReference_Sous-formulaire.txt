@@ -1,0 +1,28 @@
+SELECT SiteMarqueReferenceDesenfumage.cptsit, SiteMarqueReferenceDesenfumage.des, SiteMarqueReferenceDesenfumage.qte, SiteMarqueReferenceDesenfumage.datmisser, SiteMarqueReferenceDesenfumage.datfinser, SiteMarqueReferenceDesenfumage.numsitmarrefdes, SiteMarqueReferenceDesenfumage.vetust FROM SiteMarqueReferenceDesenfumage;
+SiteMarqueReference Sous-formulaire
+EntêteFormulaire
+des_Étiquette
+Description
+DetachedLabel
+qte_Étiquette
+Qt
+datmisser_Étiquette
+Mis en service le
+datfinser_Étiquette
+Fin de service le
+Détail
+Descriptif
+des
+qte
+Mise en service
+datmisser
+Short Date
+00/00/0000
+Mise_en_service
+Fin de service
+datfinser
+Fin_de_service
+vetust
+Étiquette21
+Vétust
+PiedFormulaire

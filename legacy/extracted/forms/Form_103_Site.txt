@@ -1,0 +1,46 @@
+Site
+Microsoft XPS Document Writer
+[Event Procedure]
+XPSPort:
+EntêteFormulaire
+lblSite
+Ajout Evenement Vehicule
+Auto_LogoCelluleVide
+Auto_EnTeteCelluleVide
+Auto_Date
+=Date()
+Short Date
+Auto_Heure
+=Time()
+Long Time
+Détail
+"";"";"";"";"10";"100"
+TypeEV
+Table/Query
+SELECT dbo_ListeEVVehicule.Numero, dbo_ListeEVVehicule.Evenement_Vehicule FROM dbo_ListeEVVehicule;
+0;1440
+"SELECT dbo_ListeEVVehicule.Numero, dbo_ListeEVVehicule.Evenement_Vehicule FROM dbo_ListeEVVehicule;";"dbo_ListeEVVehicule";"";"Numero";"Evenement_Vehicule";"PK_ListeEVVehicule"
+Étiquette332
+Conducteur:
+Étiquette331
+Evenement:
+Étiquette361
+Immatriculation:
+"";"";"";"";"10";"0"
+Conducteur
+SELECT Utilisateur.numuti, Nomuti+" "+preuti AS Expr1 FROM Utilisateur WHERE (((Utilisateur.numsoc)=1 Or (Utilisateur.numsoc)=111 Or (Utilisateur.numsoc)=112 Or (Utilisateur.numsoc)=113) AND ((Utilisateur.typuti)=2) AND ((Utilisateur.codintuti)<>'')) ORDER BY Utilisateur.Nomuti;
+Quitter (SANS SAUVEGARDE)
+Quitter__SANS_SAUVEGARDE_
+Bp_Ajout
+Étiquette405
+Km:
+Km
+"";"";"";"";"10";"20"
+Immat
+SELECT dbo_Vehicules.NumVehicule, dbo_Vehicules.Immatriculation, dbo_Vehicules.EtatVehicule FROM dbo_Vehicules WHERE (((dbo_Vehicules.EtatVehicule)<>4)) ORDER BY dbo_Vehicules.Immatriculation;
+0;1441
+Étiquette348
+Date:
+DateEv
+00/00/00;_
+PiedFormulaire

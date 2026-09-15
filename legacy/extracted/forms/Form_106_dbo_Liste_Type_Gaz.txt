@@ -1,0 +1,12 @@
+dbo_Liste_Type_Gaz
+TypeFluide sous-formulaire
+EntêteFormulaire
+Détail
+libelle
+id
+libelle_Étiquette
+Numero Id
+Texte4
+Libelle
+Étiquette5
+PiedFormulaire

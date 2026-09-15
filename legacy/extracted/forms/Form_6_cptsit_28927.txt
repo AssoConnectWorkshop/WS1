@@ -1,0 +1,558 @@
+cptsit=28927
+Site
+[Event Procedure]
+192.168.0.252
+EntêteFormulaire
+lblSite
+Site : CELIO NEYRPICPIC
+CELIO NEYPICPCPCP - Ville : SAINT MARTIN D'HERES NEYRPIC
+Commande297
+Fermer formulaire
+Commande298
+Actualiser
+Commande462
+Créer une intervention Résolu Par Téléphone
+Détail
+CtlTab152
+tpSite
+"";"";"";"";"10";"200"
+CboDonneur
+donneurid
+Table/Query
+select * from donneur where 1=1
+0;2835
+N° du client
+Étiquette224
+Donneur d'ordre
+"N° interne";"";"Nom intervenant";"";"10";"100"
+Modifiable218
+numintervenant
+SELECT Intervenant.numintervenant, Intervenant.nomint FROM Intervenant where 1=1
+0;2820
+Zone_Étiquette
+Nom intervenant Clim
+"";"";"";"";"10";"100"
+numcli
+select * from Client where 1=1
+Étiquette47
+Client
+numsit
+N° du site
+numsit_Étiquette
+Texte287
+codsit
+Étiquette288
+Code
+nomsit
+Nom du site
+nomsit_Étiquette
+adrsit
+Adresse
+adrsit_Étiquette
+codpossit
+Code postal
+codpossit_Étiquette
+CP / Ville
+vilsit
+Ville
+telsit
+Téléphone
+telsit_Étiquette
+faxsit
+Fax
+faxsit_Étiquette
+melsti
+surven
+Surface de vente
+Étiquette28
+surtot
+Surface totale
+Étiquette29
+nomres
+Nom responsable
+nomres_Étiquette
+telcencom
+Étiquette46
+Tél.
+Texte339
+civres
+Étiquette340
+Mail responsable
+numzonsit
+select * from ZoneGeographique where 1=1
+Zone géographique
+numzonsit_Étiquette
+Zone d'intervention
+txtLatitude
+latitude
+lbl26
+Latitude
+txtLongitude
+longitude
+lbl28
+Longitude
+txtAccuracy
+precisiongeo
+lbl30
+Précision
+datemiseenservicesite
+Short Date
+00/00/00;_
+Étiquette312
+En service le
+cboindclitec
+indclitec
+Value List
+1;réalisé par nous;2;connu de nous;3;à auditer par nous;4;modifié par nous
+sitsit
+Clim. dépendante (centre commercial);Clim. indépendante (centre commercial);Clim. dépendante (centre ville);Clim. indépendante (centre ville);Eficia avec pilotage;Eficia sans pilotage
+Situation
+Étiquette30
+Modifiable178
+typfluid
+SELECT TypeFluide.id, TypeFluide.libelle FROM TypeFluide where 1=1 ORDER BY TypeFluide.[libelle];
+0;1441
+Type de fluide_Étiquette
+Type de fluide :
+Type_de_fluide_Étiquette
+Texte182
+temp_entree
+Étiquette183
+Temp. entrante :
+Texte185
+temp_sortie
+Étiquette186
+Temp. sortante:
+indvetust
+;"";1;"µ««««";2;"µµ«««";3;"µµµ««";4;"µµµµ«";5;"µµµµµ"
+0;1443
+Indicateur de Vétusté (1 à 5 étoiles)
+Wingdings
+numerocontratclient
+Étiquette259
+N° Contrat Clim.
+Texte72
+datprisencharge
+Étiquette73
+Date Prise en Charge
+nbrentsit
+Nombre d'entretiens annuels planifiés
+Étiquette32
+Nb /an
+mntredev
+Montant de la redevance
+Étiquette55
+Tarif Clim 1 FMC
+nombrevisitetechnique
+Étiquette261
+Nb.(Infos)
+montantredevancefiltre
+Étiquette260
+Tarif Clim 2 FMC
+Texte262
+nombrevisitefiltre
+Étiquette263
+Modifiable405
+NumSousTraitClim
+SELECT Intervenant.numintervenant, Intervenant.nomint FROM Intervenant  where 1=1
+Étiquette406
+Nom Sous Traitant
+Texte349
+TarifSousTraitClim
+Texte352
+NumContratChaudiere
+Étiquette353
+N° Contrat Chaudiere
+Texte356
+DateContratChaudiere
+Étiquette357
+Texte354
+NombreContratChaudiere
+Étiquette355
+Nb/an
+Texte358
+mntredevContratChaudiere
+Étiquette359
+Tarif Chaudiere FMC
+Modifiable407
+NumSousTraitChaudiere
+Étiquette408
+Texte395
+TarifSousTraitChaudiere
+numerocontratdesenfumage
+Étiquette266
+N° Contrat Desenfum.
+datedesenfumage
+Étiquette268
+nombrevisitedesenfumage
+Étiquette267
+montantredevancedesenfumage
+Étiquette269
+Tarif désenf. FMC
+Modifiable402
+NumSousTraitDesenfum
+Étiquette403
+Texte399
+TarifSousTraitDesenfum
+garantiepiecesmainoeuvre
+Étiquette303
+Pièces et M.O.
+garantiepieces
+Étiquette304
+Pièces
+garantiecompresseur
+Étiquette305
+Compresseur
+Cocher360
+majregistresecuriteafaire
+Étiquette361
+NACELLE NECESSAIRE
+Texte362
+preres
+CochePasIntervenir
+majregistresecuritefait
+Étiquette365
+NE PLUS INTERVENIR
+Texte369
+typsit
+CocheRetard
+misajoursecurite
+Étiquette368
+RETARD PAIEMENT
+Texte382
+datcresit
+datefermeture
+00/00/00;0;_
+Étiquette293
+Date de fermeture
+Texte294
+motiffermeture
+Étiquette295
+Motif de fermeture
+indpuissance
+0;1444
+indaccessib
+0;1445
+comsit
+Commentaire sur le site
+Étiquette39
+Commentaire général Magasin (visible sur liste technicien)
+CmdRegenerer
+Régénérer le planning prévisionnel des entretiens
+Cocher68
+domotique
+Étiquette69
+GTB
+Cocher64
+allumageclim
+Étiquette65
+Allumage Clim.
+Cocher150
+aspirateur
+Étiquette151
+Arret d'urgence clim (OUI)
+Cocher70
+accessfiltre
+Étiquette71
+Arret d'urgence clim (NON)
+Mise à jour du registre de sécurité :
+Form.SiteMAJRegistre sous-formulaire
+cptsit
+Mise_à_jour_du_registre_de_sécurité__
+Mise à jour du registre de sécurité :Étiquette
+Registre de sécurité :
+Mise_à_jour_du_registre_de_sécurité__Étiquette
+Texte157
+hor_lun_ouv
+00:00;0;_
+Étiquette158
+Lundi :
+Texte159
+hor_lun_fer
+Texte161
+hor_mar_ouv
+Étiquette162
+Mardi :
+Texte163
+hor_mar_fer
+Texte164
+hor_mer_ouv
+Étiquette165
+Mercredi :
+Texte166
+hor_mer_fer
+Texte167
+hor_jeu_ouv
+Étiquette168
+Jeudi :
+Texte169
+hor_jeu_fer
+Texte170
+hor_ven_ouv
+Étiquette171
+Vendredi :
+Texte172
+hor_ven_fer
+Texte173
+hor_sam_ouv
+Étiquette174
+Samedi :
+Texte175
+hor_sam_fer
+Texte200
+hor_dim_ouv
+Étiquette201
+Dimanche :
+Texte202
+hor_dim_fer
+fermeture
+Étiquette296
+Ferm
+Cadre176
+Étiquette177
+Horaires d'ouverture
+nbrdesenfsit
+Nombre de désenfumage annuel
+Étiquette35
+Nbre désenfumage
+datdervisdes
+Date de dernière visite de désenfumage
+00/00/0000;0;_
+Étiquette38
+Dernière visite le
+nbrpla
+nbrplan
+Étiquette62
+Plans/Photos
+nbrpho
+ImgDevisEnCours
+sans-titre.png
+CmdAddIntervention
+Créer une intervention
+Texte248
+chemindoc
+Déposer ici le raccourci vers le dossier du site
+Étiquette249
+Raccourci réseau vers le dossier du site
+Cadre250
+Étiquette251
+A Faire
+photoafaire
+Étiquette252
+Photo à faire
+photofaite
+Étiquette253
+Photo faite
+auditafaire
+Étiquette254
+Audit à faire
+auditfait
+Étiquette255
+Audit fait
+Cadre257
+Étiquette258
+Contrat Entretien Clim
+Cadre264
+Étiquette265
+Contrat Entretien Désenfumage
+texteMO
+PrixMO
+#,##0.00
+;-#,##0.00
+TexteDepl
+PrixDepl
+Texte270
+commentaire
+Étiquette271
+Commentaire divers
+Cadre272
+Étiquette273
+Infos Install
+Cocher275
+controleetancheiteafaire
+Étiquette276
+CE à faire
+Cocher277
+controleetancheitefait
+Étiquette278
+CE fait
+CmdGeocoder
+Géocoder
+Cadre289
+Étiquette290
+Site ferm
+CmdOuvrirClient
+Commande299
+Ouvrir formulaire
+Tarifs MO et DP
+Form.Tarifs MO et DP
+Tarifs_MO_et_DP
+Cadre306
+Étiquette307
+Garanties
+Cadre337
+Étiquette338
+Infos Site
+Cadre342
+Cadre344
+Étiquette345
+Tarif MO et DP
+Cadre350
+Étiquette351
+Contrat Entretien Chaudiere
+NumClim
+Étiquette378
+N° Esabora Clim
+ImageGarantie
+ImgPasInterven
+ImgProbPaiement
+Cocher391
+demixasit
+Étiquette392
+Particulier
+Cadre409
+Étiquette410
+Divers
+Cadre412
+Cadre413
+ValidModifClient
+False
+CocherPrix
+AvecPrixSite
+Étiquette56
+Indicateur
+Étiquette57
+Indice Qualit
+Étiquette59
+Indice Puissance
+Étiquette61
+Accessibilit
+Étiquette184
+° C
+Étiquette187
+Étiquette347
+Tarif Sous Traitant
+EtiquetteContratEnCours
+CE EN COURS
+EtiquetteDevisEnCours
+DEVIS SAV EN COURS
+EtiquetteDevisTravauxEnCours
+DEVIS TRAVAUX EN COURS
+ÉtiquetteGarantieMO
+GARANTIE MO EN COURS
+ÉtiquetteGarantiePieces
+GARANTIE PIECES EN COURS
+ÉtiquetteGarantirCompr
+GARANTIE COMPR. EN COURS
+Étiquette397
+Étiquette401
+Étiquette414
+Geolocalisation
+Étiquette415
+Étiquette416
+Email
+LabelMO
+Tarif Heure Main d'oeuvre(Site):
+LabelDepl
+Tarif d'un Deplacement(Site):
+ValidModifNomSite
+ValidModifDonOrdre
+Cadre444
+Cocher453
+controleetancheiteponctuel
+Étiquette454
+Syteme de detection de fuite
+NumMaint
+Étiquette456
+N° Esabora Maint
+Cocher458
+RDV_Prendre
+Étiquette459
+RDV à Prendre
+Cadre460
+Étiquette461
+Information divers
+tpInterventions
+Interventions
+Site Sous-formulaire sous-formulaire
+Form.Site Sous-formulaire sous-formulaire
+Site_Sous_formulaire_sous_formulaire
+Site Sous-formulaire sous-formulaireÉtiquette
+Interventions en cours :
+Site_Sous_formulaire_sous_formulaireÉtiquette
+Site Sous-formulaire sous-formulaire 2
+Form.Site Sous-formulaire sous-formulaire 2
+Site_Sous_formulaire_sous_formulaire_2
+Site Sous-formulaire sous-formulaire 2Étiquette
+Interventions clôturées :
+Site_Sous_formulaire_sous_formulaire_2Étiquette
+Commande393
+Renseigner Colonne Nom Tech
+Contrat de maintenance
+Contrat_de_maintenance
+ContratDeMaintenance
+Form.DevisListeContratDeMaintenance
+NumeroSite;numeroclient
+cptsit;numcli
+Devis SAV
+Devis_SAV
+DevisListe
+Form.DevisListe
+Devis Travaux
+Devis_Travaux
+Fille310
+Form.DevisListeTravaux
+Page225
+Matériel
+Ref1
+SELECT Reference.id, Reference.Reference FROM Reference where 1=1 ORDER BY Reference.Reference;
+0;1442
+Reference1_Étiquette
+Reference1:
+Ref2
+Étiquette318
+Reference2:
+NB1
+Étiquette121
+Nombre:
+Commande314
+Ajout Reference 1
+NB2
+Étiquette316
+Commande319
+Ajout Reference 2
+NB3
+Étiquette324
+Commande325
+Ajout Reference 1+2
+Commande336
+Vers Page Parametres
+SiteMateriel sous-formulaire
+Form.SiteMateriel sous-formulaire
+NumeroSite
+SiteMateriel_sous_formulaire
+Étiquette326
+Alternance Ref1 Puis Ref2
+Commande402
+Generer le CE
+Commande143
+Importer Fichier Audit
+Page231
+Infos complémentaires Site
+Étiquette234
+Cocher464
+Invest
+Étiquette465
+Investissement
+Texte468
+InfosCompl
+Étiquette469
+Descriptif Investissement
+tpDesenfumage
+Marque && Référence de désenfumage
+Fille36
+Form.SiteMarqueReferenceDesenfumage Sous-formulaire
+Étiquette419
+Cocher438
+Cocher439
+PiedFormulaire

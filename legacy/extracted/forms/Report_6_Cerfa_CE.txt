@@ -1,0 +1,74 @@
+Cerfa CE
+Microsoft XPS Document Writer
+[Event Procedure]
+cument Writer
+XPSPort:
+ZoneEntêtePage
+Détail
+9g6
+Image5
+Cerfa.PNG
+ChkL1C1
+Étiquette582
+FMC MAINTENANCE
+Étiquette583
+2 RUE GALILEE
+Étiquette584
+33185 LE HAILLAN
+Étiquette585
+812 616 019 00012
+Étiquette621
+18964
+Boîte657
+Boîte668
+Boîte669
+Boîte670
+Boîte674
+Boîte676
+ChkL1C2
+ChkL1C3
+ChkL2C1
+ChkL2C2
+ChkL2C3
+ChkL3C1
+ChkL3C2
+ChkL3C3
+ChkL4C1
+ChkL4C2
+ChkL4C3
+ChkL5C1
+ChkL5C2
+ChkL5C3
+Cocher735
+ChkOn
+ChkOui
+ChkNon
+Étiquette768
+Étiquette772
+Étiquette773
+Étiquette774
+Étiquette785
+Étiquette786
+Étiquette805
+Étiquette842
+TESTO 316-4
+Texte25
+Texte27
+Texte31
+Texte656
+Texte844
+Texte845
+Texte839
+Texte840
+Texte841
+Texte843
+Texte815
+Texte819
+Texte820
+Texte824
+Texte825
+Texte832
+Image846
+sigsitimg
+Image847
+ZonePiedPage

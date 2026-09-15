@@ -1,0 +1,16 @@
+dbo_VisitesMaint
+TypeFluide sous-formulaire
+EntêteFormulaire
+Détail
+libelle
+Nombre_Visites
+libelle_Étiquette
+Nombre Visites
+Texte4
+Ecart_Permis_Jour
+Étiquette5
+Ecart Permis (Jour)
+Texte6
+Commentaire
+Étiquette7
+PiedFormulaire

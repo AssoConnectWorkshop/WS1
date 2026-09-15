@@ -1,0 +1,125 @@
+[Event Procedure]
+[Lookup_NumeroClient].[nomcli]
+DevisTravaux
+RICOH Aficio MP C2000 PCL 6
+LPT1:
+Default
+A4 (210 x 297 mm)
+192.168.0.250
+EntêteFormulaire
+"";"";"";"";"10";"100"
+CboClient
+Table/Query
+SELECT Client.numcli, Client.nomcli FROM Client where 1=1 ORDER BY Client.[nomcli];
+0;1441
+Étiquette46
+Client
+"";"";"";"";"";"";"";"";"";"";"10";"200"
+CboSite
+SELECT Site.cptsit, Site.numsit, Site.nomsit, Site.codpossit, Site.vilsit FROM Site where 1=1 ORDER BY Site.[nomsit];
+0;0;1442;1442;1442
+Étiquette48
+Site
+CboEtat
+Value List
+1;"Devis à viser";2;"Aucun Retour Client";4;"Envoyé";3;"Devis annulé et remplacé par";6;"Devis accepté par le client";5;"Devis refusé par le client"
+0;2835
+Étiquette52
+Etat
+"";"";"10";"100"
+CboType
+SELECT Panne.libpan FROM Panne where 1=1
+Étiquette56
+Type de panne
+"";"";"";"";"10";"0"
+CboEnvoyePar
+SELECT Utilisateur.numuti, [nomuti] & " " & [preuti] AS Gestionnaire, Utilisateur.typuti FROM Utilisateur WHERE (((Utilisateur.typuti)=1)) ORDER BY [nomuti] & " " & [preuti];
+0;2268
+Étiquette58
+Envoyé par
+TxDateDebut
+Short Date
+00/00/00;0;_
+Étiquette59
+Entre le
+TxDateFin
+Étiquette37
+et
+CmdFermer
+Commande64
+Fermer formulaire
+BpInsert
+Rendre Insertion Devis Possible
+Avert1
+Penser à Actualiser
+Avert2
+aprés Insertion
+Détail
+NumeroDevis
+NumeroDevisInterne
+Étiquette0
+N° Devis
+NomFichierDevis
+Étiquette2
+Nom Fichier Devis
+StatutDevis
+1;"Devis à viser";2;"Aucun Retour Client";3;"Devis annulé et remplacé par";4;"Envoyé";5;"Devis refusé par le client";6;"Devis accepté"
+Étiquette1
+EnvoyePar
+Étiquette18
+QteMaterielDevis
+Étiquette24
+Nb Machines concernées par l'intervention
+NomFichierDevisPartenaire
+Étiquette25
+Devis Partenaire
+MontantFournitureDevis
+#,##0.00
+;-#,##0.00
+Étiquette26
+Montant Fourniture
+MainOeuvreDevis
+Étiquette27
+Qté Heure Main Oeuvre
+NbreDeplacementDevis
+Étiquette28
+Nbre Déplacement
+MontantHTDevis
+=[MontantFournitureDevis]+([MainOeuvreDevis]*[txtcoutheuremainoeuvre])+([NbreDeplacementDevis]*[txtcoutdeplacement])
+Étiquette29
+Montant HT
+txtcoutdeplacement
+coutdeplacement
+Étiquette32
+txtcoutheuremainoeuvre
+coutheuremainoeuvre
+Étiquette34
+Modifiable20
+TypePanneDevis
+Étiquette22
+Texte36
+DateEnvoiDevis
+Étiquette19
+Envoyé le
+Trait38
+cmdGenerer
+Générer intervention suite à accord devis
+NumeroClient
+0;1440
+Client_Étiquette
+NumeroSite
+0;0;1441;1441;1441
+Site_Étiquette
+"";"";"";"";"4";"4"
+Modifiable43
+NumeroInterventionInterne
+SELECT Intervention.numintint, Intervention.numint FROM Intervention WHERE (Intervention.numint is not null) ORDER BY Intervention.numint;
+0;1442
+Intervention_Étiquette
+Intervention
+Trait50
+txtNumeroDevisRemplacement
+NumeroDevisRemplacement
+Commande68
+Vers Fichier
+PiedFormulaire

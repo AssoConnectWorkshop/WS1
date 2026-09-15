@@ -1,0 +1,10 @@
+ZoneGeographique
+EntêteFormulaire
+Détail
+numzon
+numzon_Étiquette
+N
+nomzon
+nomzon_Étiquette
+Nom Zone
+PiedFormulaire

@@ -1,0 +1,162 @@
+[Planification].[numcli]
+Planification
+[Event Procedure]
+Alain
+ALAIN-PC18
+BRN001BA9864611
+Détail
+T2
+Short Date
+00/00/00;0;_
+L2
+Date Limite  2
+T3
+L3
+Date Limite  3
+T1
+L1
+Date Limite  1
+T4
+L4
+Date Limite  4
+T5
+L5
+Date Limite 5
+T6
+L6
+Date Limite  6
+T7
+L7
+Date Limite 7
+T8
+L8
+Date Limite  8
+T9
+L9
+Date Limite  9
+T10
+L10
+Date Limite  10
+T11
+L11
+Date Limite  11
+T12
+L12
+Date Limite  12
+"";"";"";"";"10";"100"
+lstClient
+numcli
+Table/Query
+SELECT [Client].[numcli], [Client].[nomcli] FROM Client ORDER BY [nomcli];
+0;1441
+"SELECT [Client].[numcli], [Client].[nomcli] FROM Client ORDER BY [nomcli]; ";"Client";"";"numcli";"nomcli";"PK_Client"
+Client_Étiquette
+Client
+CmdFermer
+Commande46
+Quitter application
+cmdGenerer
+Générer Interventions
+TxtNombreVisite
+Étiquette49
+Nombre de visites à planifier
+Étiquette86
+Entretien
+DIENT1
+DIENT2
+DIENT3
+DIENT4
+DIENT5
+DIENT6
+DIENT7
+DIENT8
+DIENT9
+DIENT10
+DIENT11
+DIENT12
+ChaudT2
+LC2
+ChaudT3
+LC3
+ChaudT1
+LC1
+ChaudT4
+LC4
+ChaudT5
+LC5
+ChaudT6
+LC6
+ChaudT7
+LC7
+ChaudT8
+LC8
+ChaudT9
+LC9
+ChaudT10
+LC10
+ChaudT11
+LC11
+ChaudT12
+LC12
+Commande125
+NbChaud
+Étiquette127
+Étiquette128
+Chaudiere
+DICHAUD1
+DICHAUD2
+DICHAUD3
+DICHAUD4
+DICHAUD5
+DICHAUD6
+DICHAUD7
+DICHAUD8
+DICHAUD9
+DICHAUD10
+DICHAUD11
+DICHAUD12
+Étiquette141
+Attention pour chaudiere et Desenfumage pas de Test de date si l'inter existe deja !!
+Étiquette142
+Faire ABSOLUMENT en priorité les entretiens
+DesenT2
+LD2
+DesenT3
+LD3
+DesenT1
+LD1
+DesenT4
+LD4
+DesenT5
+LD5
+DesenT6
+LD6
+DesenT7
+LD7
+DesenT8
+LD8
+DesenT9
+LD9
+DesenT10
+LD10
+DesenT11
+LD11
+DesenT12
+LD12
+Commande167
+NbDesen
+Étiquette169
+Étiquette170
+Desenfumage
+DIDESEN1
+DIDESEN2
+DIDESEN3
+DIDESEN4
+DIDESEN5
+DIDESEN6
+DIDESEN7
+DIDESEN8
+DIDESEN9
+DIDESEN10
+DIDESEN11
+DIDESEN12

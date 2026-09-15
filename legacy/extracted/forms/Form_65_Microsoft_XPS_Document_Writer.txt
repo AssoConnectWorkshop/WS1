@@ -1,0 +1,60 @@
+Microsoft XPS Document Writer
+[Event Procedure]
+A4 (210 x 297 mm
+XPSPort:
+Détail
+"";"";"";"";"10";"510"
+cboClient
+Table/Query
+select 0 as numcli, " A sélectionner" as nomcli from client UNION select numcli,nomcli from client where affcli=true ORDER BY nomcli;
+0;1440
+"select 0 as numcli, "" A sélectionner"" as nomcli from client UNION select numcli,nomcli from client where affcli=true ORDER BY nomcli;";"client";"client";""
+Client_Étiquette
+Client
+cmdFermer
+Commande15
+Fermer formulaire
+CboNumSit
+Étiquette10
+N° Site ou Nom du site
+SiteListe
+Form.SiteListe
+ChkSansLongitudeLatitude
+Étiquette24
+Site sans géoloc
+CboCode
+Étiquette26
+Code:
+txtNumeroBon
+Étiquette34
+N° de Bon:
+ChkNonRooftop
+Étiquette36
+Site non rooftop
+txtrefliint
+Étiquette38
+N° DI:
+ChkModification
+Étiquette40
+Modification
+CocherRetard
+Étiquette47
+Retard Paiement
+coche_intervenir
+Étiquette49
+Sites "Ne pas intervenir"
+CocherParticulier
+Étiquette52
+Particulier
+RefMat
+Étiquette55
+Reference Materiel
+coche_intervenir_Avec_Inter
+Étiquette59
+Inter en cours en "Ne pas intervenir"
+ChkCE
+Étiquette61
+CE à éditer
+CocherInvest
+Étiquette63
+Investissement

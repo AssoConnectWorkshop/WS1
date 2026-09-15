@@ -1,0 +1,79 @@
+Site
+Microsoft XPS Document Writer
+[Event Procedure]
+XPSPort:
+EntêteFormulaire
+lblSite
+Ajout Reference Materiel
+Détail
+"";"";"";"";"10";"100"
+Type
+Table/Query
+SELECT TypeAudit.id, TypeAudit.Type FROM TypeAudit where 1=1 ORDER BY TypeAudit.Type;
+0;1440
+Fluide
+SELECT TypeFluide.id, TypeFluide.libelle FROM TypeFluide where 1=1 ORDER BY TypeFluide.libelle;
+Repere
+SELECT Repere.id, Repere.Repere FROM Repere where 1=1 ORDER BY Repere.Repere;
+Type_Tel
+SELECT TypeTel.id, TypeTel.TypeTelecommande FROM TypeTel where 1=1
+Étiquette328
+Type Telecommande:
+Étiquette329
+Repere:
+Étiquette330
+Fluide:
+Étiquette332
+Marque:
+Étiquette331
+Type:
+Étiquette336
+Reversible:
+Reversible
+Value List
+"OUI";"NON";"NC"
+1440
+Étiquette341
+Resistance:
+Resistance
+1441
+Étiquette343
+Puissance Frigo(W):
+Puiss_Frigo
+Étiquette346
+Puissance Calo(W):
+Puiss_Calo
+Étiquette348
+Quantité Gaz (KG):
+Gaz
+Étiquette350
+Nombre Filtres:
+Nb_Filtres
+Étiquette352
+Dimension Filtre:
+Dim_Filtres
+Étiquette354
+Nombre Courroies:
+Nb_Courroies
+Étiquette356
+Reference Courroies:
+Ref_Courroies
+Étiquette358
+Appoint Roof:
+Nom_Ref
+Étiquette361
+Nom Reference:
+Appoint_Roof
+Bp_Ajout
+Ajouter Reference
+Marque
+SELECT Marque.nummar, Marque.nommar FROM Marque where 1=1 ORDER BY Marque.nommar;
+BP_Modification_Toutes
+Modification de Toutes les References Materiel (Base + Materiels Existants) SAUF FLUIDE ET QTE GAZ
+BP_Modification_Une
+Modification Seulement de la Reference dans la Base
+BP_Creation
+Ajout d'une Nouvelle Reference dans la base
+Quitter (SANS SAUVEGARDE)
+Quitter__SANS_SAUVEGARDE_
+PiedFormulaire

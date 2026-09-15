@@ -1,0 +1,21 @@
+[TypeFluide].[libelle]
+TypeFluide
+TypeFluide sous-formulaire
+EntêteFormulaire
+Détail
+libelle
+libelle_Étiquette
+Type de fluide
+Texte4
+GWP
+Étiquette5
+"";"";"";"";"10";"40"
+Sociét
+Type
+Table/Query
+SELECT dbo_Liste_Type_Gaz.id, dbo_Liste_Type_Gaz.Libelle FROM dbo_Liste_Type_Gaz ORDER BY dbo_Liste_Type_Gaz.Libelle;
+0;2835
+"SELECT dbo_Liste_Type_Gaz.id, dbo_Liste_Type_Gaz.Libelle FROM dbo_Liste_Type_Gaz ORDER BY dbo_Liste_Type_Gaz.Libelle;";"dbo_Liste_Type_Gaz";"";"id";"Libelle";"PK_Liste_Type_Gaz"
+Étiquette8
+Classification Gaz
+PiedFormulaire

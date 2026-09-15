@@ -1,0 +1,499 @@
+parametre
+[Event Procedure]
+*Canon iR C2880/C3380 UFR II
+CONFIDENTIEL
+Paramètres par défaut
+IP_192.168.1.50
+Détail
+Cadre10
+Étiquette11
+Entretien
+Cadre12
+Étiquette13
+Suivi / Statistiques / Graphiques / Paramétrage
+Étiquette14
+ClimAccess - Gestion des interventions
+CmdEntretienParMois
+Entretien par mois
+CmdDepannageParMois
+Dépannage par mois
+CmdAnalyseTypePanne
+Analyse des types de panne
+CmdDepannageParTypeDeSite
+Dépannage par type de site
+CmdDepannageParSite
+Dépannage par site
+CmdRechercherSite
+Rechercher un site
+Cadre27
+Étiquette28
+Dépannage palliatif
+CmdOuvrirInterventionPlanifiee
+Interventions planifiées
+CmdOuvrirInterventionsCloturees
+Interventions clôturées
+CmdOuvrirInterventionEnCours
+Interventions en cours
+CmdOuvrirInterventionCloturee
+Cadre39
+Étiquette40
+Suivi
+CmdOuvrirPlanificationEntretien
+Planifier les entretiens
+CmdListerInterventionAttente
+Liste des interventions (H+8) en cours
+CtlTab64
+"";"";"";"";"10";"100"
+CboSuiviClient
+Table/Query
+SELECT Client.numcli, Client.nomcli FROM Client ORDER BY Client.nomcli;
+0;2835
+"SELECT Client.numcli, Client.nomcli FROM Client ORDER BY Client.nomcli; ";"Client";"";"numcli";"nomcli";"PK_Client"
+Étiquette257
+Client
+"Code intervenant";"";"10";"20"
+CboSuiviIntervenant
+SELECT Intervenant.codint FROM Intervenant ORDER BY Intervenant.codint;
+1420
+Étiquette259
+Intervenant
+BtnImprimerInterventionEnCours
+Liste des interventions
+CadreSuivi
+Étiquette262
+Interventions
+Option264
+Étiquette265
+en cours
+Option266
+Étiquette267
+effectuée en attente de bon
+$h1
+Cmd01
+01 - Nombre total de visite d'entretien par mois
+Cmd02
+02 - Nombre total de visite d'entretien par trimestre
+Cmd03
+03 - Nombre total de visite d'entretien par an
+Cmd04
+04 - Nombre de visites d'entretien par site par trimestre
+Cmd05
+05 - Nombre de visites d'entretien par site par an
+Cmd06
+06 - Ecart en jours entre date prévue d'entretien par site
+Cmd07
+07 - Ecart en jours entre date prévue d'entretien global
+Cmd08
+08 - Ecart en jours date prévue d'entretien par intervenant
+Cmd09
+09 - Nombre d'interventions pour manque d'entretien (code A05)
+CmdT1
+Planning prévisionnel entretien T1
+CmdT2
+Planning prévisionnel entretien T2
+CmdT3
+Planning prévisionnel entretien T3
+CmdT4
+Planning prévisionnel entretien T4
+"Code intervenant";"";"Nom intervenant";"";"10";"100"
+LstIntervenant
+SELECT Intervenant.codint, Intervenant.nomint FROM Intervenant ORDER BY Intervenant.codint;
+0;1440
+"SELECT Intervenant.codint, Intervenant.nomint FROM Intervenant ORDER BY Intervenant.codint; ";"Intervenant";"";"codint";"nomint";"IX_Codint"
+Intervenant_Étiquette
+CmdInterventionAEffectuer
+Entretiens à effectuer
+CmdSitesNonVisites
+Sites non visités
+CmdPlaGenEntT1
+Planning prévisionnel général entretien T1
+CmdTG2
+Planning prévisionnel général entretien T2
+CmdTG3
+Planning prévisionnel général entretien T3
+CmdTG4
+Planning prévisionnel général entretien T4
+Cmd11
+11 - Nombre de visites de dépannage en même temps que l'entretien
+CmdPlanningT1
+Planning entretien T1
+CmdPlanningT2
+Planning entretien T2
+CmdPlanningT3
+Planning entretien T3
+CmdPlanningT4
+Planning entretien T4
+CmdSiteTravauxCreation
+12 - Liste des sites en travaux ou en création
+CmdListeSiteIntervenant
+Liste des sites par intervenant
+CmdListeSimpleSite
+Liste simple des sites
+CmdListeSiteRedevance
+Liste des sites && redevance
+Cadre272
+Étiquette273
+Interventions par trimestre
+cmbIntTrimType
+Value List
+"H et mixte";"F";"Indifférent"
+1440
+"Indifférent"
+btnIntTrim
+Liste
+Cadre281
+Étiquette282
+Liste des sites
+ddlTypeSite
+Hommes et mixte;Femmes
+1442
+ddlTypeSite2
+1443
+cmdPlaAnnee
+Planning prévisionnel  entretien Année
+Dépannage_palliatif
+Cmd40
+40 - Nombre total de dépannage par site
+Cmd41
+41 - Nombre total de dépannage par mois
+Cmd42
+42 - Nombre total de dépannage par trimestre
+Cmd43
+43 - Nombre total de dépannage par an
+Cmd44
+44 - Nombre total de dépannage par situation
+Cmd45
+45 - Nombre total de dépannage par zone
+Cmd46
+46 - Nombre total de dépannage par type de site
+Cmd47
+47 - Nombre total de dépannage par civilité responsable
+Cmd48
+48 - Nombre total de dépannage par surface de vente
+Cmd49
+49 - Nombre de dépannage par marque des matériels
+Cmd50
+50 - Nombre total de dépannage par contact
+Cmd51
+51 - Calcul du coût ramené à la surface de vente
+Cmd52
+52 - Calcul du coût par site
+Cmd53
+53 - Nombre total de dépannage d'origine externe
+Cmd54
+54 - Durée moyenne d'un dépannage
+Cmd55
+55 - Coût moyen d'un dépannage par site
+Cmd56
+56 - Coût moyen d'un dépannage par intervention
+Cmd57
+57 - Pourcentage nombre de dépannage par zone géographique
+Cmd58
+58 - Nombre total de dépannage par type de panne
+Cmd39
+39 - Nombre total de dépannage avec date par site
+Page207
+Coût palliatif
+Cmd111
+111 - Calcul du coût ramené à la surface de vente
+Cmd111f
+111 - Calcul du coût ramené à la surface de vente pour femme
+Cmd111h
+111 - Calcul du coût ramené à la surface de vente pour homme
+Cmd111m
+111 - Calcul du coût ramené à la surface de vente pour mixte
+Cmd112
+112 - Calcul du coût de dépannage palliatif par site
+Cmd112f
+112 - Calcul du coût de dépannage palliatif par site pour femme
+Cmd112h
+112 - Calcul du coût de dépannage palliatif par site pour homme
+Cmd112m
+112 - Calcul du coût de dépannage palliatif par site pour mixte
+Cmd113
+113 - Calcul du coût de dépannage palliatif par situation
+Cmd114
+114 - Calcul du coût de dépannage palliatif par zone géographique
+Cmd115
+115 - Calcul du coût de dépannage palliatif par civilit
+Cmd116
+116 - Calcul du coût de dépannage palliatif par type
+Dépannage curatif
+Dépannage_curatif
+Cmd60
+60 - Nombre total de dépannage curatif par site
+Cmd61
+61 - Nombre total de dépannage curatif par mois
+Cmd62
+62 - Nombre total de dépannage curatif par trimestre
+Cmd63
+63 - Nombre total de dépannage curatif par an
+Cmd64
+64 - Nombre total de dépannage curatif par situation
+Cmd65
+65 - Nombre total de dépannage curatif par zone
+Cmd66
+66 - Nombre total de dépannage curatif par type de site
+Cmd67
+67 - Nombre total de dépannage curatif par civilité responsable
+Cmd68
+68 - Nombre total de dépannage curatif par surface de vente
+Cmd69
+69 - Nombre total de dépannage curatif par marque de matériels
+Cmd70
+70 - Nombre total de dépannage curatif par contact
+Cmd73
+73 - Nombre total de dépannage curatif cause non climatisation
+Cmd77
+77 - Pourcentage Nombre de dépannage curatif par zone
+Cmd78
+78 - Nombre total de dépannage curatif par type de panne
+Cmd59
+59 - Nombre total de dépannage curatif avec date par site
+Coût curatif
+Coût_curatif
+Cmd71
+71 - Calcul du coût ramené à la surface de vente
+Cmd71h
+71 - Calcul du coût ramené à la surface de vente pour homme
+Cmd71m
+71 - Calcul du coût ramené à la surface de vente pour mixte
+Cmd72
+72 - Calcul du coût de dépannage curatif par site
+Cmd72f
+72 - Calcul du coût de dépannage curatif par site pour femme
+Cmd72h
+72 - Calcul du coût de dépannage curatif par site pour homme
+Cmd72m
+72 - Calcul du coût de dépannage curatif par site pour mixte
+Cmd75
+75 - Coût moyen d'un dépannage curatif par site
+Cmd75f
+75 - Coût moyen d'un dépannage curatif par site pour femme
+Cmd75h
+75 - Coût moyen d'un dépannage curatif par site pour homme
+Cmd75m
+75 - Coût moyen d'un dépannage curatif par site pour mixte
+Cmd76
+76 - Coût moyen d'un dépannage curatif par intervention
+Cmd76f
+76 - Coût moyen d'un dépannage curatif par intervention pour femme
+Cmd76h
+76 - Coût moyen d'un dépannage curatif par intervention pour homme
+Cmd76m
+76 - Coût moyen d'un dépannage curatif par intervention pour mixte
+Cmd71f
+71 - Calcul du coût ramené à la surface de vente pour femme
+Cmd123
+123 - Calcul du coût de dépannage curatif par situation
+Cmd124
+124 - Calcul du coût de dépannage curatif par zone géographique
+Cmd125
+125 - Calcul du coût de dépannage curatif par civilit
+Cmd126
+126 - Calcul du coût de dépannage curatif par type
+Dépannage correctif
+Dépannage_correctif
+Cmd80
+80 - Nombre total de dépannage correctif par site
+Cmd81
+81 - Nombre total de dépannage correctif par mois
+Cmd82
+82 - Nombre total de dépannage correctif par trimestre
+Cmd83
+83 - Nombre total de dépannage correctif par an
+Cmd84
+84 - Nombre total de dépannage correctif par situation
+Cmd85
+85 - Nombre total de dépannage correctif par zone
+Cmd86
+86 - Nombre total de dépannage correctif par type de site
+Cmd87
+87 - Nombre total de dépannage correctif par civilit
+Cmd88
+88 - Nombre total de dépannage correctif par surface de vente
+Cmd89
+89 - Nombre de dépannage correctif par marque des matériels
+Cmd90
+90 - Nombre total de dépannage correctif par contact
+Cmd97p
+97 - Pourcentage Nombre de dépannage correctif par zone
+Cmd98
+98 - Nombre total de dépannage correctif par type de panne
+Cmd79
+79 - Nombre total de dépannage correctif avec date par site
+Coût correctif
+Coût_correctif
+Cmd91
+91 - Calcul du coût ramené à la surface de vente
+Cmd91f
+91 - Calcul du coût ramené à la surface de vente pour femme
+Cmd91h
+91 - Calcul du coût ramené à la surface de vente pour homme
+Cmd91m
+91 - Calcul du coût ramené à la surface de vente pour mixte
+Cmd92
+92 - Calcul du coût de dépannage correctif par site
+Cmd92f
+92 - Calcul du coût de dépannage correctif par site pour femme
+Cmd92h
+92 - Calcul du coût de dépannage correctif par site pour homme
+Cmd92m
+92 - Calcul du coût de dépannage correctif par site pour mixte
+Cmd95
+95 - Coût moyen d'un dépannage correctif par site
+Cmd95f
+95 - Coût moyen d'un dépannage correctif par site pour femme
+Cmd95h
+95 - Coût moyen d'un dépannage correctif par site pour homme
+Cmd95m
+95 - Coût moyen d'un dépannage correctif par site pour mixte
+Cmd96
+96 - Coût moyen d'un dépannage correctif par intervention
+Cmd96f
+96 - Coût moyen d'un dépannage correctif par intervention femme
+Cmd96h
+96 - Coût moyen d'un dépannage correctif par intervention homme
+Cmd97
+96 - Coût moyen d'un dépannage correctif par intervention mixte
+Cmd133
+133 - Calcul du coût de dépannage correctif par situation
+Cmd134
+134 - Calcul du coût de dépannage correctif par zone géographique
+Cmd135
+135 - Calcul du coût de dépannage correctif par civilit
+Cmd136
+136 - Calcul du coût de dépannage correctif par type
+Autres
+Cmd20
+20 - Nombre de site par type
+Cmd21
+21 - Nombre de site par situation
+Cmd22
+22 - Nombre de site par zone
+Cmd23
+23 - Nombre de site par civilit
+CmdListeInterventionFacturable
+Liste des interventions facturables
+CmdListeInterventionsFacturees
+Liste des interventions facturées
+Cmd10
+10 - Liste des sites contenant des matériels vétustes
+CmdItDep
+102 - Liste des interventions Dépannage palliatif H+8 dépass
+CmdListeInterventionAFacturer
+Liste des interventions à facturer
+Cmd103
+103 - Ecart de temps décroissant sur dépannage palliatif
+Cmd104
+104 - Nombre de pannes résolues par téléphone
+Cmd101
+101 - Ecart de temps sur dépannage palliatif
+"N° interne";"";"Code intervenant";"";"10";"20"
+LstIntervenantRepertoire
+SELECT Intervenant.numintervenant, Intervenant.codint FROM Intervenant ORDER BY Intervenant.codint;
+0;1419
+"SELECT Intervenant.numintervenant, Intervenant.codint FROM Intervenant ORDER BY Intervenant.codint; ";"Intervenant";"";"numintervenant";"codint";"PK_Intervenant_1"
+Étiquette235
+Zone
+"";"";"";"";"10";"200"
+CboModeleRepertoireTechnique
+SELECT ModeleRepertoireTechnique.nummod, ModeleRepertoireTechnique.nommod FROM ModeleRepertoireTechnique ORDER BY [nommod];
+"SELECT ModeleRepertoireTechnique.nummod, ModeleRepertoireTechnique.nommod FROM ModeleRepertoireTechnique ORDER BY [nommod]; ";"ModeleRepertoireTechnique";"";"nummod";"nommod";"PK_ModeleRepertoireTechnique"
+CboModeleRepertoireTechnique_Étiquette
+Modèle
+indclitec
+1;réalisé par Clim'Tech;2;connu de Clim'Tech;3;à auditer par Clim'Tech;4;modifié par Clim'Tech
+Nom du site
+Étiquette270
+Indicateur Clim'Tech
+CmdOuvrirRepertoireTechnique
+Répertoire technique
+Cmd117
+117 - Ecart de temps sur dépannage palliatif tout mode
+cmdLstAspirateurFiltre
+137 - Liste des sites avec aspirateur, filtre accessible par le personnel et dernière mise à jour du registre de sécurité (CLIM'TECH et Intervenant)
+Commande293
+137 bis - Liste des sites avec aspirateur, filtre accessible par le personnel et dernière mise à jour du registre de sécurité (Client)
+cmdCouverture
+Couverture
+CbZone
+SELECT ZoneGeographique.numzon, ZoneGeographique.nomzon FROM ZoneGeographique;
+0;2955
+"SELECT ZoneGeographique.numzon, ZoneGeographique.nomzon FROM ZoneGeographique; ";"ZoneGeographique";"";"numzon";"nomzon";"PK_ZoneGeographique"
+Zone_Étiquette
+Zone géographique
+Paramétrage
+CmdOuvrirContact
+Contact
+CmdOuvrirIntervenant
+CmdOuvrirMarque
+Marque
+CmdOuvrirReference
+Référence
+CmdOuvrirSite
+Site
+CmdOuvrirZone
+CmdOuvrirPanne
+Panne
+CmdOuvrirClient
+CmdOuvrirJoursFeries
+Jours fériés
+CmdMajSite
+Mettre à jour la liste des sites AT à partir du fichier Excel (\\serveur\Logiclim\annuaireAT.xls)
+CmdCelio
+Mettre à jour la liste des sites CELIO à partir du fichier Excel (\\serveur\Logiclim\annuaireCELIO.xls)
+btnModeleRepertoireTechnique
+Modèle Répertoire Technique
+btnChampsRepertoireTechnique
+Paramétrage champs du répertoire technique
+cmdTypeFluide
+Types de fluide
+cmdClimserv
+Clim'Serv
+cmdClientsClimServ
+Utilisateurs site des inter.
+Commande297
+Importer des sites à partir d'un fichier Excel
+Commande301
+Saisie en tableau
+CmdRelinkTables
+Mettre à jour les liens des tables
+Cadre110
+Étiquette111
+Dépannage curatif/correctif
+CmdDepanageCuratifEnCours
+CmdDepanageCuratifCloture
+datdeb
+00/00/0000;0;_
+Étiquette115
+Date début :
+datfin
+Étiquette116
+Date fin :
+LstClient
+numcli
+Étiquette117
+Client:
+CmdFiltrer
+Filtrer
+CmdOuvrirListeInterventionFacturable
+Interventions à facturer
+CmdRechercherIntervention
+Rechercher
+une intervention
+Commande237
+stats
+Modifiable240
+"Client";"Client";"";"numcli";"nomcli";"PK_Client"
+Étiquette241
+Modifiable242
+Étiquette243
+ListeTri
+1;Alphabétique;2;N° de site
+Étiquette245
+Tri:
+CmdTopTen
+Top Ten
+Commande248
+Flop Ten

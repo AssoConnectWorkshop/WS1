@@ -1,0 +1,89 @@
+SELECT * from ( intervention ListeInter inner join [site] ListeSite ON ListeInter.cptsit=ListeSite.cptsit ) where ListeInter.mnthtdevis <>0 Order by ListeInter.typint,ListeSite.nomsit
+ListeInterventionGenerale sous-formulaire
+[Event Procedure]
+192.168.0.247
+EntêteFormulaire
+Détail
+nomcli
+Listesite.nomsit
+nomcli_Étiquette
+Client
+nomsit
+nomsit_Étiquette
+Site
+codpossit
+Listesite.codpossit
+codpossit_Étiquette
+CP
+vilsit
+Listesite.vilsit
+vilsit_Étiquette
+Ville
+"";"";"";"";"10";"100"
+staint
+Listeinter.staint
+Table/Query
+SELECT dbo_StatusInterv.IndexLigne, dbo_StatusInterv.StatutInter FROM dbo_StatusInterv   where dbo_StatusInterv.OrdreAffichage>0 order by  dbo_StatusInterv.OrdreAffichage;
+0;2835
+staint_Étiquette
+Statut
+typint
+Listeinter.typint
+Value List
+0;Toutes;1;Entretien;2;Dépannage;3;Devis accepté;7;Désenfumage;9;Audit;4;Autre;8;Inter. réalisée en attente devis signé client;5;En travaux;6;En création
+typint_Étiquette
+Type
+"";"";"";"";"10";"0"
+traitepar
+Listeinter.traitepar
+SELECT Utilisateur.numuti, [preuti] & " " & [nomuti] AS Expr1 FROM Utilisateur where 1=1 ORDER BY [preuti] & " " & [nomuti];
+traitepar_Étiquette
+Traitée par
+datint
+Listeinter.datint
+Étiquette33
+Effectuée le
+"Code intervenant";"";"Nom intervenant";"";"10";"100"
+LstIntervenant
+listeinter.codint
+SELECT Intervenant.codint, Intervenant.nomint FROM Intervenant where 1=1 ORDER BY Intervenant.nomint;
+Étiquette37
+Intervenant
+numintint
+listeInter.numintint
+Étiquette89
+numintint:
+SousType
+listeInter.imprimeepar
+SELECT dbo_SousType.id, dbo_SousType.SousType FROM dbo_SousType where 1=1 ORDER BY dbo_SousType.SousType;
+Étiquette416
+Sous Type
+CelluleVide442
+CelluleVide444
+Modifiable445
+ListeInter.nummodres
+SELECT TypeFluide.id, TypeFluide.libelle FROM TypeFluide where 1=1 ORDER BY TypeFluide.libelle;
+0;1441
+Étiquette446
+Type Gaz
+Texte447
+ListeInter.mnthtdevis
+Étiquette448
+Qté Gaz
+CelluleVide450
+Texte452
+listeInter.numdevpartenaire
+Étiquette453
+Tech(S):
+CelluleVide459
+Chemin Dossier Etancheit
+CheminDossEtanch
+Chemin_Dossier_Etancheit
+Lien CE
+Étiquette34
+Bon
+Texte462
+Listesite.chemindoc
+Lien vers Site
+Étiquette463
+PiedFormulaire

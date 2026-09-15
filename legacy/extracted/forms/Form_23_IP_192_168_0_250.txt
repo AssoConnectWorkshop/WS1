@@ -1,0 +1,8 @@
+IP_192.168.0.250
+Détail
+TxtRefCli
+Étiquette1
+Rechercher une intervention par la référence client
+CmdRechercher
+&Lancer la recherche
+[Event Procedure]

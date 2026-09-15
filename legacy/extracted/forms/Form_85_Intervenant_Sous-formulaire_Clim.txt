@@ -1,0 +1,17 @@
+SELECT Site.nomsit, Site.NumSousTraitClim, Site.TarifSousTraitClim, Site.numsit, Site.cptsit FROM Site;
+Intervenant Sous-formulaire Clim
+EntêteFormulaire
+nomsit_Étiquette
+Nom du site
+DetachedLabel
+vilsit_Étiquette
+Prix
+Détail
+nomsit
+[Event Procedure]
+Nom_du_site
+Tarif ST
+TarifSousTraitClim
+Ville
+Tarif_ST
+PiedFormulaire

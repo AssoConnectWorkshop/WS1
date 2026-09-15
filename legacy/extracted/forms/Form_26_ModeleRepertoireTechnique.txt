@@ -1,0 +1,15 @@
+ModeleRepertoireTechnique
+EntêteFormulaire
+Détail
+nommod
+nommod_Étiquette
+Nom Modèle
+datcremod
+datcremod_Étiquette
+Date Création
+ParametreRepertoireTechnique
+Form.ParametreRepertoireTechnique
+nummod
+ParametreRepertoireTechniqueÉtiquette
+Champs visibles pour ce modèle
+PiedFormulaire

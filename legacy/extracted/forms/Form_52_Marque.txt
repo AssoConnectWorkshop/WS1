@@ -1,0 +1,7 @@
+Marque
+Marque sous-formulaire
+EntêteFormulaire
+Détail
+nommar
+nommar_Étiquette
+PiedFormulaire

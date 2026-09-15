@@ -1,0 +1,8 @@
+TypeAudit
+TypeFluide sous-formulaire
+EntêteFormulaire
+Détail
+libelle
+Type
+libelle_Étiquette
+PiedFormulaire

@@ -1,0 +1,48 @@
+SELECT * from dbo_evvehicules
+Microsoft XPS Document Writer
+[Event Procedure]
+A4 (210 x 297 mm
+XPSPort:
+Détail
+ListeEvVehicules sous-formulaire
+Form.Liste_EVVehiculesSousForm
+ListeEvVehicules_sous_formulaire
+"";"";"";"";"10";"20"
+cboimmat
+Table/Query
+SELECT dbo_Vehicules.NumVehicule, dbo_Vehicules.Immatriculation FROM dbo_Vehicules where 1=1 ORDER BY dbo_Vehicules.Immatriculation;
+0;1442
+Étiquette5
+Immat
+"";"";"";"";"10";"0"
+cboconduc
+SELECT numuti, Nomuti+" "+preuti AS Expr1 FROM Utilisateur WHERE (((Utilisateur.numsoc)=1 Or (Utilisateur.numsoc)=111 Or (Utilisateur.numsoc)=112 Or (Utilisateur.numsoc)=113) AND ((Utilisateur.typuti)=2) AND ((Utilisateur.codintuti)<>'')) ORDER BY Utilisateur.Nomuti;
+0;1440
+Client_Étiquette
+Conducteur
+cmdFermer
+Commande15
+Fermer formulaire
+Texte17
+Short Date
+00/00/00;0;_
+Étiquette18
+Entre le
+Texte36
+Étiquette37
+et
+CmdRechercher
+Rechercher
+"";"";"";"";"10";"100"
+cbotypev
+SELECT dbo_ListeEVVehicule.Numero, dbo_ListeEVVehicule.Evenement_Vehicule  FROM dbo_ListeEVVehicule where 1=1
+0;1443
+Étiquette54
+Evenement
+Commande58
+Ajout Evenement
+Commande59
+Afficher Erreur
+CheckVendu
+AfficheVendu
+Afficher Les Vendus

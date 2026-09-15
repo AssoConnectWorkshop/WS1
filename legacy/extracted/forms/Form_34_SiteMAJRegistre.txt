@@ -1,0 +1,9 @@
+[Date] DESC
+SiteMAJRegistre
+EntêteFormulaire
+Date_Étiquette
+Date
+DetachedLabel
+Détail
+00/00/0000;0;_
+PiedFormulaire

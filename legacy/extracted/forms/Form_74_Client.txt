@@ -1,0 +1,12 @@
+[Client].[numcli]
+Client
+Tarifs MO et DP
+Détail
+coutheuremainoeuvre
+#,##0.00
+;-#,##0.00
+Étiquette44
+Tarif heure Main oeuvre
+coutdeplacement
+Étiquette45
+Tarif d'un déplacement

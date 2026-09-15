@@ -1,0 +1,255 @@
+SELECT * FROM ListeInterventionGenerale2 AS Liste INNER JOIN Intervention AS Interv ON Liste.numintint = Interv.numintint WHERE (((True)<>False) AND ((Liste.staint)=7) AND ((Liste.devisafaire)=True)) ORDER BY Liste.typint, Liste.nomsit;
+ListeInterventionGenerale sous-formulaire
+[Event Procedure]
+192.168.0.247
+EntêteFormulaire
+Détail
+9m7
+nomcli
+nomcli_Étiquette
+Client
+nomsit
+nomsit_Étiquette
+Site
+codpossit
+codpossit_Étiquette
+CP
+vilsit
+vilsit_Étiquette
+Ville
+datheuapp
+liste.datheuapp
+datheuapp_Étiquette
+Date appel
+datheulim
+liste.datheulim
+datintpre_Étiquette
+Date limite
+"";"";"";"";"10";"100"
+staint
+liste.staint
+Table/Query
+SELECT dbo_StatusInterv.IndexLigne, dbo_StatusInterv.StatutInter FROM dbo_StatusInterv   where dbo_StatusInterv.OrdreAffichage>0 order by  dbo_StatusInterv.OrdreAffichage;
+0;2835
+staint_Étiquette
+Statut
+typint
+liste.typint
+SELECT dbo_TypeInterv.IndexLigneSTRING, dbo_TypeInterv.TypeInter, dbo_TypeInterv.OrdreAffichage FROM dbo_TypeInterv WHERE (((dbo_TypeInterv.IndexLigneSTRING)>"0") AND ((dbo_TypeInterv.OrdreAffichage)<>-1)) ORDER BY dbo_TypeInterv.OrdreAffichage;
+typint_Étiquette
+Type
+"";"";"";"";"10";"0"
+traitepar
+liste.traitepar
+SELECT Utilisateur.numuti, [preuti] & " " & [nomuti] AS Expr1 FROM Utilisateur where 1=1 ORDER BY [preuti] & " " & [nomuti];
+traitepar_Étiquette
+Traitée par
+objint
+liste.objint
+Étiquette18
+Titre
+datint
+Liste.datint
+Étiquette33
+Effectuée le
+cheficdemint
+Liste.cheficdemint
+Étiquette35
+DI numérisée
+devisafaire
+Liste.devisafaire
+Étiquette36
+Devis à faire
+LstIntervenant
+liste.codint
+SELECT Intervenant.codint, Intervenant.nomint FROM Intervenant where 1=1 ORDER BY Intervenant.nomint;
+Étiquette37
+Intervenant
+LstZone
+numzonsit
+SELECT ZoneGeographique.numzon, ZoneGeographique.nomzon FROM ZoneGeographique  where 1=1 ORDER BY ZoneGeographique.[nomzon];
+0;1440
+Zone_Étiquette
+Zone
+"";"";"";"";"10";"200"
+nomdonneur
+donneurid
+SELECT Donneur.donneurid, Donneur.nomdonneur FROM Donneur  where 1=1 ORDER BY Donneur.[nomdonneur];
+Donneur d'ordres_Étiquette
+Donneur d'ordres
+Donneur_d_ordres_Étiquette
+controleetancheite
+liste.controleetancheite
+Étiquette41
+Contrôle d'étanchéit
+photofaite
+liste.photofaite
+Étiquette42
+Photos
+auditfait
+liste.auditfait
+Étiquette43
+Audit
+majregsec
+liste.majregsec
+Étiquette44
+MàJ Registre de sécurit
+devisfait
+liste.devisfait
+Étiquette49
+Devis fait
+devisanepasfaire
+liste.devisanepasfaire
+Étiquette50
+Devis à ne pas faire
+numerodevisaccepte
+liste.numdevacc
+Étiquette51
+N° Devis accept
+Cocher58
+controleetancheiteafaire
+Contrôle d'étanchéité à faire
+Étiquette59
+Cocher60
+photoafaire
+Photos à faire
+Étiquette61
+Cocher62
+auditafaire
+Audit à faire
+Étiquette63
+Cocher64
+majregistresecuriteafaire
+MàJ du registre de sécurité à faire
+Étiquette65
+MàJ Registre de sécurité à faire
+datintpre
+liste.datintpre
+Étiquette82
+Date prévue :
+numintint
+liste.numintint
+Étiquette89
+numintint:
+Modifiable90
+liste.numutipre
+SELECT Utilisateur.numuti, [preuti] & " " & [nomuti] AS Expr1, Utilisateur.typuti, Utilisateur.nomsocuti FROM Utilisateur WHERE (((Utilisateur.typuti)=2) AND ((Utilisateur.nomsocuti)="FMC")) ORDER BY Utilisateur.nomuti, [preuti] & " " & [nomuti];
+Étiquette91
+Technicien prévu
+nbrentsit
+Étiquette137
+Nb Visite
+refcliint
+liste.refcliint
+Étiquette159
+N° DI Client
+numerodemandesoustraitant
+liste.numerodemandesoustraitant
+Étiquette166
+N° Demande ST
+adrsit
+Étiquette173
+Adresse Site
+comint
+Liste.comint
+Étiquette180
+Commentaire de l'intervention
+Date dernière visite entretien
+datedernierevisiteentretien
+Date_dernière_visite_entretien
+Étiquette374
+datedernierevisiteentretien:
+numsit
+N° Magasin
+Étiquette390
+numsit:
+Code du Site
+codsit
+Code_du_Site
+Code  Site
+Étiquette397
+code du site:
+mntst
+liste.mntst
+Étiquette404
+Mt ST
+mntfmc
+liste.mntfmc
+Étiquette405
+Mt FMC
+txtDiff
+=[mntfmc]-[mntst]
+Étiquette407
+Diff
+intfac
+liste.intfac
+Étiquette410
+Non Fact.
+SousType
+imprimeepar
+SELECT dbo_SousType.id, dbo_SousType.SousType FROM dbo_SousType  where 1=1 ORDER BY dbo_SousType.SousType;
+Étiquette416
+Sous Type
+Modifiable417
+Liste.nbrappint
+SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture  where 1=1
+Étiquette418
+Statut Facturation
+Modifiable431
+Liste.stadev
+SELECT Utilisateur.numuti, [preuti] & " " & [nomuti] AS Expr1, Utilisateur.typuti, Utilisateur.codintuti FROM Utilisateur WHERE (((Utilisateur.typuti)=1) AND ((Utilisateur.codintuti)<>"" And (Utilisateur.codintuti)<>"XX")) ORDER BY [preuti] & " " & [nomuti];
+Étiquette432
+Duplicata à Traiter par
+Cocher433
+Liste.duplicatafait
+Étiquette434
+Attente offre de Prix
+Texte439
+numpartenaire
+Étiquette440
+Priorité:
+Comm_Devis
+Liste.sigtec
+True/False
+Comm.Devis
+Modifiable443
+devisepar
+Value List
+1;Faible;2;Moyenne;3;Forte
+Étiquette444
+Urgence Devis
+Temps Telephone
+retourficheinterventionpar
+Temps_Telephone
+Étiquette446
+Temps Tel
+Texte451
+Liste.numerocommande
+Data Pre Diag
+Étiquette452
+Modifiable453
+Liste.prediagpar
+SELECT Utilisateur.numuti, [preuti] & " " & [nomuti] AS Expr1, Utilisateur.typuti FROM Utilisateur WHERE (((Utilisateur.typuti)=1)) ORDER BY [preuti] & " " & [nomuti];
+Étiquette454
+Pré-Diag par
+Texte455
+datesignaturecontrat
+Étiquette456
+Facturé le :
+Texte458
+numdevpartenaire
+Étiquette459
+Technicien(s)
+Texte460
+mntredev
+Étiquette461
+Tarif Clim 1 FMC:
+Texte462
+montantredevancefiltre
+Étiquette463
+Tarif Clim 2 FMC:
+Texte466
+Liste.mnthtdevpartenaire
+Prix Devis
+Étiquette467
+PiedFormulaire

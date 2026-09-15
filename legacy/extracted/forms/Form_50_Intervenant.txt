@@ -1,0 +1,86 @@
+[Intervenant].[codint]
+Intervenant
+Intervenant sous-formulaire
+Détail
+nomint
+[Event Procedure]
+Étiquette18
+Nom intervenant:
+adrint
+Étiquette19
+Adresse:
+codposint
+Étiquette20
+Code Postal:
+vilint
+Étiquette21
+Ville:
+telint
+Étiquette22
+Téléphone:
+faxint
+Étiquette23
+Fax:
+adrmelint
+Étiquette24
+E-mail:
+codint
+Étiquette25
+Code intervenant:
+Prospect
+NePlusIntervenir
+Étiquette69
+Ne Pas Intervenir
+Nom Dirigeant
+NomDirigeant_Interv
+Nom_Dirigeant
+Tel. Dirigeant
+TelDirigeant_Interv
+Tel__Dirigeant
+Mail Dirigeant
+Mail_Dirigeant_Interv
+Mail_Dirigeant
+Nom Interlocuteur
+NomInterlocuteur_Interv
+Nom_Interlocuteur
+Tel . Interlocuteur
+TelInterlocuteur_Interv
+Tel___Interlocuteur
+Info Intervenant
+Info_Interv
+Info_Intervenant
+Zone Nationale
+Zone_Nationale
+Étiquette43
+"";"";"";"";"10";"100"
+Zone Interv 1
+numzonint
+Table/Query
+SELECT ZoneGeographique.numzon, ZoneGeographique.nomzon FROM ZoneGeographique ORDER BY ZoneGeographique.nomzon;
+0;5670
+Zone_Interv_1
+"SELECT ZoneGeographique.numzon, ZoneGeographique.nomzon FROM ZoneGeographique ORDER BY ZoneGeographique.nomzon;";"ZoneGeographique";"";"numzon";"nomzon";"PK_ZoneGeographique"
+Zone Interv 2
+numzonint_2_Interv
+Zone_Interv_2
+Zone Interv 3
+numzonint_3_Interv
+Zone_Interv_3
+Zone Interv 4
+numzonint_4_Interv
+Zone_Interv_4
+"";"";"";"";"10";"102"
+Activite 1
+Activite_1
+SELECT Activites.Numactivite, Activites.Nomactivite FROM Activites ORDER BY Activites.Nomactivite;
+"SELECT Activites.Numactivite, Activites.Nomactivite FROM Activites ORDER BY Activites.Nomactivite;";"Activites";"";"Numactivite";"Nomactivite";"PK_Activites"
+Activite 2
+Activite_2
+Activite 3
+Activite_3
+Activite 4
+Activite_4
+Activite 5
+Activite_5
+Activite 6
+Activite_6

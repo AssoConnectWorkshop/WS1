@@ -1,0 +1,18 @@
+ZoneSociete
+ZoneSociete sous-formulaire
+EntêteFormulaire
+Détail
+"";"";"";"";"10";"100"
+Zone géographique
+numzon
+Table/Query
+ZoneGeographique
+0;2835
+Zone_géographique
+"ZoneGeographique";"ZoneGeographique";"";"numzon";"nomzon";"PK_ZoneGeographique"
+numzon_Étiquette
+numsoc
+Societe
+"Societe";"Societe";"";"numsoc";"nomsoc";"PK_Societe"
+Sociét
+PiedFormulaire

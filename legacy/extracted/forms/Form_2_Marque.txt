@@ -1,0 +1,9 @@
+Marque
+EntêteFormulaire
+Détail
+nummar
+nummar_Étiquette
+N
+nommar
+nommar_Étiquette
+PiedFormulaire

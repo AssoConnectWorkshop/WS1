@@ -1,0 +1,58 @@
+SELECT * from intervention  inner join [site] ON [site].cptsit=intervention.cptsit  where intervention.mnthtdevis <>0 Order by intervention.typint,[site].nomsit
+[Event Procedure]
+Microsoft XPS Document Writer
+A4 (210 x 297 mm
+XPSPort:
+Détail
+cboTypeIntervention
+Value List
+0;Toutes;1;Entretien;2;Dépannage;3;Devis accepté;7;Désenfumage;9;Audit;4;Autre;8;Inter. réalisée en attente devis signé client;5;En travaux;6;En création
+0;1441
+Type Intervention_Étiquette
+Type Inter.
+Type_Intervention_Étiquette
+"";"";"";"";"10";"100"
+cboStatut
+Table/Query
+SELECT dbo_StatusInterv.IndexLigne, dbo_StatusInterv.StatutInter FROM dbo_StatusInterv   where dbo_StatusInterv.OrdreAffichage>0 order by  dbo_StatusInterv.OrdreAffichage;
+0;1442
+Étiquette5
+Statut Intervention
+"";"";"";"";"10";"510"
+cboClient
+select 0 as numcli, " A sélectionner" as nomcli from client UNION select numcli,nomcli from client where affcli=1 ORDER BY nomcli;
+0;1440
+"select 0 as numcli, "" A sélectionner"" as nomcli from client UNION select numcli,nomcli from client where affcli=1 ORDER BY nomcli;";"client";"client";""
+Client_Étiquette
+Client
+cmdFermer
+Commande15
+Fermer formulaire
+CboNumSit
+Étiquette10
+N° Site ou Nom du site
+Texte17
+Short Date
+00/00/00;0;_
+Étiquette18
+Entre le
+CboIntervenant
+select 0 as codint, " A sélectionner" as nomint from intervenant UNION select codint,nomint from intervenant where 1=1 ORDER BY nomint;
+"select 0 as codint, "" A sélectionner"" as nomint from intervenant UNION select codint,nomint from intervenant where 1=1 ORDER BY nomint;";"intervenant";"intervenant";""
+Étiquette23
+Intervenant
+Texte36
+Étiquette37
+et
+CmdRechercher
+Rechercher
+ListeInterventionGenerale sous-formulaire
+Form.ListeInterventionGaz sous-formulaire
+ListeInterventionGenerale_sous_formulaire
+Étiquette62
+cboTypeGaz
+SELECT TypeFluide.id, TypeFluide.libelle FROM TypeFluide where 1=1 ORDER BY TypeFluide.libelle;
+Étiquette64
+Type Gaz
+Somme
+Somme:

@@ -1,0 +1,26 @@
+SELECT dbo_HeuresTech.DateInterv, nomuti+' '+preuti AS Nom, dbo_HeuresTech.nominterv FROM Utilisateur INNER JOIN dbo_HeuresTech ON Utilisateur.numuti = dbo_HeuresTech.numerotech WHERE (((dbo_HeuresTech.TypeInterv)=60));
+[Event Procedure]
+192.168.0.247
+EntêteFormulaire
+Détail
+nomcli
+Nom
+nomcli_Étiquette
+Technicien
+numsit
+nominterv
+Vehicule
+Étiquette390
+Libelle:
+CelluleVide435
+CelluleVide436
+CelluleVide437
+CelluleVide438
+CelluleVide439
+CelluleVide440
+Texte441
+DateInterv
+Date Saisie
+Étiquette442
+Date:
+PiedFormulaire

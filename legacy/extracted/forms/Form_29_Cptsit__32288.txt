@@ -1,0 +1,136 @@
+Cptsit= 32288
+[Site Sous-formulaire sous-formulaire 2].[numint] DESC
+[Event Procedure]
+SELECT [Site Sous-formulaire].cptsit, [Site Sous-formulaire].codint, [Site Sous-formulaire].[prévue le], [Site Sous-formulaire].[effectuée le], [Site Sous-formulaire].typint, [Site Sous-formulaire].Statut, [Site Sous-formulaire].numintint, [Site Sous-formulaire].datheuapp, [Site Sous-formulaire].devisfait, [Site Sous-formulaire].devisafaire, [Site Sous-formulaire].datheulim, [Site Sous-formulaire].numint, [Site Sous-formulaire].refint, [Site Sous-formulaire].refcliint, [Site Sous-formulaire].numdevacc, [Site Sous-formulaire].NumeroDevis, [Site Sous-formulaire].NumeroDevisInterne, [Site Sous-formulaire].Intervention.cheficdemint, [Site Sous-formulaire].cheficdemcli, [Site Sous-formulaire].StatutDevis, [Site Sous-formulaire].NomFichierDevis, [Site Sous-formulaire].numdevpartenaire, [Site Sous-formulaire].[Statut Facturation], dbo_TypeInterv.TypeInter, dbo_TypeInterv.IndexLigneSTRING, dbo_StatusInterv_1.StatutInter, [Site Sous-formulaire].CheminDossEtanch, [Site Sous-formulaire].mnthtdevis, [Site Sous-formulaire].nummodres, [Site Sous-formulaire].comdevisinterne, [Site Sous-formulaire].sigtec, [Site Sous-formulaire].devisepar, [Site Sous-formulaire].comint, [Site Sous-formulaire].Trav_NomFichierDevis, [Site Sous-formulaire].Trav_NumeroDevis, [Site Sous-formulaire].Trav_NumeroDevisInterne, [Site Sous-formulaire].Trav_StatutDevis, [Site Sous-formulaire].mnthtdevpartenaire FROM dbo_StatusInterv, ([Site Sous-formulaire] INNER JOIN dbo_TypeInterv ON [Site Sous-formulaire].typint = dbo_TypeInterv.IndexLigneSTRING) INNER JOIN dbo_StatusInterv AS dbo_StatusInterv_1 ON [Site Sous-formulaire].Statut = dbo_StatusInterv_1.IndexLigne WHERE ((([Site Sous-formulaire].Statut)=7 Or ([Site Sous-formulaire].Statut)=8 Or ([Site Sous-formulaire].Statut)=10 Or ([Site Sous-formulaire].Statut)=20)) ORDER BY [Site Sous-formulaire].[prévue le] DESC , [Site Sous-formulaire].[effectuée le] DESC;
+Site Sous-formulaire sous-formulaire
+RICOH Aficio MP C2000 PCL 6
+LPT1:
+Default
+A4 (210 x 297 mm)
+192.168.0.250
+EntêteFormulaire
+numsit_Étiquette
+N° du site
+DetachedLabel
+codint_Étiquette
+Code
+datheulim
+Date limite d'intervention
+effectuée le_Étiquette
+Effectuée le
+effectuée_le_Étiquette
+typint_Étiquette
+Type
+Statut_Étiquette
+Statut
+Étiquette13
+Date et heure d'appel:
+Étiquette16
+N° Bon
+Étiquette1
+Etat
+Détail
+numsit
+cptsit
+Intervenant
+codint
+date limite d'intervention
+Date d'intervention prévisionnelle
+date_limite_d_intervention
+effectuée le
+00/00/0000
+effectuée_le
+date demande
+datheuapp
+Short Date
+date_demande
+devisfait
+Étiquette14
+Devis fait
+devisafaire
+Étiquette15
+Devis à faire
+N°Bon
+numint
+N° Devis Accept
+numdevacc
+N°_Devis_Accept
+Devis SAV Fait
+NumeroDevisInterne
+Devis_SAV_Fait
+N° DI
+refcliint
+N°_DI
+DI Client
+cheficdemcli
+DI_Client
+Étiquette27
+DI Client:
+numintint
+Étiquette20
+numintint:
+Statut Devis
+StatutDevis
+Value List
+1;"Devis à viser";2;"Aucun Retour Client";3;"Devis annulé et remplacé par";4;"Envoyé";5;"Devis refusé par le client";6;"Devis accepté"
+0;2835
+Statut_Devis
+Bon
+cheficdemint
+Étiquette34
+Devis
+nomfichierdevis
+Étiquette22
+Nom Tech
+numdevpartenaire
+Nom_Tech
+Type Interv
+TypeInter
+Type d'intervention
+Type_Interv
+Statut Inter
+StatutInter
+Statut_Inter
+Étiquette30
+Les  3 Données sont passées de liste -> texte avec Inner joir
+"";"";"";"";"10";"100"
+Statut Facturation
+Table/Query
+SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture;
+Statut_Facturation
+"SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture;";"dbo_StatutFacture";"";"IndexLigne";"Statut";"PK_StatutFacture"
+Texte32
+mnthtdevis
+Qté Gaz
+Texte34
+CheminDossEtanch
+Doss.Etanch.
+Étiquette35
+TypeGaz
+nummodres
+SELECT TypeFluide.ID, TypeFluide.Libelle FROM TypeFluide order by TypeFluide.Libelle;
+"SELECT TypeFluide.ID, TypeFluide.Libelle FROM TypeFluide order by TypeFluide.Libelle;";"TypeFluide";"";"ID";"Libelle";"PK_typefluide"
+Texte37
+sigtec
+Comm.Devis
+Urgence Devis
+devisepar
+1;Faible;2;Moyenne;3;Forte
+Urgence_Devis
+Texte38
+comint
+Comm.Inter.
+Devis TR
+Trav_nomfichierdevis
+Devis_TR
+Étiquette47
+Statut Devis TR
+Trav_StatutDevis
+Statut_Devis_TR
+Devis TR Fait
+Trav_NumeroDevisInterne
+Devis_TR_Fait
+Montant Devis
+mnthtdevpartenaire
+Montant_Devis
+PiedFormulaire

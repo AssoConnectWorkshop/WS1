@@ -1,0 +1,42 @@
+FicheIntervention
+FicheIntervention sous-formulaire
+Sp+
+Canon iR C2880/C3380 PCL5c
+CONFIDENTIEL
+Paramètres par défaut
+IP_192.168.1.50
+EntêteFormulaire
+numBon_Étiquette
+numBon
+DetachedLabel
+DateFicheInt_Étiquette
+DateFicheInt
+HeureFin_Étiquette
+HeureFin
+TempsAller_Étiquette
+TempsAller
+TempsRetour_Étiquette
+TempsRetour
+Détail
+N° de bon
+[Event Procedure]
+N°_de_bon
+Date
+Short Date
+00/00/0000;0;_
+Heure départ
+Short Time
+00:00;0;_
+Heure_départ
+Temps aller
+Temps_aller
+Temps retour
+Temps_retour
+Remarques
+numIntint
+Étiquette11
+numIntint:
+Heure arrivée
+HeureDebut
+Heure_arrivée
+PiedFormulaire

@@ -1,0 +1,183 @@
+[Form_FicheIntervention sous-formulaire] La date/heure d'arrivée doit être ultérieure à la date/heure d'appel
+[Form_FicheInterventionEntretien sous-formulaire] La date/heure d'arrivée doit être ultérieure à la date/heure d'appel
+[Form_Intervention] Une date d'intervention doit être saisie
+[Form_Intervention] Est-vous sûr de vouloir clôturer cette intervention ?
+[Form_Intervention] Est-vous sûr de vouloir déclôturer cette intervention ?
+[Form_Intervention] Merci de bien vouloir renseigner les minutes passées au téléphone
+[Form_Intervention] La date limite d'intervention n'est pas saisie, confirmez-vous votre sortie ?
+[Form_Intervention] Est-vous sûr de vouloir créer une nouvelle intervention en utilisant les données actuelles ?
+[Form_Intervention] Erreur sur Ajout Heures dans Planning ,merci de contacter la banane!!
+[Form_Intervention] L'année saisie n'est pas correcte!!
+[Form_Intervention] L'année saisie n'est pas correcte!!
+[Form_Intervention] L'année saisie n'est pas correcte!!
+[Form_Intervention] Il y a Trop de technicien les données ne sont prevues que pour 
+[Form_Intervention] Création partie suivante annulée
+[Form_Intervention] Donnée inconnue Index 
+[Form_Intervention] Partie 2 crée
+[Form_Intervention] Saisie Partie 
+[Form_Intervention] Vous devez définir la référence client !
+[Form_Intervention] Vous devez définir la date d'appel !
+[Form_Intervention] Vous devez définir l'objet de l'appel !
+[Form_Intervention] Vous devez indiquer la personne ayant traité l'appel !
+[Form_Intervention] Vous devez indiquer le statut de l'intervention !
+[Form_Intervention] Vous devez définir la date d'intervention prévue !
+[Form_Intervention] Vous devez définir l'heure d'intervention prévue !
+[Form_Intervention] La date/heure prévue doit être ultérieure la date/heure d'appel
+[Form_Intervention] Vous devez définir la date d'intervention réelle !
+[Form_Intervention] Vous devez définir le numéro de bon !
+[Form_Intervention] Vous devez définir le mode de résolution !
+[Form_Intervention] Vous devez définir l'heure de début de l'intervention !
+[Form_Intervention] Vous devez définir l'heure de fin de l'intervention !
+[Form_Intervention] Vous devez définir le commentaire de l'intervention !
+[Form_Intervention] La date/heure prévue doit être ultérieure la date/heure d'appel
+[Form_Intervention] La date/heure d'arrivée doit être ultérieure à la date/heure d'appel
+[Form_Intervention] L'heure de fin de l'intervention doit être ultérieure à l'heure de début
+[Form_Intervention] Vous devez d'abord sélectionner une intervention.
+[Form_Intervention] Vous n'avez pas les droits pour faire ce changement
+[Form_Intervention] Vous n'avez pas les droits pour faire ce changement
+[Form_Intervention] Vous n'avez pas les droits pour faire ce changement
+[Form_Intervention] Vous n'avez pas les droits pour faire ce changement
+[Form_Intervention] La demande ne peut pas être clôturée s'il n'y a pas de fichier associé.
+[Form_Intervention2] Une date d'intervention doit être saisie
+[Form_Intervention2] Est-vous sûr de vouloir clôturer cette intervention ?
+[Form_Intervention2] Est-vous sûr de vouloir déclôturer cette intervention ?
+[Form_Intervention2] La date limite d'intervention n'est pas saisie, confirmez-vous votre sortie ?
+[Form_Intervention2] Est-vous sûr de vouloir créer une nouvelle intervention en utilisant les données actuelles ?
+[Form_Intervention2] Vous devez définir la référence client !
+[Form_Intervention2] Vous devez définir la date d'appel !
+[Form_Intervention2] Vous devez définir l'objet de l'appel !
+[Form_Intervention2] Vous devez indiquer la personne ayant traité l'appel !
+[Form_Intervention2] Vous devez indiquer le statut de l'intervention !
+[Form_Intervention2] Vous devez définir la date d'intervention prévue !
+[Form_Intervention2] Vous devez définir l'heure d'intervention prévue !
+[Form_Intervention2] La date/heure prévue doit être ultérieure la date/heure d'appel
+[Form_Intervention2] Vous devez définir la date d'intervention réelle !
+[Form_Intervention2] Vous devez définir le numéro de bon !
+[Form_Intervention2] Vous devez définir le mode de résolution !
+[Form_Intervention2] Vous devez définir l'heure de début de l'intervention !
+[Form_Intervention2] Vous devez définir l'heure de fin de l'intervention !
+[Form_Intervention2] Vous devez définir le commentaire de l'intervention !
+[Form_Intervention2] La date/heure prévue doit être ultérieure la date/heure d'appel
+[Form_Intervention2] La date/heure d'arrivée doit être ultérieure à la date/heure d'appel
+[Form_Intervention2] L'heure de fin de l'intervention doit être ultérieure à l'heure de début
+[Form_Intervention2] Vous devez d'abord sélectionner une intervention.
+[Form_Intervention2] La demande ne peut pas être clôturée s'il n'y a pas de fichier associé.
+[Form_InterventionEntretien] Vous devez saisir la date réelle d'intervention.
+[Form_InterventionEntretien] La génération des visites d'entretien s'est bien éffectuée.
+[Form_InterventionEntretien] Une date d'intervention doit être saisie
+[Form_InterventionEntretien] Est-vous sûr de vouloir clôturer cette intervention ?
+[Form_InterventionEntretien] Est-vous sûr de vouloir déclôturer cette intervention ?
+[Form_InterventionEntretien] Est-vous sûr de vouloir créer une nouvelle intervention en utilisant les données actuelles ?
+[Form_InterventionEntretien] Vous devez d'abord sélectionner une intervention.
+[Form_InterventionEntretien] Il faut sélectionner le type d'intervention pour pouvoir imprimer le fax.
+[Form_ListeEVVehicules] Resultat;
+[Form_ListeInterGaz] Attention,Vous allez Exporter les resultats pour 
+[Form_ListeInterGaz] Aucun client n'a été sélectionné
+[Form_ListeInterventionGaz sous-formulaire] Vous n'avez pas les droits pour faire ce changement
+[Form_ListeInterventionGaz sous-formulaire] Vous n'avez pas les droits pour faire ce changement
+[Form_ListeInterventionGenerale sous-formulaire] Vous n'avez pas les droits pour faire ce changement
+[Form_ListeInterventionGenerale sous-formulaire] Vous n'avez pas les droits pour faire ce changement
+[Form_ListeInterventionGenerale] Attention,Vous allez Exporter les resultats pour 
+[Form_ListeInterventionGenerale] Aucun client n'a été sélectionné
+[Form_ListeTables] Resultat;
+[Form_Map] Error number:
+[Form_MenuClimAccess] Perte de l'utilisateur connécté ,merci de vous re-identifier
+[Form_MenuClimAccess] Vous n'etes pas identifié en tant que Kadi donc pas de saisie de mot de passe :)
+[Form_MenuClimAccess] Mauvais Mot de passe
+[Form_MenuPrincipal] Insert INTO TopTen(nomsittop, indvettop, Nbintphy, nbintdef, numsittop, typsittop) VALUES ('
+[Form_MenuPrincipal] Insert INTO TopTen(nomsittop, indvettop, Nbintphy, nbintdef) VALUES ('
+[Form_Parametrage] Vous allez importer le fichier d'audit!!,,vous etes sure ?,c'est votre dernier mot ?
+[Form_Parametrage] Le fichier doit etre forcement un fichier excel
+[Form_Parametrage] Une prochaine fois etre...
+[Form_Parametrage] Import Audit Terminé de 
+[Form_Parametrage] Import Audit Terminé de 
+[Form_Parametrage] Import Audit Terminé de 
+[Form_Parametrage] Vous allez remplacer les logins et effacer les mots de mot de l'ancien site Web pour les utilisateurs FMC,Etes vous sur ?
+[Form_Parametrage] Vous allez remplacer les mots de mot de le site Web pour les utilisateurs FMC,Etes vous sur ?
+[Form_Parametrage] Vous allez envoyer un mail avec login/mot de passe à tous les utilisateurs FMC,Etes vous sur ?
+[Form_Parametrage] Mauvais mot de Passe..pas bien :(
+[Form_Parametrage] Modification Possible :)
+[Form_Parametrage] Pas de bon mot de passe ,pas de modification Possible (BestClub JeJeMeMe Choix dans la ..) :(
+[Form_Parametrage] Modification Possible :)
+[Form_Parametrage] Pas de bon mot de passe ,pas de modification Possible (BestClub JeJeMeMe Choix dans la ..) :(
+[Form_Parametrage] Pierre Morue ,vous allez importer le fichier d'audit!!,,vous etes sur ?,c'est votre dernier mot ?
+[Form_Parametrage] Le fichier doit etre forcement un fichier excel
+[Form_Parametrage] Une prochaine fois etre...
+[Form_Parametrage] Pierre Morue ,vous allez importer le fichier d'audit!!,,vous etes sur ?,c'est votre dernier mot ?
+[Form_Parametrage] Le fichier doit etre forcement un fichier excel
+[Form_Parametrage] Une prochaine fois etre...
+[Form_Parametrage] Modification Possible :)
+[Form_Parametrage] Pas de bon mot de passe ,pas de modification Possible (BestClub JeJeMeMe Choix dans la ..) :(
+[Form_Planification] La génération de 
+[Form_Planification] Attention pas d'intervenant chaudiere pour 
+[Form_Planification] La génération de 
+[Form_Planification] Attention pas d'intervenant Desenfumage pour 
+[Form_Planification] La génération de 
+[Form_PlanificationEntretien] La génération des visites d'entretien s'est bien éffectuée.
+[Form_PlanificationEntretien] Merci de saisir une date de fin pour pouvoir générer le planning prévisionnel.
+[Form_PlanificationEntretien] Merci de saisir le nombre de visite d'entretien pour pouvoir générer le planning prévisionnel.
+[Form_PlanificationEntretien] La génération des visites d'entretien s'est bien éffectuée.
+[Form_PlanificationEntretien] Pour ce client utiliser l'autre bouton
+[Form_PlanificationEntretien] Merci de saisir une date de fin pour pouvoir générer le planning prévisionnel.
+[Form_PlanificationEntretien] Merci de saisir le nombre de visite d'entretien pour pouvoir générer le planning prévisionnel.
+[Form_PlanificationEntretien] La génération des visites d'entretien s'est bien éffectuée.
+[Form_RechercheIntervention] Il n'y a pas d'intervention contenant cette référence client.
+[Form_Saisie_EV_Vehicule] Merci de renseigner un type d'evenement
+[Form_Saisie_EV_Vehicule] Merci de renseigner un conducteur
+[Form_Saisie_EV_Vehicule] Merci de renseigner une Immatriculation
+[Form_Saisie_EV_Vehicule] Merci de renseigner une Date
+[Form_Saisie_EV_Vehicule] Le dernier kilometrage saisi pour 
+[Form_Saisie_EV_Vehicule] Merci de renseigner un kilometrage
+[Form_Saisie_EV_Vehicule] Veuillez verifier Votre Saisie pour 
+[Form_Saisie_Reference] Veuillez verifier le nom de la reference
+[Form_Saisie_Reference] Veuillez verifier le nom de la Marque
+[Form_Saisie_Reference] Veuillez verifier le Type
+[Form_Saisie_Reference] Veuillez verifier le Repere
+[Form_Saisie_Reference] Veuillez verifier le fluide
+[Form_Saisie_Reference] Veuillez verifier le Type de Telecommande
+[Form_Saisie_Reference] Veuillez verifier le champ reversible
+[Form_Saisie_Reference] Veuillez verifier le champ Resistance
+[Form_Saisie_Reference] Veuillez verifier la quantité de gaz
+[Form_Saisie_Reference] Veuillez verifier la puissance calorifique
+[Form_Saisie_Reference] Veuillez verifier la puissance calorifique,elle est en W
+[Form_Saisie_Reference] Veuillez verifier la puissance Frigorifique
+[Form_Saisie_Reference] Veuillez verifier la puissance frigorifique,elle est en W
+[Form_Saisie_Reference] Veuillez verifier le nombre de courroies
+[Form_Saisie_Reference] Veuillez verifier le nombre de Filtres
+[Form_Saisie_Reference] Le nom de la reference existe deja dans la base
+[Form_Saisie_Reference] Attention,Vous allez Creer une nouvelle reference dans la base de données,la reference dont vous etes partie existera toujours,Etes Vous Sur ?
+[Form_Saisie_Vehicule] Veuillez verifier Votre Saisie pour 
+[Form_SfMaterielPanne]  Voulez vous supprimer cette enregistrement ? 
+[Form_Site Sous-formulaire sous-formulaire 2] Vous n'avez pas les droits pour faire ce changement
+[Form_Site Sous-formulaire sous-formulaire 2] Vous n'avez pas les droits pour faire ce changement
+[Form_Site Sous-formulaire sous-formulaire] Vous n'avez pas les droits pour faire ce changement
+[Form_Site Sous-formulaire sous-formulaire] Vous n'avez pas les droits pour faire ce changement
+[Form_Site] Merci de saisir le nombre de visite d'entretien pour pouvoir générer le planning prévisionnel.
+[Form_Site] Il n'y a pas d'intervenant attribué à la zone géographique sélectionnée pour ce site. Aucune intervention ne sera générée.
+[Form_Site] La géolocalisation est vide, confirmez-vous la sortie
+[Form_Site] Attention,Vous allez faire passer toutes les intervention en cours au statut 'Ne plus intervenir', (Pensez à noter leur statut precedent avnt de faire cette action), Confirmez vous?
+[Form_Site] Attention,Vous allez faire passer les intervention du statut 'Ne plus intervenir' au statut 'à planifier' ,Confirmez vous?
+[Form_Site] Attention,Vous n'etes pas autorisé a faire cette modification
+[Form_Site] Vous allez importer le fichier d'audit!!,,vous etes sur(e) ?,c'est votre dernier mot ?
+[Form_Site] Le fichier choisi doit etre: Fichier_Audit.xlsx
+[Form_Site] Une prochaine fois etre...
+[Form_Site] Import Audit Terminé de 
+[Form_Site] Ajout Impossible,Veuilllez verifier le nombre de la reference 1
+[Form_Site] Ajout Impossible,Veuilllez verifier la reference 1
+[Form_Site] Ajout Impossible,Veuilllez verifier le nombre de la reference 2
+[Form_Site] Ajout Impossible,Veuilllez verifier la reference 1
+[Form_Site] Ajout Impossible,Veuilllez verifier la reference 1
+[Form_Site] Ajout Impossible,Veuilllez verifier le nombre de la reference 1+2
+[Form_Site] Ajout Impossible,Veuilllez verifier la reference 2
+[Form_Site] Etes vous sur de vouloir cloturer le site ? Cela va changer le nom du client ,si oui pensez à le noter avant
+[Form_Site] Error number:
+[Form_Utilisateur sous-formulaire] Merci de penser a lancer le Programme de fabien pour prise en compte des jours fériés (Si Chez FMC)
+[ImportExcel] La zone '
+[ImportExcel] Le donneur d'ordre '
+[ImportExcel] L'intervenant '
+[ImportExcel] Le client '
+[ImportExcel] Import terminé
+[PDFCE] Les CE ont deja été édités
+[PDFCE] La génération du CE 
+[PDFCE] La génération du CE 
+[Report_Test Cerfa] La génération du CE 

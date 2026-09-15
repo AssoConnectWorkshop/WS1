@@ -1,0 +1,50 @@
+[Planification].[numeroplanification], [Planification].[numcli]
+Planification
+192.168.0.247
+Détail
+T2
+Short Date
+00/00/00;0;_
+L2
+Date Limite  2
+T3
+L3
+Date Limite  3
+T1
+L1
+Date Limite  1
+T4
+L4
+Date Limite  4
+T5
+L5
+Date Limite 5
+T6
+L6
+Date Limite  6
+T7
+L7
+Date Limite 7
+T8
+L8
+Date Limite  8
+T9
+L9
+Date Limite  9
+T10
+L10
+Date Limite  10
+T11
+L11
+Date Limite  11
+T12
+L12
+Date Limite  12
+TxtNombreVisite
+nombrevisite
+[Event Procedure]
+Étiquette49
+Nb de visites
+Trait78
+numcli
+numeroplanification

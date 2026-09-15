@@ -1,0 +1,14 @@
+FiltreClimAccessMobile
+192.168.0.247
+Détail
+DateDebut
+Étiquette0
+Date Début
+DateFin
+Étiquette1
+Date Fin
+Étiquette2
+Saisir les dates de début et de fin pour filtrer les interventions visibles sur les tablettes
+Commande3
+[Event Procedure]
+Fermer formulaire

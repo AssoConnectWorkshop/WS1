@@ -1,0 +1,94 @@
+ListeInterventionGenerale
+RICOH Aficio MP C2000 PCL 6
+LPT1:
+Default
+000 PCL 6
+A4 (210 x 297 mm)
+192.168.0.250
+vilsit
+EntêteÉtat
+Étiquette42
+Liste des interventions à réaliser
+Image45
+Ì5x
+Ìx
+fmc.jpg
+Auto_Date
+=Date() & " - " & Time()
+Long Date
+ZoneEntêtePage
+nomcli_Étiquette
+Client
+DetachedLabel
+nomsit_Étiquette
+Site
+typint_Étiquette
+Type
+staint_Étiquette
+Statut
+numsit_Étiquette
+Code Site
+numzonsit_Étiquette
+Zone
+codint_Étiquette
+Intervenant
+donneurid_Étiquette
+Entreprise référente
+datheulim_Étiquette
+Date limite
+Étiquette47
+Adresse
+Étiquette49
+Nb Visite
+Étiquette48
+Secteur
+Étiquette58
+Audit
+Étiquette59
+Photos
+Étiquette61
+Contrôle étanchéit
+Étiquette63
+MàJ Registre de sécurit
+Détail
+nomcli
+nomsit
+numsit
+datheulim
+"";"";"";"";"10";"100"
+numzonsit
+Table/Query
+ZoneGeographique
+0;2835
+"ZoneGeographique";"ZoneGeographique";"";"numzon";"nomzon";"PK_ZoneGeographique"
+txtadrsit
+=[adrsit] & " " & [codpossit] & " " & [vilsit]
+typint
+Value List
+0;Toutes;1;Entretien;2;Dépannage;3;Suite à devis;7;Désenfumage;4;Autre;5;En travaux;6;En création
+"";"";"";"";"10";"200"
+donneurid
+Donneur
+"Donneur";"Donneur";"";"donneurid";"nomdonneur";"PK_Donneur"
+"Code intervenant";"";"0";"0"
+codint
+"Intervenant";"Intervenant";"";"codint";"nomint";"PK_Intervenant"
+staint
+-1;"Matériel à commander";1;"A planifier";2;"Planifiée";3;"Attente de matériel";4;"En cours";5;"En cours chez le sous-traitant";6;"Effectuée en attente retour fiche intervention";7;"Clôturée";8;"Annulée avec accord client"
+nbrentsit
+Cocher57
+auditafaire
+Cocher60
+photoafaire
+Cocher62
+controleetancheiteafaire
+Cocher64
+majregistresecuriteafaire
+ZonePiedPage
+Texte43
+=Now()
+Texte44
+="Page " & [Page] & " sur " & [Pages]
+Étiquette46
+Document confidentiel - propriété exclusive de FMC Climatisation
+PiedÉtat

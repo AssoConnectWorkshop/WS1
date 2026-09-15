@@ -1,0 +1,31 @@
+SELECT [AuditClimatisation].[numaudit], [AuditClimatisation].[numauditclimatisation], [AuditClimatisation].[Marque], [AuditClimatisation].[Reference], [AuditClimatisation].[NumeroSerie], [AuditClimatisation].[Type], [AuditClimatisation].[FluideQuantite], [AuditClimatisation].[AccessibiliteGroupe], [AuditClimatisation].[AccessibiliteCassettes], [AuditClimatisation].[Emplacement], [AuditClimatisation].[Etat], [AuditClimatisation].[Observations], [AuditClimatisation].[NumeroSiteMateriel] FROM AuditClimatisation;
+AuditClimatisation sous-formulaire
+EntêteFormulaire
+Détail
+numaudit
+numaudit_Étiquette
+numauditclimatisation
+numauditclimatisation_Étiquette
+Marque
+Marque_Étiquette
+Reference
+Reference_Étiquette
+NumeroSerie
+NumeroSerie_Étiquette
+Type
+Type_Étiquette
+FluideQuantite
+FluideQuantite_Étiquette
+AccessibiliteGroupe
+AccessibiliteGroupe_Étiquette
+AccessibiliteCassettes
+AccessibiliteCassettes_Étiquette
+Emplacement
+Emplacement_Étiquette
+Etat
+Etat_Étiquette
+Observations
+Observations_Étiquette
+NumeroSiteMateriel
+NumeroSiteMateriel_Étiquette
+PiedFormulaire

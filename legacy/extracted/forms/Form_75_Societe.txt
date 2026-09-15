@@ -1,0 +1,10 @@
+Societe
+Societe sous-formulaire
+EntêteFormulaire
+Détail
+numsoc
+numsoc_Étiquette
+Sociét
+nomsoc
+nomsoc_Étiquette
+PiedFormulaire

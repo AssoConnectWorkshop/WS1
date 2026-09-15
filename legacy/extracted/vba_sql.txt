@@ -1,0 +1,408 @@
+[Calcul] select * from joursferies
+[Calcul] Delete from planning
+[Calcul] Select * from SiteEntretienPrevuDemixage_datintpre
+[Calcul] Select * from Planning
+[Calcul] Select * from Parametre
+[Calcul] Select * from SiteEntretienPrevuDemixage_datint
+[Calcul] Select * from planning where numsit=
+[Calcul] SELECT * FROM dbo_StatutFacture where dbo_StatutFacture.Statut='
+[Calcul] SELECT * FROM dbo_StatutFacture where dbo_StatutFacture.IndexLigne=
+[Form_00 - Statistiques Clients] Select nomcli,coutheuremainoeuvre,coutdeplacement from client where numcli=
+[Form_00 - Statistiques Clients] Select * from site where 
+[Form_00 - Statistiques Clients] select StatutDevis,MontantHTDevis from Devis where NumeroSite=
+[Form_00 - Statistiques Clients] select StatutDevis,MontantHTDevis from DevisTravaux where NumeroSite=
+[Form_00 - Statistiques Clients] select Count(numintint) AS QteIntervention from Intervention where staint<>8 and cptsit=
+[Form_00 - Statistiques Clients] select datediff(
+[Form_00 - Statistiques Clients] select Count(numintint) AS NbTech from InterventionTechnicien where numintint=
+[Form_00 - Statistiques Clients] Select nomcli from client where numcli=
+[Form_00 - Statistiques Clients] Select * from site where 
+[Form_00 - Statistiques Clients] select Count(numintint) AS QteIntervention , Sum(mntfmc) as Montant from Intervention where cptsit=
+[Form_00 - Statistiques Clients] Select nomcli from client where numcli=
+[Form_00 - Statistiques Clients] Select * from site where 
+[Form_00 - Statistiques Clients] select Count(numintint) AS QteIntervention , Sum(mntfmc) as Montant from Intervention where cptsit=
+[Form_00 - Statistiques Clients] select Count(numintint) AS QteIntervention , Sum(mntfmc) as Montant from Intervention where cptsit=
+[Form_00 - Statistiques Clients] Select nomcli from client where numcli=
+[Form_00 - Statistiques Clients] Select * from site where 
+[Form_00 - Statistiques Clients] select Count(numintint) AS QteIntervention , Sum(mntfmc) as Montant from Intervention where cptsit=
+[Form_00 - Statistiques Clients] select Count(numintint) AS QteIntervention , Sum(mntfmc) as Montant from Intervention where cptsit=
+[Form_Carte] SELECT numintint,latitude,longitude,typint,staint,nomcli,nomsit,datheulim,datheuapp,datintpre,nomuti,adrsit,codpossit,comsit,comint,vilsit,datedernierevisiteentretien as [datdervis] From [ListeInterventionGenerale] left join [Utilisateur] on [ListeInterventionGenerale].numutipre = Utilisateur.numuti WHERE 
+[Form_Client] SELECT Site.numcli FROM Site Where Site.numsit=
+[Form_Client] SELECT client.numcli FROM client Where client.nomcli like '%
+[Form_DevisListe] SELECT coutheuremainoeuvre,coutdeplacement FROM client where numcli=
+[Form_DevisListe] select codint from intervenant i inner join site s on s.numintervenant = i.numintervenant where s.cptsit=
+[Form_DevisListe] INSERT INTO intervention (cptsit, datheuapp,objint,staint,typint,codint,numdevacc,nbrpagfax,mnthtdevpartenaire) VALUES (
+[Form_DevisListe] select max(numintint) from intervention 
+[Form_DevisListe] Select NomFichierDevis from Devis where numerosite =
+[Form_DevisListe] Select NomFichierDevis from DevisTravaux where numerosite =
+[Form_DevisListe] Update Site set Mess_Devis='
+[Form_DevisListeContratDeMaintenance] SELECT coutheuremainoeuvre,coutdeplacement FROM client where numcli=
+[Form_DevisListeContratDeMaintenance] select * from intervention where numintint=
+[Form_DevisListeContratDeMaintenance] select codint from intervenant i inner join site s on s.numintervenant = i.numintervenant where s.cptsit=
+[Form_DevisListeContratDeMaintenance] select max(numintint) from intervention 
+[Form_DevisListeContratDeMaintenance] select codint from intervenant i inner join site s on s.numintervenant = i.numintervenant where s.cptsit=
+[Form_DevisListeContratDeMaintenance] select max(numintint) from intervention 
+[Form_DevisListeTravaux] SELECT coutheuremainoeuvre,coutdeplacement FROM client where numcli=
+[Form_DevisListeTravaux] select codint from intervenant i inner join site s on s.numintervenant = i.numintervenant where s.cptsit=
+[Form_DevisListeTravaux] INSERT INTO intervention (cptsit, datheuapp,objint,staint,typint,codint,numdevacc,nbrpagfax,mnthtdevpartenaire) VALUES (
+[Form_DevisListeTravaux] select max(numintint) from intervention 
+[Form_DevisListeTravaux] Select NomFichierDevis from Devis where numerosite =
+[Form_DevisListeTravaux] Select NomFichierDevis from DevisTravaux where numerosite =
+[Form_DevisListeTravaux] Update Site set Mess_Devis='
+[Form_Donneur] SELECT Site.numcli FROM Site Where Site.numsit=
+[Form_Donneur] SELECT client.numcli FROM client Where client.nomcli like '%
+[Form_Filtre Extraction] SELECT Client.nomcli, Site.numsit, Site.codsit, Site.nomsit, Site.adrsit, Site.codpossit, Site.vilsit, SiteMateriel.RepereSurSite, SiteMateriel.repere, SiteMateriel.Emplacement, SiteMateriel.Quantite, SiteMateriel.Marque, SiteMateriel.Type, SiteMateriel.Reference, SiteMateriel.NumeroSerie, SiteMateriel.Reversible, SiteMateriel.ResistanceElectrique, SiteMateriel.PuissanceFrigo, SiteMateriel.PuissanceCalo, SiteMateriel.FluideQuantite,
+[Form_Filtre Extraction] Select nomcli,coutheuremainoeuvre,coutdeplacement from client where numcli=
+[Form_Filtre Extraction] Select nomcli from client where numcli=
+[Form_Filtre Extraction] Select * from site where 
+[Form_Filtre Extraction] select Count(numintint) AS QteIntervention , Sum(mntfmc) as Montant from Intervention where cptsit=
+[Form_Filtre Extraction] select Count(numintint) AS QteIntervention , Sum(mntfmc) as Montant from Intervention where cptsit=
+[Form_Filtre Extraction] Select nomcli from client where numcli=
+[Form_Filtre Extraction] Select * from site where 
+[Form_Filtre Extraction] select Count(numintint) AS QteIntervention , Sum(mntfmc) as Montant from Intervention where cptsit=
+[Form_Filtre Extraction] select Count(numintint) AS QteIntervention , Sum(mntfmc) as Montant from Intervention where cptsit=
+[Form_Intervention] SELECT Client.numcli, Client.melcli, Client.concli  FROM Client  WHERE (((Client.numcli)=
+[Form_Intervention] SELECT Utilisateur.numuti, [preuti] & ' ' & [nomuti] AS Expr1, Utilisateur.typuti From Utilisateur 
+[Form_Intervention] SELECT Site.cptsit, Site.nomsit, Site.adrsit, Site.codpossit, site.vilsit FROM Site WHERE (((Site.cptsit)= 
+[Form_Intervention] SELECT HeureDebut,HeureFin  FROM dbo_HeuresTech WHERE numinterv = 
+[Form_Intervention] SELECT numzonsit FROM Site WHERE (cptsit = 
+[Form_Intervention] UPDATE Intervention SET staint=9 WHERE numintint=
+[Form_Intervention] SELECT nbrentsit FROM Site WHERE (cptsit = 
+[Form_Intervention] SELECT Intervenant.codint 
+[Form_Intervention] delete from intervention where datintpre is not null and datint is null
+[Form_Intervention] Select max(datint) from intervention where cptsit=
+[Form_Intervention] Select count(*) from intervention where datint between #01/01/
+[Form_Intervention] update intervention set staint=1 where numintint=
+[Form_Intervention] select Contact.*,Intervention.numintint from Contact inner join Intervention on Contact.codcon = Intervention.codcon where adrmelcon is not null and numintint=
+[Form_Intervention] select Intervenant.* from Intervenant inner join Intervention on Intervenant.codint = Intervention.codint where adrmelint is not null and numintint=
+[Form_Intervention] SELECT VillesInterventions_Interv  FROM intervenant WHERE codint = '
+[Form_Intervention] Update intervenant set VillesInterventions_Interv = '
+[Form_Intervention] Update intervenant set VillesInterventions_Interv = '
+[Form_Intervention] select max(numintint) from intervention
+[Form_Intervention] SELECT PanneMaterielSite.numintint, PanneMaterielSite.numsitmarref FROM PanneMaterielSite
+[Form_Intervention] SELECT numuti FROM InterventionTechnicien WHERE numintint = 
+[Form_Intervention] select * from dbo_HeuresTechAuto WHERE numinterv = 
+[Form_Intervention] SELECT nomsit FROM site WHERE cptsit = 
+[Form_Intervention] Insert INTO dbo_HeuresTechAuto(NomInterv,Numinterv,NumeroSite,NumeroTech, TypeInterv, DateInterv,HeureDebut,HeureFin,InterdictionModif) VALUES ('
+[Form_Intervention] SELECT nomuti,preuti FROM utilisateur WHERE numuti = 
+[Form_Intervention] SELECT nomsit FROM site WHERE cptsit = 
+[Form_Intervention] Update dbo_HeuresTechAuto set NumeroSite=
+[Form_Intervention] SELECT *  FROM Site WHERE cptsit = 
+[Form_Intervention] Update Intervention set cheficdemint='
+[Form_Intervention] SELECT VillesInterventions_Interv  FROM intervenant WHERE codint = '
+[Form_Intervention] Update intervenant set VillesInterventions_Interv = '
+[Form_Intervention] Update intervenant set VillesInterventions_Interv = '
+[Form_Intervention] SELECT *  FROM Site WHERE cptsit = 
+[Form_Intervention] SELECT *  FROM ZoneGeographique WHERE numzon = 
+[Form_Intervention] SELECT *  FROM Client WHERE numcli = 
+[Form_Intervention] SELECT HeureDebut,HeureFin,DateInterv,nomuti,preuti,NumeroTech FROM dbo_HeuresTech INNER JOIN Utilisateur ON Utilisateur.numuti = dbo_HeuresTech.NumeroTech where numinterv= 
+[Form_Intervention] UPDATE Intervention SET comint='
+[Form_Intervention] SELECT * FROM Intervention where numintint =  
+[Form_Intervention] Insert into Intervention (numint,cptsit,codint,typint,datintpre,heuintpre,datint,tpsallint,tpsretint,heuarrint,heudepint,codpan,comint,dirint,intfac,intfactok,intafact,codcon,staint,refint,refcliint,nbrappint,mntfac,datheuapp,datheulim,pannoncli,nbrpagfax,nummodres,numdev,objint,traitepar,majregsec,sigsit,sigtec,sigcli,creele,majle,nbrtecint,numdevacc,saisiepar,imprimeepar,classeepar,prediagpar,envoisoustraitantpar,numerodemandesoustraitant,retourficheinterventionpar,devisepar,duplicatacreepar,duplicatafait,prediagres,devisafaire,numpartenaire,numdevpartenaire,mnthtdevpartenaire,stadev,mnthtdevis,retourficheoriginal,retourfichecopie,retourfichecopieordi,numerocommande,cheficdemint,visitegratuite,datesignaturecontrat,numerocontratclient,devisfait,cheficdemcli,comdevis,devisanepasfaire,controleetancheite,natureintervention,photofaite,auditfait,commajregsec,sigtec2,sigcli2,sigsit2,sigtecimg,
+[Form_Intervention] SELECT *  FROM Site WHERE cptsit = 
+[Form_Intervention] SELECT codint FROM intervenant where numintervenant = 
+[Form_Intervention] SELECT cptsit, [Date] FROM SiteMAJRegistre WHERE (cptsit = 
+[Form_Intervention] INSERT INTO SiteMAJRegistre (cptsit, [Date]) VALUES (
+[Form_Intervention] SELECT *  FROM Site WHERE cptsit = 
+[Form_Intervention] SELECT *  FROM sitemateriel WHERE numerosite = 
+[Form_Intervention] SELECT datint  FROM intervention WHERE cptsit = 
+[Form_Intervention] SELECT *  FROM Devis WHERE statutdevis<>6 and numerosite =
+[Form_Intervention] SELECT *  FROM DevisTravaux WHERE statutdevis<>6 and numerosite =
+[Form_Intervention] SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture
+[Form_Intervention] SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture
+[Form_Intervention] SELECT numuti  FROM interventiontechnicien WHERE numintint=
+[Form_Intervention] SELECT nomuti, preuti  FROM Utilisateur WHERE numuti=
+[Form_Intervention] UPDATE Intervention SET numdevpartenaire='
+[Form_Intervention] SELECT PanneMaterielSite.numintint, PanneMaterielSite.numsitmarref FROM PanneMaterielSite
+[Form_Intervention] SELECT *  FROM Site WHERE nomsit like '
+[Form_Intervention2] UPDATE Intervention SET staint=9 WHERE numintint=
+[Form_Intervention2] SELECT nbrentsit FROM Site WHERE (cptsit = 
+[Form_Intervention2] SELECT Intervenant.codint 
+[Form_Intervention2] delete from intervention where datintpre is not null and datint is null
+[Form_Intervention2] Select max(datint) from intervention where cptsit=
+[Form_Intervention2] Select count(*) from intervention where datint between #01/01/
+[Form_Intervention2] update intervention set staint=1 where numintint=
+[Form_Intervention2] select Contact.*,Intervention.numintint from Contact inner join Intervention on Contact.codcon = Intervention.codcon where adrmelcon is not null and numintint=
+[Form_Intervention2] select Intervenant.* from Intervenant inner join Intervention on Intervenant.codint = Intervention.codint where adrmelint is not null and numintint=
+[Form_Intervention2] select max(numintint) from intervention
+[Form_Intervention2] SELECT PanneMaterielSite.numintint, PanneMaterielSite.numsitmarref FROM PanneMaterielSite
+[Form_Intervention2] SELECT *  FROM Site WHERE cptsit = 
+[Form_Intervention2] SELECT codint FROM intervenant where numintervenant = 
+[Form_Intervention2] SELECT cptsit, [Date] FROM SiteMAJRegistre WHERE (cptsit = 
+[Form_Intervention2] INSERT INTO SiteMAJRegistre (cptsit, [Date]) VALUES (
+[Form_Intervention2] SELECT *  FROM Devis WHERE statutdevis<>6 and numerosite =
+[Form_Intervention2] SELECT PanneMaterielSite.numintint, PanneMaterielSite.numsitmarref FROM PanneMaterielSite
+[Form_Intervention2] SELECT *  FROM Site WHERE nomsit like '
+[Form_InterventionEntretien] delete from intervention where datintpre is not null and datint is null
+[Form_InterventionEntretien] Select max(datint) from intervention where cptsit=
+[Form_InterventionEntretien] SELECT Site.*, Intervenant.codint, Site.numzonsit
+[Form_InterventionEntretien] Select count(*) from intervention where datint between #01/01/
+[Form_InterventionEntretien] UPDATE Intervention SET staint=9 WHERE numintint=
+[Form_InterventionEntretien] SELECT nbrentsit FROM Site WHERE (cptsit = 
+[Form_InterventionEntretien] SELECT Intervenant.codint 
+[Form_InterventionEntretien] delete from intervention where datintpre is not null and datint is null
+[Form_InterventionEntretien] Select max(datint) from intervention where cptsit=
+[Form_InterventionEntretien] Select count(*) from intervention where datint between #01/01/
+[Form_InterventionEntretien] update intervention set staint=1 where numintint=
+[Form_InterventionEntretien] select max(numintint) from intervention
+[Form_InterventionEntretien] SELECT Contact.codcon FROM Contact WHERE (((Contact.codcon)='
+[Form_InterventionEntretien] SELECT PanneMaterielSite.numintint, PanneMaterielSite.numsitmarref FROM PanneMaterielSite
+[Form_InterventionEntretien] SELECT cptsit, [Date] FROM SiteMAJRegistre WHERE (cptsit = 
+[Form_InterventionEntretien] INSERT INTO SiteMAJRegistre (cptsit, [Date]) VALUES (
+[Form_InterventionEntretien] SELECT PanneMaterielSite.numintint, PanneMaterielSite.numsitmarref FROM PanneMaterielSite
+[Form_ListeClientAffiche] SELECT * FROM client
+[Form_ListeClientAffiche] SELECT * FROM client WHERE (((Client.affcli)=Yes));
+[Form_ListeEVVehicules] SELECT * FROM dbo_evvehicules   where 
+[Form_ListeEVVehicules] SELECT dbo_EvVehicules.DateEv, dbo_EvVehicules.Immat, [Utilisateur.Nomuti]+' '+[Utilisateur.Preuti] AS NomComplet, dbo_EvVehicules.Km, dbo_ListeEVVehicule.Evenement_Vehicule FROM ((dbo_EvVehicules INNER JOIN Utilisateur ON dbo_EvVehicules.Conducteur = Utilisateur.numuti) INNER JOIN dbo_ListeEVVehicule ON dbo_EvVehicules.TypeEv = dbo_ListeEVVehicule.Numero) INNER JOIN dbo_Vehicules ON dbo_EvVehicules.Immat = dbo_Vehicules.Immatriculation
+[Form_ListeInterGaz] SELECT * from ( intervention ListeInter inner join [site] ListeSite ON ListeInter.cptsit=ListeSite.cptsit ) where 
+[Form_ListeInterGaz] select sum(mnthtdevis)as Som from ( intervention ListeInter inner join [site] ListeSite ON ListeInter.cptsit=ListeSite.cptsit ) where 
+[Form_ListeInterGaz] SELECT  Liste.nomsit,Intervention.datint, Intervention.heudepint, Intervention.datefintech FROM (ListeInterventionGenerale2 Liste inner join Intervention on Liste.numintint=Intervention.numintint)  where 
+[Form_ListeInterGaz] SELECT  Liste.nomsit,Interv.datint, Interv.heudepint, Interv.datefintech FROM (((ListeInterventionGenerale2 AS Liste INNER JOIN Intervention AS Interv ON Liste.numintint = Interv.numintint) INNER JOIN Intervenant ON Interv.codint = Intervenant.codint) INNER JOIN InterventionTechnicien ON Interv.numintint = InterventionTechnicien.numintint) INNER JOIN dbo_SousType ON Interv.imprimeepar = dbo_SousType.id
+[Form_ListeInterGaz] SELECT  Liste.nomsit,Utilisateur.nomuti +' '+Utilisateur.preuti AS Nom,Intervenant.nomint,Liste.typint,Interv.datint, Interv.heudepint, Interv.datefintech FROM (((ListeInterventionGenerale2 AS Liste INNER JOIN Intervention AS Interv ON Liste.numintint = Interv.numintint) INNER JOIN Intervenant ON Interv.codint = Intervenant.codint) INNER JOIN InterventionTechnicien ON Interv.numintint = InterventionTechnicien.numintint) INNER JOIN Utilisateur ON InterventionTechnicien.numuti = Utilisateur.numuti
+[Form_ListeInterventionGaz sous-formulaire] SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture
+[Form_ListeInterventionGenerale sous-formulaire] delete from intervention where numintint=
+[Form_ListeInterventionGenerale sous-formulaire] SELECT dbo_StatutFacture.IndexLigne, dbo_StatutFacture.Statut FROM dbo_StatutFacture
+[Form_ListeInterventionGenerale] SELECT * FROM ListeInterventionGenerale2 
+[Form_ListeInterventionGenerale] Select * from dbo_VisitesMaint
+[Form_ListeInterventionGenerale] SELECT * FROM (ListeInterventionGenerale2 Liste inner join Intervention on Liste.numintint=Intervention.numintint)  where 
+[Form_ListeInterventionGenerale] SELECT * FROM ListeInterventionGenerale2  Liste inner join Intervention Interv on Liste.numintint=Interv.numintint
+[Form_ListeInterventionGenerale] select sum(retourficheinterventionpar)as Som from (ListeInterventionGenerale2 Liste inner join Intervention on Liste.numintint=Intervention.numintint) where 
+[Form_ListeInterventionGenerale] SELECT  Liste.nomsit,Intervention.datint, Intervention.heudepint, Intervention.datefintech FROM (ListeInterventionGenerale2 Liste inner join Intervention on Liste.numintint=Intervention.numintint)  where 
+[Form_ListeInterventionGenerale] SELECT  Liste.nomsit,Interv.datint, Interv.heudepint, Interv.datefintech FROM (((ListeInterventionGenerale2 AS Liste INNER JOIN Intervention AS Interv ON Liste.numintint = Interv.numintint) INNER JOIN Intervenant ON Interv.codint = Intervenant.codint) INNER JOIN InterventionTechnicien ON Interv.numintint = InterventionTechnicien.numintint) INNER JOIN dbo_SousType ON Interv.imprimeepar = dbo_SousType.id
+[Form_ListeInterventionGenerale] SELECT  Liste.nomsit,Utilisateur.nomuti +' '+Utilisateur.preuti AS Nom,Intervenant.nomint,Liste.typint,Interv.datint, Interv.heudepint, Interv.datefintech FROM (((ListeInterventionGenerale2 AS Liste INNER JOIN Intervention AS Interv ON Liste.numintint = Interv.numintint) INNER JOIN Intervenant ON Interv.codint = Intervenant.codint) INNER JOIN InterventionTechnicien ON Interv.numintint = InterventionTechnicien.numintint) INNER JOIN Utilisateur ON InterventionTechnicien.numuti = Utilisateur.numuti
+[Form_ListeKM] SELECT dbo_HeuresTech.DateInterv, nomuti+' '+preuti AS Nom, dbo_HeuresTech.nominterv FROM Utilisateur INNER JOIN dbo_HeuresTech ON Utilisateur.numuti = dbo_HeuresTech.numerotech WHERE (((dbo_HeuresTech.TypeInterv)=60))
+[Form_ListeKM] SELECT dbo_HeuresTech.DateInterv, nomuti+' '+preuti AS Nom, dbo_HeuresTech.nominterv FROM Utilisateur INNER JOIN dbo_HeuresTech ON Utilisateur.numuti = dbo_HeuresTech.numerotech WHERE (dbo_HeuresTech.TypeInterv=60 and 
+[Form_ListeSiteGenerale] select distinct cptsit from Intervention where Intervention.staint=17
+[Form_ListeSiteGenerale] SELECT * FROM ListeSite2
+[Form_ListeSiteGenerale] SELECT * FROM ListeSite
+[Form_ListeSiteGenerale] SELECT * FROM ListeSite
+[Form_ListeSiteGenerale] select cptsit,numsit,numcli,codsit,nomsit,nomsocsit,sitsit,typsit,adrsit,codpossit,vilsit,telsit,faxsit,civres,nomres,preres,numzonsit,surven,surtot,nbrentsit,nbrdesenfsit,datdervisdes,telcencom,datcresit,mntredev,montantredevancefiltre,datprisencharge,donneurid,numintervenant,numerocontratclient,numerocontratdesenfumage,nombrevisitedesenfumage,montantredevancedesenfumage,datedesenfumage,NumSousTraitDesenfum,NumSousTraitClim,chemindoc,TarifSousTraitChaudiere,TarifSousTraitClim,NumContratChaudiere,NombreContratChaudiere,mntredevContratChaudiere,DateContratChaudiere,NumSousTraitChaudiere,TarifSousTraitDesenfum from site 
+[Form_ListeSiteGenerale] SELECT * FROM ListeSite where (codsit like '*
+[Form_ListeSiteGenerale] SELECT * FROM ListeSite where (codsit like '*
+[Form_ListeSiteGenerale] SELECT * FROM ListeSite WHERE (codsit like '*
+[Form_ListeSiteGenerale] SELECT     Intervention.numintint, Intervention.numint, Intervention.codint, Intervention.typint, Intervention.datintpre, Intervention.heuintpre, Intervention.datint, Intervention.tpsallint, Intervention.tpsretint,
+[Form_ListeSousTraitGenerale] Select * from intervenant where 
+[Form_ListeSousTraitGenerale] Select * from intervenant
+[Form_ListeSousTraitGenerale] Select * from intervenant
+[Form_ListeTables] SELECT * FROM dbo_evvehicules   where 
+[Form_ListeTables] SELECT dbo_EvVehicules.DateEv, dbo_EvVehicules.Immat, [Utilisateur.Nomuti]+' '+[Utilisateur.Preuti] AS NomComplet, dbo_EvVehicules.Km, dbo_ListeEVVehicule.Evenement_Vehicule FROM ((dbo_EvVehicules INNER JOIN Utilisateur ON dbo_EvVehicules.Conducteur = Utilisateur.numuti) INNER JOIN dbo_ListeEVVehicule ON dbo_EvVehicules.TypeEv = dbo_ListeEVVehicule.Numero) INNER JOIN dbo_Vehicules ON dbo_EvVehicules.Immat = dbo_Vehicules.Immatriculation
+[Form_Map] SELECT nomcli, nomsit, longitude, latitude from site inner join client on client.numcli = site.numcli where longitude is not null and latitude is not null and client.numcli=
+[Form_Map] SELECT cptsit,nomsit,adrsit,codpossit,vilsit from site where longitude is null and numcli in (432) 
+[Form_Map] update site set longitude=
+[Form_MenuClimAccess] Select cptsit,refcliint,datheuapp,dateenvoimail,rappel24h,rappel48h,rappel72h,rappelsemaine,numintint from intervention where staint=1 and (rappel24h=1 or rappel48h=1  or rappel72h=1  or rappelsemaine=1 )
+[Form_MenuClimAccess] Select nomsit from site where cptsit=
+[Form_MenuClimAccess] Update intervention set dateenvoimail=#
+[Form_MenuClimAccess] SELECT COUNT(*) FROM ListeInterventionGenerale2 where staint=9
+[Form_MenuClimAccess] SELECT COUNT(*)  FROM ListeInterventionGenerale2 where nbrappint=9
+[Form_MenuClimAccess] SELECT typint FROM ListeInterventionGenerale2 where nbrappint=1 or nbrappint=2
+[Form_MenuClimAccess] SELECT COUNT(*) FROM ListeInterventionGenerale2 where staint=-1
+[Form_MenuClimAccess] SELECT COUNT(*) FROM ListeInterventionGenerale2 where staint=2
+[Form_MenuClimAccess] SELECT COUNT(*) FROM ListeInterventionGenerale2 where staint=7 and devisafaire=true
+[Form_MenuClimAccess] SELECT COUNT(*) FROM ListeInterventionGenerale2 where staint=7 and devisafaire=true and duplicatafait=true
+[Form_MenuClimAccess] SELECT COUNT(*) FROM ListeInterventionGenerale2 where staint=7 and devisafaire=true and duplicatafait=false
+[Form_MenuClimAccess] SELECT COUNT(*) FROM ListeInterventionGenerale2 where nbrappint=8
+[Form_MenuClimAccess] select * from dbo_vehicules where EtatVehicule<>4 and  EtatVehicule<>5 order by Immatriculation  
+[Form_MenuClimAccess] select * from dbo_evvehicules where Immat='
+[Form_MenuClimAccess] select * from  Dbo_Demande_Web where NumUser=
+[Form_MenuClimAccess] UPDATE Dbo_Demande_Web Set Type_Demande=0,Data1=0,Data2=0,Data3=''
+[Form_MenuPrincipal] Delete * FROM TopTen
+[Form_MenuPrincipal] SELECT TOP 20 Site.nomsit, Site.numsit, Site.typsit, Site.indvetust, [TopTen - Nb inter total].
+[Form_MenuPrincipal] Select * FROM [RequeteTopTen]
+[Form_MenuPrincipal] Insert INTO TopTen(nomsittop, indvettop, Nbintphy, nbintdef, numsittop, typsittop) VALUES ('
+[Form_MenuPrincipal] Insert INTO TopTen(nomsittop, indvettop, Nbintphy, nbintdef, numsittop, typsittop) VALUES ('
+[Form_MenuPrincipal] Delete * FROM TopTen
+[Form_MenuPrincipal] SELECT TOP 20 Site.nomsit, Site.numsit, Site.typsit, Site.indvetust, [TopTen - Nb inter total].
+[Form_MenuPrincipal] Select * FROM [RequeteFlopTen]
+[Form_MenuPrincipal] Insert INTO TopTen(nomsittop, indvettop, Nbintphy, nbintdef) VALUES ('
+[Form_MenuPrincipal] Insert INTO TopTen(nomsittop, indvettop, Nbintphy, nbintdef, numsittop, typsittop) VALUES ('
+[Form_MenuPrincipal] DELETE parametre.numpar FROM parametre WHERE (((parametre.numpar)<>1));
+[Form_MenuPrincipal] SELECT numsit, typsit, nomsit, numcli, cptsit FROM Site WHERE numcli = 
+[Form_Parametrage] INSERT INTO SiteMateriel(Numerosite
+[Form_Parametrage] INSERT INTO SiteMateriel(Numerosite,RepereSurSite,Repere,Emplacement,Quantite,Marque,Type,Reference,NumeroSerie,Reversible,ResistanceElectrique,PuissanceFrigo,PuissanceCalo,FluideQuantite,DateMiseEnService,TypeTelecommande,NbreTelecommande,EmplacementTelecommande
+[Form_Parametrage] INSERT INTO SiteMateriel(Numerosite,Repere,Emplacement,Quantite,Marque,Type,Reference,NumeroSerie,Reversible,ResistanceElectrique,PuissanceFrigo,PuissanceCalo,FluideQuantite,DateMiseEnService,TypeTelecommande,NbreTelecommande,EmplacementTelecommande) VALUES (
+[Form_Parametrage] update SiteMateriel SET FluideQuantite='
+[Form_Parametrage] Select cptsit from site where nomsit='
+[Form_Parametrage] select * from utilisateur where numsoc=1 or numsoc=111 or numsoc=112 or numsoc=113
+[Form_Parametrage] UPDATE utilisateur SET loguti=
+[Form_Parametrage] UPDATE utilisateur SET loguti=
+[Form_Parametrage] select * from utilisateur where numsoc=1 or numsoc=111 or numsoc=112 or numsoc=113
+[Form_Parametrage] UPDATE utilisateur SET codintuti=
+[Form_Parametrage] UPDATE utilisateur SET codintuti=
+[Form_Parametrage] select * from utilisateur where (numsoc=111 or numsoc=112 or numsoc=113 )
+[Form_Parametrage] select * from utilisateur where numuti=65
+[Form_Parametrage] select NomInterv,Numerotech,dateinterv from dbo_HeuresTech where TypeInterv=60
+[Form_Parametrage] INSERT INTO dbo_EvVehicules(DateEV,TypeEV,Km,conducteur,Immat) values(#
+[Form_Planification] SELECT * FROM SITE WHERE numcli=
+[Form_Planification] delete from intervention where datheulim is not null and datint is null
+[Form_Planification] SELECT codint FROM INTERVENANT WHERE numintervenant=
+[Form_Planification] SELECT codint FROM INTERVENANT WHERE numintervenant=
+[Form_Planification] SELECT numintint from intervention where cptsit = 
+[Form_Planification] SELECT * FROM SITE WHERE numcli=
+[Form_Planification] SELECT * FROM SITE WHERE numcli=
+[Form_Planification] delete from intervention where datheulim is not null and datint is null
+[Form_Planification] SELECT codint FROM INTERVENANT WHERE numintervenant=
+[Form_Planification] SELECT codint FROM INTERVENANT WHERE numintervenant=
+[Form_Planification] SELECT * FROM SITE WHERE numcli=
+[Form_Planification] SELECT * FROM SITE WHERE numcli=
+[Form_Planification] delete from intervention where datheulim is not null and datint is null
+[Form_Planification] SELECT codint FROM INTERVENANT WHERE numintervenant=
+[Form_Planification] SELECT codint FROM INTERVENANT WHERE numintervenant=
+[Form_PlanificationEntretien] SELECT Site.numcli, Site.cptsit, Site.nbrentsit,  Site.numzonsit
+[Form_PlanificationEntretien] delete from intervention where datintpre is not null and datint is null
+[Form_PlanificationEntretien] SELECT Intervenant.codint 
+[Form_PlanificationEntretien] SELECT Intervention.cptsit, Intervention.datint FROM Intervention 
+[Form_PlanificationEntretien] SELECT Site.*  FROM Site  WHERE (Site.numcli)<>1 And (Site.numcli)<>2 And (Site.numcli)<>49 And (Site.numcli)<>77 And (Site.numcli)<>70 And (Site.numcli)<>40
+[Form_PlanificationEntretien] Select * from site where numcli=
+[Form_PlanificationEntretien] delete from intervention where datintpre is not null and datint is null
+[Form_PlanificationEntretien] Select max(datint) from intervention where cptsit=
+[Form_PlanificationEntretien] SELECT Intervenant.codint 
+[Form_PlanificationEntretien] Select count(*) from intervention where datint between #01/01/
+[Form_PlanificationEntretien] Select count(*) from intervention where datint between #
+[Form_PlanificationEntretien] SELECT Site.numcli, Site.cptsit, Site.nbrentsit,  Site.numzonsit
+[Form_PlanificationEntretien] delete from intervention where datintpre is not null and datint is null
+[Form_PlanificationEntretien] SELECT Intervenant.codint 
+[Form_PlanificationEntretien] SELECT Site.*, Intervenant.codint, Site.numzonsit
+[Form_PlanificationEntretien] SELECT Count(Site.nomsit) FROM Site WHERE (Site.numcli)<>1 And (Site.numcli)<>2 And (Site.numcli)<>49 And (Site.numcli)<>77 And (Site.numcli)<>70 And (Site.numcli)<>40 ;
+[Form_PlanificationEntretien] SELECT Count(Site.nomsit) FROM Site WHERE Site.numcli=
+[Form_PlanificationEntretien] delete from intervention where datintpre is not null and datint is null
+[Form_PlanificationEntretien] Select max(datint) from intervention where cptsit=
+[Form_PlanificationEntretien] Select count(*) from intervention where datint between #01/01/
+[Form_RechercheIntervention] Select numintint, typint, staint from intervention where refcliint like '*
+[Form_Saisie_EV_Vehicule] Select max(km) from dbo_evvehicules where Immat='
+[Form_Saisie_EV_Vehicule] select dbo_Vehicules.Immatriculation from dbo_Vehicules   where  dbo_Vehicules.conducteur=
+[Form_Saisie_EV_Vehicule] INSERT INTO dbo_EvVehicules (DateEV,KM,Conducteur,Immat,TypeEv) Values ('
+[Form_Saisie_EV_Vehicule] select Utilisateur.numuti from dbo_Vehicules INNER JOIN Utilisateur ON dbo_Vehicules.Conducteur = Utilisateur.numuti  where  dbo_Vehicules.Immatriculation='
+[Form_Saisie_Reference] select * from reference where Reference='
+[Form_Saisie_Reference] INSERT INTO REFERENCE (Reference,Repere,Type,Nommar,Fluide,TypeTel,Reversible,Resistance,PuissanceFrigo,PuissanceCalo,QteGaz,NbFiltres,DimFiltres,NbCourroies,RefCourroies,AppointRoof) VALUES (
+[Form_Saisie_Reference] INSERT INTO REFERENCE (Reference,Repere,Type,Nommar,Fluide,TypeTel,Reversible,Resistance,PuissanceFrigo,PuissanceCalo,QteGaz,NbFiltres,DimFiltres,NbCourroies,RefCourroies,AppointRoof) VALUES (
+[Form_Saisie_Reference] Update SiteMateriel set Reference='
+[Form_Saisie_Reference] Update SiteMateriel set Marque='
+[Form_Saisie_Reference] Update SiteMateriel set Repere='
+[Form_Saisie_Reference] Update SiteMateriel set Type='
+[Form_Saisie_Reference] Update SiteMateriel set TypeTelecommande='
+[Form_Saisie_Reference] Update SiteMateriel set Reversible='
+[Form_Saisie_Reference] Update SiteMateriel set ResistanceElectrique='
+[Form_Saisie_Reference] Update SiteMateriel set PuissanceFrigo='
+[Form_Saisie_Reference] Update SiteMateriel set PuissanceCalo='
+[Form_Saisie_Reference] Update SiteMateriel set NbreFiltreRoofTop='
+[Form_Saisie_Reference] Update SiteMateriel set ReferenceFiltreRoofTop='
+[Form_Saisie_Reference] Update SiteMateriel set NbreCourroiesRoofTop='
+[Form_Saisie_Reference] Update SiteMateriel set ReferenceCourroiesRoofTop='
+[Form_Saisie_Reference] Update SiteMateriel set AppointChauffageSurRoof='
+[Form_Saisie_Reference] Update Reference set Reference='
+[Form_Saisie_Reference] Update Reference set Reference='
+[Form_Saisie_Reference] Update Reference set Nommar='
+[Form_Saisie_Reference] Update Reference set Repere='
+[Form_Saisie_Reference] Update Reference set Type='
+[Form_Saisie_Reference] Update Reference set Fluide='
+[Form_Saisie_Reference] Update Reference set TypeTel='
+[Form_Saisie_Reference] Update Reference set Reversible='
+[Form_Saisie_Reference] Update Reference set Resistance='
+[Form_Saisie_Reference] Update Reference set PuissanceFrigo='
+[Form_Saisie_Reference] Update Reference set PuissanceCalo='
+[Form_Saisie_Reference] Update Reference set QteGaz='
+[Form_Saisie_Reference] Update Reference set NbFiltres='
+[Form_Saisie_Reference] Update Reference set DimFiltres='
+[Form_Saisie_Reference] Update Reference set NbCourroies='
+[Form_Saisie_Reference] Update Reference set RefCourroies='
+[Form_Saisie_Reference] Update Reference set AppointRoof='
+[Form_Saisie_Reference] select * from reference where 
+[Form_Saisie_Reference] SELECT TypeAudit.id, TypeAudit.Type FROM TypeAudit where TypeAudit.Type like '%
+[Form_Saisie_Vehicule] select * from dbo_vehicules where 
+[Form_Saisie_Vehicule] select * from dbo_evvehicules where Immat='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Conducteur=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Immatriculation='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set EtatVehicule=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set DateMiseCirculation='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Date_Fin_Leasing='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set leasing=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Garantie=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Leasing=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set KM_a_l_achat=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Nb_KM_Garantie=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Temps_Mois_Garantie=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Nb_Km_Leasing=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Temps_Mois_Leasing=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Km_Inter_Revision=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Temps_Mois_Inter_Revision=
+[Form_Saisie_Vehicule] Update dbo_Vehicules set NumTelepeage  ='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set CodeCarteEssence  ='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set NumCarteEssence  ='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Marque  ='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Modele  ='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Societe  ='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Critair  ='
+[Form_Saisie_Vehicule] Update dbo_Vehicules set Champ_Libre  ='
+[Form_SfMaterielPanne] DELETE * FROM PanneMaterielSite
+[Form_Site Sous-formulaire sous-formulaire 2] SELECT [Site Sous-formulaire].cptsit, [Site Sous-formulaire].codint, [Site Sous-formulaire].[prévue le], [Site Sous-formulaire].[effectuée le], [Site Sous-formulaire].typint, [Site Sous-formulaire].Statut, [Site Sous-formulaire].numintint, [Site Sous-formulaire].datheuapp, [Site Sous-formulaire].devisfait, [Site Sous-formulaire].devisafaire, [Site Sous-formulaire].datheulim, [Site Sous-formulaire].numint, [Site Sous-formulaire].refint, [Site Sous-formulaire].refcliint, [Site Sous-formulaire].numdevacc, [Site Sous-formulaire].NumeroDevis, [Site Sous-formulaire].NumeroDevisInterne, [Site Sous-formulaire].Intervention.cheficdemint, [Site Sous-formulaire].cheficdemcli, [Site Sous-formulaire].StatutDevis, [Site Sous-formulaire].NomFichierDevis, [Site Sous-formulaire].[Statut Facturation]
+[Form_Site Sous-formulaire sous-formulaire 2] delete from intervention where numintint=
+[Form_Site Sous-formulaire sous-formulaire] delete from intervention where numintint=
+[Form_Site] delete from intervention where datintpre is not null and datint is null
+[Form_Site] Select max(datint) from intervention where cptsit=
+[Form_Site] SELECT Intervenant.codint 
+[Form_Site] Select count(*) from intervention where datint between #01/01/
+[Form_Site] UPDATE Intervention SET staint=
+[Form_Site] INSERT INTO SiteMateriel(Numerosite
+[Form_Site] INSERT INTO SiteMateriel(Numerosite,RepereSurSite,Repere,Emplacement,NbreRadiateurs,Marque,Type,Reference,NumeroSerie,Reversible,ResistanceElectrique,PuissanceFrigo,PuissanceCalo,FluideQuantite,DateMiseEnService,TypeTelecommande,NbreTelecommande,EmplacementTelecommande,Quantite
+[Form_Site] Select * from Reference where id =
+[Form_Site] INSERT INTO SiteMateriel (Reference,Repere,Type,Marque,FluideQuantite,NbreRadiateurs,TypeTelecommande,Reversible,ResistanceElectrique,PuissanceFrigo,PuissanceCalo,NbreFiltreRoofTop,ReferenceFiltreRoofTop,NbreCourroiesRoofTop,ReferenceCourroiesRoofTop,AppointChauffageSurRoof,NumeroSite,Quantite) VALUES (
+[Form_Site] Select * from Reference where id =
+[Form_Site] INSERT INTO SiteMateriel (Reference,Repere,Type,Marque,FluideQuantite,NbreRadiateurs,TypeTelecommande,Reversible,ResistanceElectrique,PuissanceFrigo,PuissanceCalo,NbreFiltreRoofTop,ReferenceFiltreRoofTop,NbreCourroiesRoofTop,ReferenceCourroiesRoofTop,AppointChauffageSurRoof,NumeroSite,Quantite) VALUES (
+[Form_Site] Select * from Reference where id =
+[Form_Site] Select * from Reference where id =
+[Form_Site] INSERT INTO SiteMateriel (Reference,Repere,Type,Marque,FluideQuantite,NbreRadiateurs,TypeTelecommande,Reversible,ResistanceElectrique,PuissanceFrigo,PuissanceCalo,NbreFiltreRoofTop,ReferenceFiltreRoofTop,NbreCourroiesRoofTop,ReferenceCourroiesRoofTop,AppointChauffageSurRoof,NumeroSite,Quantite) VALUES (
+[Form_Site] INSERT INTO SiteMateriel (Reference,Repere,Type,Marque,FluideQuantite,NbreRadiateurs,TypeTelecommande,Reversible,ResistanceElectrique,PuissanceFrigo,PuissanceCalo,NbreFiltreRoofTop,ReferenceFiltreRoofTop,NbreCourroiesRoofTop,ReferenceCourroiesRoofTop,AppointChauffageSurRoof,NumeroSite,Quantite) VALUES (
+[Form_Site] SELECT numintint  FROM intervention WHERE cptsit=
+[Form_Site] SELECT numuti  FROM interventiontechnicien WHERE numintint=
+[Form_Site] SELECT nomuti, preuti  FROM Utilisateur WHERE numuti=
+[Form_Site] UPDATE Intervention SET numdevpartenaire='
+[Form_Site] Update devis set NumeroClient =368 where NumeroClient =
+[Form_Site] Update ContratDeMaintenance set NumeroClient  =368 where NumeroClient =
+[Form_Site] Update DevisTravaux set NumeroClient =368 where NumeroClient =
+[Form_Site] Select datemiseenservicesite,garantiecompresseur,garantiepieces,garantiepiecesmainoeuvre from site where cptsit =
+[Form_Site] Select * from Devis where numerosite =
+[Form_Site] Select * from DevisTravaux where numerosite =
+[Form_Site] Select * from ContratDeMaintenance where numerosite =
+[Form_Site] SELECT cheminpho,cheminpla  FROM client WHERE Numcli = 
+[Form_Site] SELECT *  FROM sitemateriel WHERE numerosite = 
+[Form_Site] Update devis set NumeroClient =
+[Form_Site] Update ContratDeMaintenance set NumeroClient =
+[Form_Site] Update DevisTravaux set NumeroClient =
+[Form_SiteMateriel sous-formulaire] SELECT TypeAudit.id, TypeAudit.Type FROM TypeAudit where TypeAudit.Type like '%
+[ImportExcel] SELECT NumerositeMateriel,NumeroSite,Quantite,FluideQuantite,nbreradiateurs from sitemateriel
+[ImportExcel] SELECT * FROM [IMPORT$]
+[ImportExcel] SELECT numzon FROM ZoneGeographique WHERE nomzon ='
+[ImportExcel] select donneurid from donneur where nomdonneur='
+[ImportExcel] select numintervenant from intervenant where codint='
+[ImportExcel] select numcli from client where nomcli='
+[ImportExcel] SELECT * FROM [IMPORT$]
+[ImportExcel] select donneurid from donneur where nomdonneur='
+[ImportExcel] select numintervenant from intervenant where codint='
+[ImportExcel] select numcli from client where nomcli='
+[ImportExcel] select cptsit from site inner join client on client.numcli = site.numcli where client.nomcli ='
+[ImportExcel] SELECT numzon FROM ZoneGeographique WHERE nomzon ='
+[ImportExcel] select max(cptsit) from site
+[ImportExcel] select numintint from intervention where datheulim=#
+[ImportExcel] SELECT annuaire.N° AS NumMag, annuaire.F8, annuaire.Directrice, annuaire.Téléphone AS Tel, annuaire.Fax FROM annuaire
+[ImportExcel] UPDATE Site Set civres='
+[ImportExcel] SELECT LISTING.N° AS NumMag, LISTING.TELEPHONE AS Tel, LISTING.FAX FROM LISTING WHERE (((LISTING.N°) Is Not Null))
+[ImportExcel] UPDATE Site Set telsit='
+[ImportExcel] SELECT ID, Client, [N° Client interne], [N° Compteur Site], [N° Site], Champ7, [Code Site],
+[ImportExcel] SELECT * From SitesCelio
+[ImportExcel] INSERT INTO Site(numcli,numsit,nomsit,codsit,sitsit,adrsit,codpossit,vilsit,telsit,faxsit,civres,nomres,preres,surven,surtot,nbrentsit,comsit,temp_entree,temp_sortie,longitude,latitude) values(
+[ImportExcel] SELECT * From AImporter
+[ImportExcel] INSERT INTO Site(numzonsit,numcli,nomsit,codsit,adrsit,codpossit,vilsit,nbrentsit,numvistecsit,mntredev,comsit,codint) values(
+[PDFCE] SELECT *  FROM Site WHERE cptsit = 
+[PDFCE] SELECT *  FROM sitemateriel WHERE numerosite = 
+[PDFCE] Select * from intervention where numintint=
+[PDFCE] select * from SiteMateriel where Numerositemateriel=
+[PDFCE] select * from TypeFluide where Libelle='
+[PDFCE] select * from dbo_Liste_Type_Gaz where id=
+[Report_FicheIntervention] Select nomdonneur,meldonneur,cheminpho,cheminpla from donneur where donneurid=
+[Report_ListeInterventionGenerale sans quadrillage] UPDATE Site set datedernierevisiteentretien = (select MAX(datint) from Intervention where typint=1 and staint=7 and Intervention.cptsit = Site.cptsit)
+[Report_ListeInterventionOM] UPDATE Site set datedernierevisiteentretien = (select MAX(datint) from Intervention where typint=1 and staint=7 and Intervention.cptsit = Site.cptsit)
+[Report_Test Cerfa] Select * from intervention where numintint=
+[Report_Test Cerfa] select * from Site where cptsit=
+[Report_Test Cerfa] select * from SiteMateriel where Numerositemateriel=
+[Report_Test Cerfa] select * from TypeFluide where Libelle='
+[Report_Test Cerfa] select * from dbo_Liste_Type_Gaz where id=
+[Report_Test Cerfa] Update SiteMateriel set CE_EDITE = 1 where NumerositeMateriel=

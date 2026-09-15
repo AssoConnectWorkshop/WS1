@@ -1,0 +1,201 @@
+Audit
+BROUILLON
+Echantillon nº 1
+Canon MG5500 series Printer
+CNBJNP_F48139213D0B
+ZoneEntêtePage
+Détail
+Rf2
+Trait12
+Trait13
+Étiquette14
+1 - CLIMATISATION
+Étiquette15
+PRODUCTION CALORIFIQUE / FRIGORIFIQUE
+"";"";"";"";"10";"100"
+Modifiable2
+numcli
+Table/Query
+SELECT [Client].[numcli], [Client].[nomcli] FROM Client ORDER BY [nomcli];
+0;1441
+"SELECT [Client].[numcli], [Client].[nomcli] FROM Client ORDER BY [nomcli]; ";"Client";"";"numcli";"nomcli";"PK_Client"
+Client_Étiquette
+Client
+"";"";"";"";"";"";"10";"200"
+cptsit
+SELECT [Site].[cptsit], [Site].[nomsit], [Site].[vilsit] FROM Site ORDER BY [nomsit], [vilsit];
+0;1441;1441
+"SELECT [Site].[cptsit], [Site].[nomsit], [Site].[vilsit] FROM Site ORDER BY [nomsit], [vilsit]; ";"Site";"";"cptsit";"nomsit";"PK_Site"
+Site_Étiquette
+Site
+Texte10
+dateaudit
+Étiquette11
+Date
+AuditClimatisation sous-formulaire
+Form.AuditClimatisation sous-formulaire
+numaudit
+AuditClimatisation_sous_formulaire
+Trait16
+Trait17
+Étiquette18
+2 - RIDEAU D'AIR CHAUD
+Trait19
+Trait20
+Étiquette21
+3 - VENTILATION (EXTRACTION - AIR NEUF)
+Trait22
+Trait23
+Étiquette24
+4 - DESENFUMAGE
+Trait25
+Trait26
+Étiquette27
+5 - PROTECTION ELECTRIQUE
+Trait28
+Trait29
+Étiquette30
+6 - PHOTOS
+Trait31
+Trait32
+Étiquette33
+7 - PLAN
+AuditRegulationCommande sous-formulaire
+Form.AuditRegulationCommande sous-formulaire
+AuditRegulationCommande_sous_formulaire
+Étiquette64
+REGULATION / COMMANDE
+Étiquette67
+COUPURE DE PROXIMITE
+observationsregulationcommande
+Étiquette72
+Observations Régulation / Commande
+coupureproximiteqte
+Étiquette73
+Qt
+coupureproximiteetat
+Étiquette74
+Etat
+coupureproximitelocalisation
+Étiquette75
+Localisation
+coupureproximiteobservations
+Étiquette76
+Observations Coupure de proximit
+Étiquette83
+CONDENSATS
+Étiquette84
+Pompe de relevage
+condensatpompederelevagemarque
+Étiquette85
+Marque
+condensatpompederelevagetype
+Étiquette86
+Type
+condensatpompederelevageemplacement
+Value List
+1;Dans bac;2;Au dessus unité intérieure
+0;2835
+Étiquette88
+Emplacement
+condensatpvc
+Étiquette89
+PVC
+condensatsouple
+Étiquette90
+SOUPLE
+Étiquette91
+Diamètre
+Étiquette92
+condensatpvcdiametre
+Étiquette93
+mm
+condensatsouplediametre
+Étiquette94
+condensatraccordementeu
+Étiquette98
+EU
+condensatraccordementep
+Étiquette99
+EP
+condensatraccordementext
+Étiquette100
+EXT
+Étiquette101
+Raccordement
+condensatcheminementsurfacedevente
+Étiquette106
+Surface de vente
+condensatcheminementreserve
+Étiquette107
+Réserve
+condensatcheminementtoiture
+Étiquette108
+Toiture
+condensatcheminementtremie
+Étiquette109
+Trémie
+Étiquette110
+Cheminement
+condensatetat
+Étiquette111
+Étiquette112
+LOT AERAULIQUE
+Trait113
+Trait114
+Trait115
+Trait116
+lotaerauliquediffuseurcirculaire
+Étiquette117
+Diffuseur circulaire
+lotaerauliquediffuseurcarre
+Étiquette118
+Diffuseur carr
+lotaerauliquebuselongueportee
+Étiquette119
+Buse longue portée
+Étiquette120
+Diffusion
+lotaerauliquediffuseurcirculaireqte
+Étiquette121
+lotaerauliquediffuseurcarreqte
+Étiquette122
+lotaerauliquebuselongueporteeqte
+Étiquette123
+lotaerauliquegainetextile
+Étiquette124
+Gaine Textile
+lotaerauliquegainesouple
+Étiquette125
+Gaine Souple
+lotaerauliquegalvacirculaire
+Étiquette126
+Circulaire
+lotaerauliquegalvacirculairecalorifugee
+Étiquette127
+Calorifugée
+lotaerauliquegalvarectangulaire
+Étiquette128
+Rectangulaire
+lotaerauliquegalvarectangulairecalorifugee
+Étiquette129
+Étiquette130
+Gaine souple
+Étiquette131
+Galva
+lotaerauliquereprisegrilletrape
+Étiquette132
+Grille trappe
+lotaerauliquereprisegrilletrapeqte
+Étiquette133
+lotaerauliquerepriseautres
+Étiquette134
+Autres
+lotaerauliqueobservations
+Étiquette135
+Observations Lot Aéraulique
+Étiquette136
+ROOF TOP
+Trait137
+Fille138
+ZonePiedPage

@@ -1,0 +1,60 @@
+SELECT SiteMarqueReference.cptsit, SiteMarqueReference.nummar, SiteMarqueReference.fluide, SiteMarqueReference.qte, SiteMarqueReference.datmisser, SiteMarqueReference.datfinser, SiteMarqueReference.numsitmarref, SiteMarqueReference.indvet, SiteMarqueReference.indvetplu, SiteMarqueReference.indpri, SiteMarqueReference.des, SiteMarqueReference.nomref, SiteMarqueReference.type FROM SiteMarqueReference ORDER BY SiteMarqueReference.datmisser;
+SiteMarqueReference Sous-formulaire
+EntêteFormulaire
+nummar_Étiquette
+Marque
+DetachedLabel
+numref_Étiquette
+numref
+des_Étiquette
+Description
+fluide_Étiquette
+Fluide
+qte_Étiquette
+Qt
+datmisser_Étiquette
+Mis en service le
+datfinser_Étiquette
+Fin de service le
+Étiquette21
+Vétust
+Étiquette22
+V+
+Étiquette23
+Principal
+Étiquette24
+Type
+Détail
+"";"";"";"";"10";"100"
+nummar
+Table/Query
+0;2835
+"Marque";"Marque";"";"nummar";"nommar";"PK_Marque"
+Descriptif
+des
+fluide
+[Event Procedure]
+qte
+Mise en service
+datmisser
+Short Date
+00/00/0000
+Mise_en_service
+Fin de service
+datfinser
+Fin_de_service
+indvet
+Indicateur de vétust
+indvetplu
+Indicateur de vétusté plus
+V_
+indpri
+"";"";"";"";"";"";"";"";"10";"100"
+Référence
+nomref
+SELECT Reference.nomref, Reference.desref, Reference.nummar, Marque.nommar FROM Reference INNER JOIN Marque ON Reference.nummar=Marque.nummar ORDER BY Reference.nomref;
+1134;0;0;2835
+type
+Value List
+"CLIM";"CLIM";"RAC";"RAC";"VENTIL";"VENTIL"
+PiedFormulaire

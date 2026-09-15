@@ -1,0 +1,163 @@
+([SiteListe].[vilsit] Like "*maxime*")
+SELECT * FROM ListeSite
+SiteListe
+[Event Procedure]
+192.168.0.247
+EntêteFormulaire
+Détail
+cptsit
+cptsit_Étiquette
+SITE.cptsit
+codsit
+codsit_Étiquette
+Code
+nomsit
+nomsit_Étiquette
+Nom
+nomsocsit
+nomsocsit_Étiquette
+sitsit
+sitsit_Étiquette
+Situation
+typsit
+typsit_Étiquette
+adrsit
+adrsit_Étiquette
+Adresse
+codpossit
+codpossit_Étiquette
+CP
+vilsit
+vilsit_Étiquette
+Ville
+telsit
+telsit_Étiquette
+Téléphone
+faxsit
+faxsit_Étiquette
+Fax
+civres
+civres_Étiquette
+Civilit
+nomres
+nomres_Étiquette
+Nom Responsable
+preres
+preres_Étiquette
+Prénom
+surven
+surven_Étiquette
+Surface Vente
+surtot
+surtot_Étiquette
+Surface totale
+nbrentsit
+nbrentsit_Étiquette
+Nb Entretien
+nbrdesenfsit
+nbrdesenfsit_Étiquette
+Nb désenfumage
+datdervisdes
+datdervisdes_Étiquette
+Dernière visite désenfumage
+comsit
+comsit_Étiquette
+Commentaire
+telcencom
+telcencom_Étiquette
+Tél. centre commercial
+datcresit
+datcresit_Étiquette
+Date de création du site
+mntredev
+mntredev_Étiquette
+Tarif 1 Clim FMC
+datprisencharge
+datprisencharge_Étiquette
+Date prise en charge clim
+numsit
+numsit_Étiquette
+N
+"";"";"";"";"10";"100"
+numcli
+Table/Query
+SELECT * FROM Client WHERE 1=1
+0;2835
+numcli_Étiquette
+Client
+numzonsit
+SELECT ZoneGeographique.numzon, ZoneGeographique.nomzon FROM ZoneGeographique WHERE 1=1  ORDER BY ZoneGeographique.nomzon;
+numzonsit_Étiquette
+Zone
+"N° interne";"";"Nom intervenant";"";"10";"100"
+Intervenant
+numintervenant
+SELECT intervenant.numintervenant, intervenant.nomint FROM intervenant Where 1=1 ORDER BY intervenant.nomint;
+numintervenant_Étiquette
+"";"";"";"";"10";"200"
+Donneur d'ordres
+donneurid
+SELECT Donneur.donneurid, Donneur.nomdonneur FROM Donneur Where 1=1 ORDER BY Donneur.nomdonneur;
+Donneur_d_ordres
+donneurid_Étiquette
+Donneur
+numerocontratdesenfumage
+Étiquette130
+N° Contrat Désenfumage:
+nombrevisitedesenfumage
+Étiquette131
+Nb visite désenfumage:
+datedesenfumage
+Étiquette132
+Date prise en charge Désenfumage:
+montantredevancedesenfumage
+Étiquette133
+Redevance désenfumage:
+numerocontratclient
+Étiquette136
+Contrat client:
+Chemin_Dossier
+chemindoc
+Chemin Dossier
+Étiquette34
+Bon
+NumContratChaudiere
+Étiquette153
+N° Contrat Chaudière:
+NombreContratChaudiere
+Étiquette155
+Nb visite Chaudiére:
+DateContratChaudiere
+Étiquette157
+Date Prise en charge Chaudiére:
+mntredevContratChaudiere
+Étiquette159
+Tarif Chaudiére FMC:
+NumSousTraitChaudiere
+SELECT intervenant.numintervenant, intervenant.nomint FROM intervenant ORDER BY intervenant.nomint;
+"SELECT intervenant.numintervenant, intervenant.nomint FROM intervenant ORDER BY intervenant.nomint;";"intervenant";"";"numintervenant";"nomint";"PK_Intervenant_1"
+Étiquette161
+Sous-Traitant Chaudiere
+NumSousTraitDesenfum
+Étiquette163
+Sous-Traitant Desenfumage
+TarifSousTraitDesenfum
+Étiquette165
+Tarif Desenfumage FMC
+TarifSousTraitClim
+Étiquette167
+Tarif Sous-Traitant Clim
+TarifSousTraitChaudiere
+Étiquette169
+Tarif Sous-Traitant Chaudiere
+montantredevancefiltre
+Étiquette171
+Tarif 2 Clim FMC
+NumSousTraitClim
+Étiquette173
+Sous-Traitant Clim
+RDV
+RDV_Prendre
+Étiquette52
+RDV à Prendre
+PiedFormulaire

@@ -1,0 +1,19 @@
+SELECT SiteNombreEntretien.nbrentsit, SiteNombreEntretien.datfin, SiteNombreEntretien.cptsit FROM SiteNombreEntretien;
+SiteNombreEntretien sous-formulaire
+EntêteFormulaire
+nbrentsit_Étiquette
+Nombre Visite
+DetachedLabel
+numsit_Étiquette
+numsit
+datfin_Étiquette
+Finie le
+Détail
+Nbre Visite
+nbrentsit
+Nbre_Visite
+cptsit
+Jusqu'au
+datfin
+Jusqu_au
+PiedFormulaire

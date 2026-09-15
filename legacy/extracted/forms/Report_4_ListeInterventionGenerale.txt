@@ -1,0 +1,73 @@
+ListeInterventionGenerale
+UseSameSize
+ries PS3
+ET0021B73D5AB2
+ZoneEntêtePage
+Détail
+nomsit
+Étiquette5
+SITE
+datheuapp
+Étiquette6
+Date de la demande
+Texte7
+datheulim
+Étiquette8
+Date maxi intervention
+nomcli
+Étiquette9
+CLIENT
+adrsit
+Étiquette11
+Adresse
+telsit
+Étiquette12
+Tél
+Texte13
+Étiquette14
+Fax
+Texte15
+Étiquette16
+Mail
+numintint
+Étiquette17
+Numéro Demande
+Texte18
+nomzon
+Étiquette19
+Zone
+Texte20
+objint
+Étiquette21
+Objet
+Étiquette22
+Saisie dans Access (Demande d'intervention)
+Cocher23
+Étiquette24
+Cocher25
+Étiquette26
+Cocher27
+Étiquette28
+Cocher29
+Étiquette30
+Cocher31
+Étiquette32
+Cocher33
+Étiquette34
+Cocher35
+Étiquette36
+Cocher37
+Étiquette38
+Cocher39
+Étiquette40
+Cocher41
+Étiquette42
+Cocher43
+Étiquette44
+Cocher45
+Étiquette46
+Étiquette47
+Impression de la demande
+Étiquette48
+Classer dossier "Demande d'intervention" ORDI
+ZonePiedPage

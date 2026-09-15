@@ -1,0 +1,59 @@
+[ClientListe].[nomcli], [ClientListe].[codposcli]
+SELECT * FROM client WHERE (((Client.affcli)=Yes));
+ClientListe
+192.168.0.52_1
+EntêteFormulaire
+Étiquette18
+Détail
+numcli
+numcli_Étiquette
+Nom du client
+nomcli
+[Event Procedure]
+Nom_du_client
+nomcli_Étiquette
+Adresse du client
+adrcli
+Adresse_du_client
+adrcli_Étiquette
+Adresse
+CP
+codposcli
+codposcli_Étiquette
+Ville
+vilcli
+vilcli_Étiquette
+Téléphone
+telcli
+telcli_Étiquette
+Fax
+faxcli
+faxcli_Étiquette
+Contact principal
+concli
+Contact_principal
+concli_Étiquette
+Contact
+E-mail
+melcli
+E_mail
+melcli_Étiquette
+coutheuremainoeuvre
+Étiquette19
+Main d'oeuvre:
+coutdeplacement
+Étiquette20
+Déplacement:
+Cocher22
+affcli
+Étiquette23
+Affiché:
+Texte24
+cheminpla
+Étiquette25
+Num Esabora Clim
+Texte26
+cheminpho
+Étiquette27
+Num Esabora Maint
+PiedFormulaire

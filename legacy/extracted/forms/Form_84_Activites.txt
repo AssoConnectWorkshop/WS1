@@ -1,0 +1,9 @@
+Activites
+TypeFluide sous-formulaire
+EntêteFormulaire
+Détail
+Texte4
+Nomactivite
+Étiquette5
+Activite
+PiedFormulaire

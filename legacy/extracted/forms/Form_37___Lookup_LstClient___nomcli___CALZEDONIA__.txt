@@ -1,0 +1,97 @@
+([Lookup_LstClient].[nomcli]="CALZEDONIA")
+[Site].[longitude]
+Site
+Géocoder un site
+RICOH Aficio MP C2000 PCL 6
+LPT1:
+Default
+[Event Procedure]
+192.168.0.250
+EntêteFormulaire
+txtAddress
+adrsit
+lbl11
+Adresse
+txtCity
+vilsit
+lbl13
+Ville
+txtZipCode
+codpossit
+lbl15
+Code postal
+txtRegion
+lbl17
+Région
+txtCountry
+"France"
+lbl19
+Pays
+btnGeocode
+&Géocoder
+Rect2
+lblGeocoding
+Résultat Géocodage
+txtRetAddress
+lbl24
+Adresse renvoyée
+txtLatitude
+latitude
+lbl26
+Latitude
+txtLongitude
+longitude
+lbl28
+Longitude
+txtAccuracy
+lbl30
+Précision
+txtStatus
+lbl32
+Statut
+btnAddMarker
+Afficher le marqueur sur la carte
+Rect1
+lbl9
+btnClearMarker
+Masquer le marqueur sur la carte
+btnClearAddress
+Clear Address
+nomsit
+Étiquette36
+"";"";"";"";"10";"100"
+LstClient
+numcli
+Table/Query
+SELECT Client.numcli, Client.nomcli FROM Client ORDER BY Client.nomcli;
+0;2835
+"SELECT Client.numcli, Client.nomcli FROM Client ORDER BY Client.nomcli; ";"Client";"";"numcli";"nomcli";"PK_Client"
+Étiquette37
+Client
+CmdPrevious
+Commande38
+Enregistrement précédent
+CmdNext
+&Suivant
+Enregistrement suivant
+CmdAfficher
+Afficher
+Actualiser
+CmdGeocoderTout
+&Géocoder tous les sites
+Détail
+WebBrowser
+Root Entry
+CONTENTS
+AccessObjSiteData
+Users
+@shell32.dll,-21813
+èRaphael
+Desktop
+@shell32.dll,-21769
+$Geocoding.html
+S-1-5-21-3665125414-1287425855-588944623-1002
+S-1-5-21-1175139966-1439509285-1368376869-1001
+Microsoft Web Browser
+Shell.Explorer.2
+PiedFormulaire

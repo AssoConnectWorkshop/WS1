@@ -1,0 +1,11 @@
+SELECT Site.nomsit, Intervention.codint, Site.cptsit FROM Site INNER JOIN Intervention ON Site.cptsit = Intervention.cptsit WHERE (((Intervention.typint)='1')) GROUP BY Site.nomsit, Intervention.codint, Site.cptsit;
+Intervenant Sous-formulaire Clim
+EntêteFormulaire
+nomsit_Étiquette
+Nom du site
+DetachedLabel
+Détail
+nomsit
+[Event Procedure]
+Nom_du_site
+PiedFormulaire
