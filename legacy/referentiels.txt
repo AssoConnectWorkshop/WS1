@@ -1,0 +1,412 @@
+t;id;lib;o
+-;--;---;-
+Activites;1;Climatisation;0
+Activites;2;Chauffage;0
+Activites;3;Ramonage;0
+Activites;4;Plomberie;0
+Activites;5;Petite Plomberie;0
+Activites;6;Froid (Ex: Ch. Froide);0
+Activites;7;Desenfumage;0
+Activites;8;Gaineur;0
+Activites;9;Nettoyage/Desinfection;0
+Activites;10;Electricité;0
+Activites;11;Zingueur;0
+Activites;12;Ventilation;0
+Activites;13;Assainissement;0
+Activites;14;Detection GAZ / Incendie;0
+Activites;15;Etude Structure;0
+Activites;16;Calorifuges/Isolation;0
+Activites;17;Vidange/pompage;0
+Activites;18;Etancheité/Couverture/Zinguerie;0
+Activites;19;Traitement de l'eau;0
+Activites;20;Etancheur;0
+ModeResolution;1;par téléphone;0
+ModeResolution;2;en même temps que la visite d'entretien;0
+ModeResolution;3;par fax;0
+ModeResolution;4;intervention physique;0
+Panne;1;Clim- Recherche de fuite (FF);0
+Panne;2;Clim- Compresseur HS;0
+Panne;3;Clim- Organes Frigo defaillant;0
+Panne;4;Clim- Organes Frigo HS;0
+Panne;5;Clim- Organe interne GE (Sonde,moteur,volute…);0
+Panne;6;Clim- Organe interne UI  (Sonde,moteur,volute…);0
+Panne;7;Clim- Carte electronique HS GE;0
+Panne;8;Clim- Carte electronique HS UI;0
+Panne;9;Clim- Telecommande HS;0
+Panne;10;Clim- Manque d'entretien;0
+Panne;11;Clim- Manque de puissance;0
+Panne;12;Clim- Mauvaise utilisation;0
+Panne;13;Clim- Filtre à remplacer;0
+Panne;14;Clim- Pb Electrique (Cable coupé,non alimenté…);0
+Panne;15;Clim- Fuite de condensats;0
+Panne;16;Clim- Inter de proximité HS;0
+Panne;17;Clim- Z- Autre;0
+Panne;18;VMC- Caisson HS;0
+Panne;19;VMC- Manque de débit d'air;0
+Panne;20;VMC- Pb Electrique (Cable coupé,non alimenté…);0
+Panne;21;VMC- Gaine arrachées/Non raccordée/Decrochée;0
+Panne;22;VMC- Z- Autre;0
+Panne;23;RAC- RAC HS;0
+Panne;24;RAC- Resistance HS;0
+Panne;25;RAC- Pb Electrique (Cable coupé,non alimenté…);0
+Panne;26;RAC- Klixon enclenché;0
+Panne;27;RAC- Klixon HS;0
+Panne;28;RAC- Pb ventilation (Moteur/Volute);0
+Panne;29;RAC- Pb Telecommande;0
+Panne;30;Destrat- Destrat HS;0
+Panne;31;Destrat- Pb Electrique (Cable coupé,non alimenté…);0
+Panne;32;Destrat-  Pb Telecommande;0
+Panne;34;Chambre froide- CF pas en temperature;0
+Panne;35;Chambre froide- Organe Frigo HS;0
+Panne;36;Chambre froide- Organe electrique HS;0
+Panne;37;Chambre froide- Pb Electrique;0
+Panne;38;Chambre froide- Pb Regulation;0
+Panne;39;Chambre froide- Porte ouverte;0
+Panne;40;Chambre froide- fuite condensats;0
+Panne;41;NULL;0
+Panne;42;Chaufferie- A completer;0
+Panne;43;Chaudieres- A completer;0
+Panne;44;Extracteur Labo- A completer;0
+Panne;45;Plomberie- A completer;0
+Panne;46;Ballon ECS- A completer;0
+Panne;47;NULL;0
+Panne;48;NULL;0
+Panne;49;NULL;0
+Panne;50;NULL;0
+Societe;1;Ancien Salarié FMC;0
+Societe;2;ACF;0
+Societe;3;Broceliande;0
+Societe;4;Equipage;0
+Societe;5;Guerit;0
+Societe;6;HPAC;0
+Societe;7;LGC Climatisation;0
+Societe;8;Mansuy;0
+Societe;9;MISO;0
+Societe;10;PPI;0
+Societe;11;R-CLIM;0
+Societe;12;SEE Sautereau;0
+Societe;13;Solution Chauffage;0
+Societe;14;LGC Climatisation;0
+Societe;15;1A;0
+Societe;16;Nord Climatisation;0
+Societe;17;FCT;0
+Societe;18;Aquaplanet;0
+Societe;19;France Install;0
+Societe;20;Chauffage Landividisiau;0
+Societe;21;SFM Batiment;0
+Societe;22;Loire Froid Climatisation;0
+Societe;23;FC 17;0
+Societe;24;FC Auvergne;0
+Societe;25;CVC Froid;0
+Societe;26;ECO2 CVC;0
+Societe;27;SARL LEURS;0
+Societe;28;SARL Frederic Lafon;0
+Societe;29;Castillon Chauffage;0
+Societe;30;SOOFLE;0
+Societe;31;FMC (OGF Audit);0
+Societe;32;EMD;0
+Societe;33;GAZ TECHNIQUE;0
+Societe;34;TREILLARD ETS;0
+Societe;35;Maillet ETS;0
+Societe;36;SAS MAGADOUX DEMARTY;0
+Societe;37;EURL CCB Remi Borde;0
+Societe;38;FERLUC;0
+Societe;39;ATCS;0
+Societe;40;BOULLARD ETS;0
+Societe;41;ABBYS VIDANGE CORREZE;0
+Societe;42;SI2G;0
+Societe;43;SARL POMPES DENIS;0
+Societe;44;FCCF;0
+Societe;45;EURL SODECIS;0
+Societe;46;GTC;0
+Societe;47;SANICENTRE;0
+Societe;48;A.AIR.CLIM;0
+Societe;49;SAS 2R;0
+Societe;50;Tekniclima;0
+Societe;51;A DEFINIR;0
+Societe;52;AMBIANCE CLIMATISATION;0
+Societe;53;CFC34;0
+Societe;54;DELTA T;0
+Societe;55;EDDIA;0
+Societe;56;DE2C;0
+Societe;57;GENESTE CHAUFFAGE;0
+Societe;58;BENEO;0
+Societe;59;INVERT'AIR CLIMATISATION;0
+Societe;60;AVIPUR;0
+Societe;61;AMARI BRANDAO;0
+Societe;62;Chaudiere;0
+Societe;63;A.R.I.E.B;0
+Societe;64;Visite;0
+Societe;65;SAS CHAPELAT ANDRÉ;0
+Societe;67;ACP;0
+Societe;68;TWINS ENERGIE;0
+Societe;69;EURL ACP;0
+Societe;70;DARCHIS SARACHMAN;0
+Societe;71;AUVERCLIM;0
+Societe;72;SGA MEYER;0
+Societe;73;Espace Chauffage;0
+Societe;74;GTI;0
+Societe;75;2M2D;0
+Societe;76;Planete Froid;0
+Societe;77;MAYANS ENERGIES;0
+Societe;78;DARTHOU;0
+Societe;79;MB Multi;0
+Societe;80;EMDBEILLARD;0
+Societe;81;AUVERGNE PRO CLIM;0
+Societe;82;SAS ACGLS;0
+Societe;83;JSENERGIE;0
+Societe;84;THERMI SERVICE;0
+Societe;85;ARITH CHAUFFAGE;0
+Societe;86;SARL DEMOUGE;0
+Societe;87;E2S;0
+Societe;88;EUROENERGIE;0
+Societe;89;SPEED PLOMBERIE;0
+Societe;90;FATALOT;0
+Societe;91;INDO;0
+Societe;92;COTE NOUVELLES ENERGIES;0
+Societe;93;BINET ENERGIES;0
+Societe;94;ETS SERVAIS;0
+Societe;95;THERMI CHAUFF;0
+Societe;96;GB Services;0
+Societe;97;BESOINS SERVICES 24;0
+Societe;98;LC 74 PLOMBIER CHAUFFAGISTE;0
+Societe;99;Atelier Thermique Corriou (ATC);0
+Societe;100;SAS RAYNAUD;0
+Societe;101;A Air Clim;0
+Societe;102;SIMIE;0
+Societe;103;CLIMCHAUD ENERGIES;0
+Societe;104;CAPET THERMIE;0
+Societe;105;ETS BRIFFAUT;0
+Societe;106;LCO;0
+Societe;107;FCT 13;0
+Societe;108;SAS LEITAO;0
+Societe;109;JENERGIE;0
+Societe;110;FPCLIM;0
+Societe;111;Z- FMC Clim (Ne pas effacer);0
+Societe;112;Z- FMC Maintenance (Ne pas effacer);0
+Societe;113;Z- FMC Bureau (Ne pas effacer);0
+Societe;114;CR climatisation;0
+Societe;115;AD CHAUFFAGE SERVICES;0
+Societe;116;A2L CLIM;0
+Societe;117;EURL BOUCHER;0
+Societe;118;CUENOD;0
+Societe;119;JHC GAZ;0
+Societe;120;Sté NORMAND;0
+Societe;121;IN&TECH;0
+Societe;122;REVOLUTION'AIR;0
+Societe;123;SN BRUNORI;0
+Societe;124;DMC;0
+Societe;125;KAYRO;0
+SousType;1;Climatisation;0
+SousType;2;Ventilation;0
+SousType;3;Refrigeration;0
+SousType;4;Plomberie;0
+SousType;5;Chauffage;0
+SousType;6;Groupe eau glacée;0
+SousType;7;Gaz;0
+SousType;8;Roof top;0
+SousType;9;Electricité;0
+SousType;11;FEVI (Extraction);0
+StatusInterv;-1;Materiel à commander;1
+StatusInterv;2;Attente Materiel;2
+StatusInterv;1;A Planifier;3
+StatusInterv;7;Cloturé;4
+StatusInterv;8;Annulé avec accord client;5
+StatusInterv;20;Annulé en interne;6
+StatusInterv;9;Réalisé - A Valider;7
+StatusInterv;10;Résolu par téléphone;8
+StatusInterv;17;Ne pas Intervenir;9
+StatusInterv;19;Attente Fiche;10
+StatutFacture;1;A facturer;1
+StatutFacture;2;A définir;2
+StatutFacture;8;A definir (Par Fabien);3
+StatutFacture;3;Non Facturable;4
+StatutFacture;7;Non Facturable (SG);4
+StatutFacture;4;Facturé;5
+StatutFacture;6;Attendre 100% fini;6
+StatutFacture;5;Facturé (au  trimestre);7
+StatutFacture;9;Stand by;8
+StatutFacture;10;En Attente de Commande;9
+StatutFacture;11;SIRET Non renseigné;10
+TypeAudit;1;1- A definir (Divers);0
+TypeAudit;2;1- Boitier BS;0
+TypeAudit;3;1- Telecommande;0
+TypeAudit;4;1- Telec Centralisée;0
+TypeAudit;5;1- Plenum Airzone;0
+TypeAudit;6;1- Tel. Airzone;0
+TypeAudit;7;1- Acc. Airzone;0
+TypeAudit;8;1- Web Serveur Airzone;0
+TypeAudit;9;1- Purificateur;0
+TypeAudit;10;1- Monosplit;0
+TypeAudit;11;1- Multisplit;0
+TypeAudit;12;1- Twin;0
+TypeAudit;13;1- VRV;0
+TypeAudit;14;1- VRV à eau;0
+TypeAudit;15;1- Cave à vin;0
+TypeAudit;16;1- Window;0
+TypeAudit;17;1- Gr. à eau perdue;0
+TypeAudit;18;1- Monobloc;0
+TypeAudit;19;1- Mural;0
+TypeAudit;20;1- Console;0
+TypeAudit;21;1- Gainable;0
+TypeAudit;22;1- Cassette;0
+TypeAudit;23;1- Plafonnier;0
+TypeAudit;24;1- Armoire;0
+TypeAudit;25;1- Clim mobile;0
+TypeAudit;26;1- Bouches/Grilles;0
+TypeAudit;27;1- Roof (A définir);0
+TypeAudit;28;1- Roof Thermo;0
+TypeAudit;29;1- Roof Gaz;0
+TypeAudit;30;1- Roof Thermo + Gaz;0
+TypeAudit;31;1- Roof F.Seul + Gaz;0
+TypeAudit;32;1- Gr. Eau glacée;0
+TypeAudit;33;1- V. Convecteur;0
+TypeAudit;34;1- Deshu;0
+TypeAudit;35;0- NC;0
+TypeAudit;36;2- A definir (Divers);0
+TypeAudit;37;2- Chaudiere (A definir);0
+TypeAudit;38;2- Chaudiere Gaz;0
+TypeAudit;39;2- Chaudiere Fioul;0
+TypeAudit;40;2- GE PAC Air/Eau;0
+TypeAudit;41;2- PAC Piscine;0
+TypeAudit;42;2- PAC Boucle d'eau;0
+TypeAudit;43;2- UI PAC Air/Eau;0
+TypeAudit;44;2- Ballon Thermo;0
+TypeAudit;45;2- Thermostat;0
+TypeAudit;46;2- RAC (A definir);0
+TypeAudit;47;2- RAC electrique;0
+TypeAudit;48;2- RAC  Elec Encastré;0
+TypeAudit;49;2- RAC  Elec Apparent;0
+TypeAudit;50;2- RAC Thermo;0
+TypeAudit;51;2- RAC Thermo Encastré;0
+TypeAudit;52;2- RAC Thermo Apparent;0
+TypeAudit;53;2- RAC sans chauffage;0
+TypeAudit;54;2- RAC à eau;0
+TypeAudit;55;2- Rad. Elec;0
+TypeAudit;56;2- Rad à eau;0
+TypeAudit;57;2- Aerotherme (A definir);0
+TypeAudit;58;2- Aérotherme Gaz;0
+TypeAudit;59;2- Aérotherme Elec;0
+TypeAudit;60;2- Aérotherme Eau;0
+TypeAudit;61;3- A definir (Divers);0
+TypeAudit;62;3- Extracteur Labo;0
+TypeAudit;63;3- Ventilation Salon;0
+TypeAudit;64;3- Detection presence;0
+TypeAudit;65;3- Voyants V/R;0
+TypeAudit;66;3- Caisson Filtrant;0
+TypeAudit;67;3- Filtre Media;0
+TypeAudit;68;3- Filtre charbon;0
+TypeAudit;69;3- Media+Charbon;0
+TypeAudit;70;3- Bouches;0
+TypeAudit;71;4- A definir (Divers);0
+TypeAudit;72;4- Specifique/Divers;0
+TypeAudit;73;4- Simple Flux;0
+TypeAudit;74;4- Double Flux;0
+TypeAudit;75;4- Extracteur Cuisine;0
+TypeAudit;76;4- Grille (Souff/Extraction);0
+TypeAudit;77;4- Hotte;0
+TypeAudit;78;4- CTA;0
+TypeAudit;79;5- A definir (Divers);0
+TypeAudit;80;5- Chauffe Eau;0
+TypeAudit;81;5- Styx;0
+TypeAudit;82;6- A definir (Divers);0
+TypeAudit;83;6- Cartouche;0
+TypeAudit;84;6- Caisson desenfumage;0
+TypeAudit;85;6- Treuil Méca.;0
+TypeAudit;86;6- Treuil Pneu.;0
+TypeAudit;87;6- Trappe;0
+TypeAudit;88;6- Coffret Relayage;0
+TypeAudit;89;7- A definir (Divers);0
+TypeAudit;90;7- Destrat Soufflant;0
+TypeAudit;91;7- Destrat à pale;0
+TypeAudit;92;8- A definir (Divers);0
+TypeAudit;93;8- Monobloc (Positive);0
+TypeAudit;94;8- Monobloc (Negative);0
+TypeAudit;95;8- UE (Positive);0
+TypeAudit;96;8- UE (Negative);0
+TypeAudit;97;8- Evapo (Positive);0
+TypeAudit;98;8- Evapo (Negative);0
+TypeAudit;99;8- Vitrine;0
+TypeAudit;100;9- A definir (Divers);0
+TypeAudit;101;9- Pompe;0
+TypeAudit;102;10- A definir (Divers);0
+TypeAudit;103;10- Regul;0
+TypeFluide;28;A confirmer;0
+TypeFluide;29;Plusieurs (Voir Audit);0
+TypeFluide;30;R290;3
+TypeFluide;33;R513A;631
+TypeFluide;21;R32;675
+TypeFluide;25;R448a;1397
+TypeFluide;26;R449a;1397
+TypeFluide;24;R134a;1430
+TypeFluide;4;R407C;1774
+TypeFluide;6;R22;1810
+TypeFluide;5;R410a;2088
+TypeFluide;32;R452a;2140
+TypeFluide;27;R404a;3922
+TypeInterv;14;Appel;0
+TypeInterv;0;Toutes;1
+TypeInterv;1;Entretien;2
+TypeInterv;13;Maint.Chaudiere;2
+TypeInterv;2;Depannage;3
+TypeInterv;3;Devis SAV;4
+TypeInterv;12;Devis SAV (TR);5
+TypeInterv;5;En travaux;6
+TypeInterv;7;Désenfumage;7
+TypeInterv;9;Audit;8
+TypeInterv;4;Autre;9
+TypeInterv;6;En Création;10
+TypeInterv;8;Inter.réalisée en attente devis signé client;11
+TypeUtilisateur;NULL;2;0
+TypeUtilisateur;1;34;0
+TypeUtilisateur;2;277;0
+TypeUtilisateur;3;4;0
+VisitesMaint;2;Ecart mini 10 mois;1
+VisitesMaint;4;Ecart mini 4,5 mois;2
+VisitesMaint;5;Ecart Mini 2 mois;3
+VisitesMaint;6;Ecart mini 1,5 mois;4
+VisitesMaint;7;Ecart mini 25 jours;6
+VisitesMaint;9;Ecart mini 15 jours;12
+ZoneGeo;63;Bruno.Zone Sud Est;0
+ZoneGeo;68;Bx.Zone Bayonne;0
+ZoneGeo;69;Bx.Zone Pau;0
+ZoneGeo;70;Bx.Zone Bordeaux;0
+ZoneGeo;71;F. Nantes;0
+ZoneGeo;72;Bx.Zone Limoges;0
+ZoneGeo;74;Bx.Zone Agen;0
+ZoneGeo;75;L. La Rochelle;0
+ZoneGeo;76;F. Centre;0
+ZoneGeo;77;F. Bretagne Nord;0
+ZoneGeo;78;Bruno.Zone Perpignan;0
+ZoneGeo;79;F. Normandie Ouest;0
+ZoneGeo;80;F. Angers/Le Mans/Tours;0
+ZoneGeo;82;00. Hors Contrat;0
+ZoneGeo;84;F. Bretagne Sud;0
+ZoneGeo;85;L. Poitiers/Niort/La Roche sur Yon;0
+ZoneGeo;86;L. Angouleme;0
+ZoneGeo;87;Bx.Zone Bergerac;0
+ZoneGeo;89;00. Hors Contrat (Kingfisher);0
+ZoneGeo;91;0. Zone Nord Nord (Générale);0
+ZoneGeo;92;ZZ.Libre 3;0
+ZoneGeo;93;Bx.Zone Brive la Gaillarde;0
+ZoneGeo;94;F. Normandie Est;0
+ZoneGeo;96;Bx.Zone Perigueux;0
+ZoneGeo;97;F. Paris;0
+ZoneGeo;99;ZZ.Libre 2;0
+ZoneGeo;100;Bx.Ancien Zone FC 17 (OGF);0
+ZoneGeo;101;0. Zone Auvergne (Générale);0
+ZoneGeo;106;ZZ.Libre.12;0
+ZoneGeo;107;ZZ.Libre.11;0
+ZoneGeo;108;F. OGF (CP 85);0
+ZoneGeo;111;ZZ.Libre 5;0
+ZoneGeo;112;Bx.Zone Toulouse;0
+ZoneGeo;114;0. Zone Lyon (Générale);0
+ZoneGeo;115;0. Zone Paris (Générale);0
+ZoneGeo;116;ZZ.Libre 4;0
+ZoneGeo;117;ZZ.Libre 9;0
+ZoneGeo;118;ZZ.Libre 7;0
+ZoneGeo;119;ZZ.Libre 1;0
+ZoneGeo;120;ZZ.Libre.10;0
+ZoneGeo;121;ZZ.Libre 6;0
+ZoneGeo;122;ZZ.Libre 8;0
+ZoneGeo;123;Benoit. Zone Nord Est;0
