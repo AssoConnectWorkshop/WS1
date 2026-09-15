@@ -8,9 +8,17 @@ Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · AssoConnec
 - **AssoConnect API**: server-only client at `src/lib/assoconnect.ts`. Base URL `https://app.assoconnect.com/api/v1`, header `X-AUTH-TOKEN`, `Accept: application/ld+json`. Rate limit: 30 req/s, CRM scope only.
 - **Config-driven**: navigation and site values in `src/config/site.ts`.
 
+## Project: ClimAccess migration
+This repo hosts the rewrite of FMC's Access application "ClimAccess" (CVC maintenance management).
+- **Start here**: `docs/plan/README.md`, then the brief of the current step `docs/plan/etape-N.md`. Execute one step at a time.
+- Source knowledge: `legacy/SCHEMA_ANALYSIS.md`, `legacy/schema.sql`, `legacy/referentiels.txt`, `legacy/analysis/*.md` (business rules read from the VBA). Read the relevant analysis file before coding a screen.
+- Out of scope for now: tablet app and web portal, see `docs/hors-perimetre-tablette-portail.md`.
+- No real data in the repo, ever. Data transfer scripts run on the user's PC.
+
 ## Workflow
 - Before the first commit in a session: `git config user.email noreply@anthropic.com && git config user.name Claude`
-- After completing a task: commit → push → create PR → merge PR, without waiting for user confirmation.
+- After completing a task: commit and push directly to `main` (see README). No PR needed unless asked.
+- At the end of a step: update the "État" section of its brief and tell the user what to test.
 
 ## Rules
 - Server Components by default; `'use client'` only when interactivity requires it.

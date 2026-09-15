@@ -1,0 +1,55 @@
+# Étape 6 — Compléments : documents, automatismes, exports, carte, véhicules
+
+## Objectif
+
+Parité fonctionnelle avec Access pour le bureau. Après cette étape, SQL Server n'est plus nécessaire
+au bureau (la tablette et le portail restent hors périmètre, voir `docs/hors-perimetre-tablette-portail.md`).
+
+## 6.1 PDF du rapport d'intervention (analysis 02 §9)
+- Route `/interventions/[id]/bon.pdf`, génération serveur (`@react-pdf/renderer` ou `pdf-lib`).
+- Contenu : logo FMC (ou logo du donneur d'ordre s'il a une image dans Storage `logos`), « Fiche d'intervention N° » (legacy_id ou id), N° site et code, date, client, site, adresse, temps de trajet (aller, retour, total), temps sur site (arrivée, départ, durée) sauf si `masquer_heures_sur_bon`, nombre de techniciens, registre de sécurité oui/non, prestations effectuées, à prévoir / reste à faire, commentaire, type, cachet et signature client (nom, image), noms et signatures techniciens.
+- Bouton « Générer le PDF » : enregistre dans Storage `bons/<annee>/<id>.pdf`, renseigne `chemin_bon_pdf` (URL Storage), autorise le passage au statut 7.
+
+## 6.2 Certificat d'étanchéité Cerfa (analysis 03 §3.6, 01 §5.2)
+- Éligibilité : `site_materiels` du site avec `certificat_etancheite_edite = false` et `date_controle_etancheite` dans l'année.
+- Pré-contrôles bloquants avec les messages Access : fluide connu et de famille HCFC/HFC/HFO, `charge_fluide_kg > 0`, `gwp > 0`, marque, numéro de série, référence renseignés.
+- Calcul : t.éq.CO2 = kg × GWP / 1000 ; cases par seuils : HCFC kg < 30 / < 300 / ≥ 300 ; HFC tCO2e < 50 / < 500 / ≥ 500 ; HFO kg < 10 / < 100 / ≥ 100 ; « détection permanente » si `sites.detection_fuite_permanente`.
+- Un PDF par équipement, Storage `certificats/<annee>/<intervention>-<materiel>.pdf`, puis `certificat_etancheite_edite = true`. Fond du Cerfa : à fournir par l'utilisateur (image), sinon mise en page équivalente.
+- Opérateur : FMC Maintenance, 2 rue Galilée, 33185 Le Haillan ; SIRET et n° d'attestation à mettre en paramètre (`parametres_application`).
+
+## 6.3 Relances SAV automatiques (analysis 01 §5.3)
+- Vercel Cron toutes les heures, route `/api/cron/relances` protégée par `CRON_SECRET`.
+- Pour chaque intervention statut 1 avec une case rappel cochée : si `now - date_dernier_rappel` (ou création si null) dépasse 24 h / 48 h / 72 h / 168 h selon la case → envoi d'un e-mail à l'adresse SAV paramétrée (`parametres_application.email_sav`) via Resend (clé `RESEND_API_KEY`, serveur), objet « Rappel Intervention <site> », corps site, N° DI client, date de demande ; `date_dernier_rappel = now()`.
+- Journal des envois dans `journal_emails`.
+
+## 6.4 E-mails manuels
+- Depuis la fiche intervention : « Mail au partenaire » (intervenant.email), « Mail au contact » (contact.email), « Mail de fin d'intervention » (client.email) : ouverture d'un formulaire pré-rempli avec les textes Access, envoi via Resend, journalisé.
+
+## 6.5 Exports Excel (analysis 04 §3, §4)
+- `exceljs`, génération serveur, téléchargement.
+- **Bilan client** (export « Fabien ») : mêmes 28 colonnes et mêmes règles (période sur date réalisée pour les interventions, sur date d'envoi pour les devis ; statuts 8 et 10 exclus ; heures × nombre de techniciens ; coût théorique = déplacements × tarif + heures × tarif). Corriger le compteur de devis refusés.
+- **Comptage et montants par site** (export « Pierre ») : filtres type, statut, sous-type, période sur date limite ; option par mois ; option par motif de nom de site (4 textes).
+- **Export du parc matériel** d'un client (colonnes de `site_materiels`).
+- **Export de la liste d'interventions** courante (colonnes affichées).
+- Pas de modèle réseau : fichiers générés de zéro avec en-têtes.
+
+## 6.6 Carte (analysis 03 §5)
+- `/carte` : Leaflet (`react-leaflet`, tuiles OpenStreetMap), une épingle par intervention avec géolocalisation du site, couleur par type (1 bleu, 2 vert, 3 rouge, 5 cône orange, 7 jaune, 9 noir, autres marron), cercle orange 500 m si date limite dépassée, info-bulle (type, client, site, adresse, date demande, date limite, dernière visite, technicien prévu, date prévue, commentaires). Filtres : clients, types, statuts, période, donneur, intervenants, zones.
+
+## 6.7 Parc automobile (analysis 04 §5)
+- `/vehicules` : liste, fiche éditable, événements (relevé km, révision, CT, contrôle complémentaire) avec règle « km ≥ dernier relevé », case « afficher les vendus » (état 4).
+- Alertes sur le tableau de bord : CT > 24 mois, contrôle complémentaire > 12 mois depuis le plus récent CT/CC, révision (km entre révisions dépassés ou mois), leasing (date de fin ou mois), garantie (mois) ; véhicules d'état 4 et 5 exclus.
+
+## 6.8 Documents vers Storage (si accès au serveur de fichiers)
+- Script `scripts/migrate-documents/` sur le PC de l'utilisateur : parcourt les chemins `\\serveur\...` référencés (`chemin_bon_pdf`, `devis.fichier_chemin`, `sites.dossier_chemin`), copie dans Storage, remplace le chemin par l'URL. Rapport des fichiers introuvables.
+
+## Critères d'acceptation
+
+- Un bon PDF et un Cerfa comparés à leurs équivalents Access : mêmes informations.
+- Une relance de test reçue sur l'adresse SAV de test.
+- Bilan client d'une période comparé à l'export Access : mêmes totaux (hors correction du compteur de refus).
+- Build vert, push sur `main` fonctionnalité par fonctionnalité.
+
+## État
+
+- [ ] Non commencée
