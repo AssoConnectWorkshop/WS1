@@ -26,6 +26,10 @@ yarn-error.log*
 .env*.local
 .env
 
+# scripts/migrate-legacy (étape 2 : jamais de données réelles ni de rapport dans le repo)
+scripts/migrate-legacy/node_modules
+scripts/migrate-legacy/last-run-report.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

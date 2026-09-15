@@ -86,4 +86,38 @@ cible sélectionnée avant insertion, dans l'ordre des dépendances, en une tran
 
 ## État
 
-- [ ] Non commencée
+- [x] `scripts/migrate-legacy/` écrit : orchestrateur (`index.mjs`, `--tables=`, `--dry-run`),
+  `config.mjs`, un module de mapping par table cible (`mapping/*.mjs`, y compris les
+  référentiels absents de `legacy/referentiels.txt` — marques, reperes, types_telecommande,
+  jours_feries, types_evenement_vehicule, etats_vehicule, references_materiel), `lib/`
+  (dates Europe/Paris, conversions génériques, complétion de référentiels), `report.mjs`.
+- [x] `scripts/migrate-legacy/README.md` : prérequis, variables, commandes, dépannage.
+- [x] `.gitignore` : `scripts/migrate-legacy/node_modules` et `last-run-report.md` ajoutés
+  (`.env.local` déjà couvert globalement par `.env*.local`).
+- [x] `docs/plan/dictionnaire.md` complété : section « Règles de transformation », section
+  des référentiels chargés directement depuis la source à l'étape 2.
+- [x] Validé **sans données réelles** : chaque module de mapping testé contre une vraie base
+  Postgres (schéma de l'étape 1) avec une ligne source synthétique par table
+  (`scripts/migrate-legacy/test/`, données fictives) — vérifie que chaque colonne produite
+  existe dans la table cible, que les FK/lookups se résolvent, que les deux passages
+  différés (`intervenants` ↔ `utilisateurs`, `site_materiels.intervention_id`) fonctionnent,
+  et que relancer deux fois de suite ne duplique rien et laisse `created_at`/`updated_at`
+  inchangés (a révélé et corrigé un bug réel : le trigger `set_updated_at` de l'étape 1
+  écrasait `majle` par `now()` sur chaque réexécution — désormais désactivé le temps du lot
+  quand la ligne fournit sa propre valeur).
+- [ ] **Non exécuté contre les vraies données** : cette session n'a accès ni au SQL Server
+  Docker de l'utilisateur, ni à `SUPABASE_DB_URL`, ni à des données réelles (interdit par
+  `CLAUDE.md`). Le transfert réel, le rapport de contrôle sur les vrais volumes, et les
+  critères d'acceptation chiffrés (écarts, sommes à l'euro près, relance x2, vérification de
+  5 sites/interventions) restent à faire **sur le PC de l'utilisateur**.
+
+### À faire par l'utilisateur
+
+1. `cd scripts\migrate-legacy && npm install`.
+2. Créer `.env.local` (voir `README.md`) avec les identifiants du SQL Server Docker local et
+   `SUPABASE_DB_URL` (pooler Postgres direct, port 5432).
+3. `node index.mjs --dry-run` puis `node index.mjs`.
+4. Lire `scripts/migrate-legacy/last-run-report.md` : écarts par table, codes de référentiel
+   découverts, lignes orphelines, sommes de contrôle, échantillon de 20 sites.
+5. Relancer `node index.mjs` une seconde fois et vérifier que le rapport est identique.
+6. Vérifier dans Supabase 5 sites et 5 interventions connus.

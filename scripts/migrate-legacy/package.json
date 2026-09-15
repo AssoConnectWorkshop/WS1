@@ -1,0 +1,14 @@
+{
+  "name": "migrate-legacy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Transfert logiclim (SQL Server) -> Supabase (Postgres). Tourne uniquement sur le PC de l'utilisateur.",
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "mssql": "^11.0.1",
+    "pg": "^8.13.1"
+  }
+}
