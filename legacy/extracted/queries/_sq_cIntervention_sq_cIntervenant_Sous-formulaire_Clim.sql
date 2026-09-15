@@ -1,0 +1,1 @@
+SELECT Intervenant.codint,Intervenant.nomint,Intervenant.numzonint,Intervenant.Activite_1,Intervenant.Activite_2,Intervenant.Activite_3,Intervenant.Activite_4,Intervenant.Activite_5,Intervenant.Activite_6,Intervenant.VillesInterventions_Interv,Intervenant.numzonint_2_Interv,Intervenant.numzonint_3_Interv,Intervenant.numzonint_4_Interv FROM [Site],[Intervenant] 

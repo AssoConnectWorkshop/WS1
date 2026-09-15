@@ -1,0 +1,1 @@
+SELECT annuaire.N°,1,Trim([magasin]),Trim(IIf([H/F]="M","H et F",[H/F])),Trim([Adresse]),Trim(IIf(Len([code_postal])=4,"0" & [code_postal],[code_postal])),Trim([Ville]),Remplacer([F8]),Trim([Directrice]),Trim([Téléphone]),Trim([Fax]) FROM [annuaire],[Site] WHERE (((Site.numsit) Is Null)) 

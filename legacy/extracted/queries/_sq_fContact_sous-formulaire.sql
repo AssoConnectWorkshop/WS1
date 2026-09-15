@@ -1,0 +1,1 @@
+SELECT Contact.codcon,Contact.nomcon,Contact.precon,Contact.adrmelcon,Contact.numcli,Contact.telcon,Contact.faxcon,Contact.mobcon,Contact.obscon,Contact.foncon,Contact.civcon,Contact.numdonneur FROM [Contact] 

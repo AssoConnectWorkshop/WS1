@@ -1,0 +1,1 @@
+SELECT Site.hor_lun_ouv,Site.hor_lun_fer,Site.hor_mar_ouv,Site.hor_mar_fer,Site.hor_mer_ouv,Site.hor_mer_fer,Site.hor_jeu_ouv,Site.hor_jeu_fer,Site.hor_ven_ouv,Site.hor_ven_fer,Site.hor_sam_ouv,Site.hor_sam_fer,Site.hor_dim_ouv,Site.hor_dim_fer,Site.cptsit FROM [Site] 

@@ -1,0 +1,1 @@
+SELECT Utilisateur.numuti,Utilisateur.nomuti,Utilisateur.preuti,Utilisateur.typuti,Utilisateur.nomsocuti,Utilisateur.mdputi,Utilisateur.numsoc,Utilisateur.loguti,Utilisateur.codintuti,Utilisateur.Mail,Utilisateur.KmARenseigner,Utilisateur.Immat,Utilisateur.nummod FROM [Utilisateur] 

@@ -1,0 +1,1 @@
+SELECT Site.CptSit,Site.numcli,Site.codsit,Site.nomsit,Site.sitsit,Site.typsit,Site.adrsit,Site.codpossit,Site.vilsit,Site.telsit,Site.faxsit,Site.civres,Site.nomres,Site.preres,Site.surven,Site.surtot,Site.nbrentsit,Site.datdervisdes,Site.comsit,Site.telcencom,Site.datcresit,Site.mntredev,Site.datprisencharge,Site.misajoursecurite,Site.numsit FROM [Site] 

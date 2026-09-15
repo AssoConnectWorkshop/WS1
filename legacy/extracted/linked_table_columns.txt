@@ -1,0 +1,47 @@
+SITE (102): DateContratChaudiere, InfoCompl, Invest, NombreContratChaudiere, NumContratChaudiere, NumEsabora, NumSousTraitChaudiere, NumSousTraitClim, NumSousTraitDesenfum, RDV_Prendre, TarifSousTraitChaudiere, TarifSousTraitClim, TarifSousTraitDesenfum, accessfiltre, adrsit, allumageclim, aspirateur, auditafaire, auditfait, chemindoc, civres, codpossit, codsit, commentaire, comsit, controleetancheiteafaire, controleetancheitefait, controleetancheiteponctuel, cptsit, creele, datcresit, datdervisdes, datedernierevisiteentretien, datedesenfumage, datefermeture, datesignaturecontrat, datprisencharge, demixasit, domotique, donneurid, faxsit, fermeture, hor_dim_fer, hor_dim_ouv, hor_jeu_fer, hor_jeu_ouv, hor_lun_fer, hor_lun_ouv, hor_mar_fer, hor_mar_ouv, hor_mer_fer, hor_mer_ouv, hor_sam_fer, hor_sam_ouv, hor_ven_fer, hor_ven_ouv, indaccessib, indclitec, indpuissance, indvetust, latitude, longitude, majle, majregistresecuriteafaire, majregistresecuritefait, misajoursecurite, mntredev, mntredevContratChaudiere, montantredevancedesenfumage, montantredevancefiltre, montantredevancetechnique, motiffermeture, nbrdesenfsit, nbrentsit, nbrpho, nbrplan, nombrevisitedesenfumage, nombrevisitefiltre, nombrevisitetechnique, nomres, nomsit, nomsocsit, numerocontratclient, numerocontratdesenfumage, numintervenant, numsit, numzone2, numzonsit, photoafaire, photofaite, precisiongeo, preres, sitsit, surtot, surven, telcencom, telsit, temp_entree, temp_sortie, typfluid, typsit, vilsit
+Intervention (85): CheminDossEtanch, auditfait, cheficdemcli, cheficdemint, classeepar, codcon, codint, codpan, comdevis, comdevisinterne, comint, comtec, controleetancheite, controleetancheiteponctuel, cptsit, creele, datesignaturecontrat, datheuapp, datheulim, datint, datintpre, devisafaire, devisanepasfaire, devisepar, devisfait, dirint, duplicatacreepar, duplicatafait, envoisoustraitantpar, heuarrint, heudepint, heuintpre, heuvis, imprimeepar, intafact, intfac, intfactok, majle, majregsec, mntfac, mntfmc, mnthtdevis, mnthtdevpartenaire, mntst, natureintervention, nbrappint, nbrpagfax, nbrtecint, numdev, numdevacc, numdevpartenaire, numerocommande, numerocontratclient, numerodemandesoustraitant, numint, numintint, nummodres, numpartenaire, numutipre, objint, pannoncli, photofaite, prediagpar, prediagres, refcliint, refint, retourfichecopie, retourfichecopieordi, retourficheinterventionpar, retourficheoriginal, saisiepar, sigcli2, sigcliimg, sigsit, sigsitimg, sigtec, sigtec2, sigtecimg, stadev, staint, tpsallint, tpsretint, traitepar, typint, visitegratuite
+SiteMateriel (65): AccessibiliteCassettes, AccessibiliteGroupe, AerothermeGazElec, AppointChauffageSurRoof, CE_Edite, ClimLocauxSociauxDateMiseService, ClimLocauxSociauxEmplacement, ClimLocauxSociauxEmplacementGroupeExterieur, ClimLocauxSociauxFluideQuantite, ClimLocauxSociauxMarque, ClimLocauxSociauxNumeroSerie, ClimLocauxSociauxReference, ClimLocauxSociauxReversible, ClimLocauxSociauxType, ControleEtancheite, DateAchat, DateCE, DateMiseEnService, DevisEnCours, DevisValide, DisjoncteurArmoirePrincipale, DisjoncteurCoffretIndependant, DisjoncteurPrincipal, DisjoncteurRadiateursTypeIntensite, Disjoncteurs, Emplacement, EmplacementTelecommande, EtatSupports, FluideQuantite, LocalisationRadiateurs, LocalisationVMC, Marque, NbreAerotherme, NbreCourroiesRoofTop, NbreFiltreRoofTop, NbreRadiateurs, NbreRideauType, NbreTelecommande, NumeroInter, NumeroSerie, NumeroSite, NumeroSiteMateriel, Observations, Photos, PuissanceCalo, PuissanceFrigo, PuissanceRideau, Quantite, Radiateurs, RapportsMaintenance, Reference, ReferenceCourroiesRoofTop, ReferenceFiltreRoofTop, Repere, RepereSurSite, ResistanceElectrique, Reversible, RideauAir, SasEntree, SupportGroupes, Type, TypeDisjoncteurRideau, TypeTelecommande, VMC, repere
+Site (57): CptSit, NumSousTraitChaudiere, NumSousTraitDesenfum, TarifSousTraitChaudiere, TarifSousTraitDesenfum, VilSit, adrsit, auditafaire, civres, codpossit, codsit, comsit, controleetancheiteafaire, cptsit, datcresit, datdervisdes, datedernierevisiteentretien, datprisencharge, demixasit, donneurid, faxsit, hor_dim_fer, hor_dim_ouv, hor_jeu_fer, hor_jeu_ouv, hor_lun_fer, hor_lun_ouv, hor_mar_fer, hor_mar_ouv, hor_mer_fer, hor_mer_ouv, hor_sam_fer, hor_sam_ouv, hor_ven_fer, hor_ven_ouv, indvetust, latitude, longitude, majregistresecuriteafaire, misajoursecurite, mntredev, montantredevancefiltre, nbrentsit, nomres, nomsit, numcli, numsit, numzonsit, photoafaire, preres, sitsit, surtot, surven, telcencom, telsit, typsit, vilsit
+ListeInterventionGenerale (20): NumeroDevisInterne, adrsit, codpossit, codsit, comtec, datheulim, datint, datintpre, mntst, nomcli, nomsit, nomzon, numdevacc, numintint, numsit, refcliint, sigsit, sigtec, telsit, vilsit
+Intervenant (17): Activite_1, Activite_2, Activite_3, Activite_4, Activite_5, Activite_6, VillesInterventions_Interv, adrmelint, codint, faxint, nomint, numintervenant, numzonint, numzonint_2_Interv, numzonint_3_Interv, numzonint_4_Interv, telint
+Client (16): adrcli, affcli, cheminpho, cheminpla, codposcli, concli, coutdeplacement, coutheuremainoeuvre, faxcli, hormaxintcli, logcli, melcli, nomcli, numcli, telcli, vilcli
+Utilisateur (15): Immat, KmARenseigner, Mail, Nomuti, Preuti, codintuti, loguti, mdputi, nomsocuti, nomuti, nummod, numsoc, numuti, preuti, typuti
+Planification (14): T1, T10, T11, T12, T2, T3, T4, T5, T6, T7, T8, T9, nombrevisite, numcli
+SiteMarqueReference (13): cptsit, datfinser, datmisser, des, fluide, indpri, indvet, indvetplu, nomref, nummar, numsitmarref, qte, type
+Contact (12): adrmelcon, civcon, codcon, faxcon, foncon, mobcon, nomcon, numcli, numdonneur, obscon, precon, telcon
+Devis (11): DateEnvoiDevis, MontantFournitureDevis, MontantHTDevis, MontantHTDevisPartenaire, NbreDeplacementDevis, NomFichierDevis, NumeroDevis, NumeroDevisInterne, NumeroSite, StatutDevis, montanthtdevis
+FicheIntervention (7): dateFicheInt, heureDebut, heureFin, numBon, numIntInt, tempsAller, tempsRetour
+SiteMarqueReferenceDesenfumage (7): cptsit, datfinser, datmisser, des, numsitmarrefdes, qte, vetust
+Donneur (6): cheminpho, cheminpla, donneurid, meldonneur, nomdonneur, sairapdonneur
+dbo_EvVehicules (5): DateEv, Immat, Km, NumEV, TypeEv
+DevisTravaux (4): NomFichierDevis, NumeroDevis, NumeroDevisInterne, StatutDevis
+TypeFluide (4): ID, Libelle, id, libelle
+dbo_TypeInterv (4): IndexLigne, IndexLigneSTRING, OrdreAffichage, TypeInter
+dbo_StatusInterv (3): IndexLigne, OrdreAffichage, StatutInter
+client (3): affcli, nomcli, numcli
+dbo_StatutFacture (3): IndexLigne, OrdreAffichage, Statut
+dbo_Vehicules (3): EtatVehicule, Immatriculation, NumVehicule
+dbo_HeuresTech (3): DateInterv, TypeInterv, nominterv
+PanneMaterielSite (3): dateDebut, dateFin, numintint
+SiteNombreEntretien (3): cptsit, datfin, nbrentsit
+Climserv (2): NomPrenom, id
+ZoneGeographique (2): nomzon, numzon
+intervenant (2): nomint, numintervenant
+dbo_SousType (2): SousType, id
+dbo_ListeEVVehicule (2): Evenement_Vehicule, Numero
+Activites (2): Nomactivite, Numactivite
+ModeResolution (2): libmodres, nummodres
+ListeInter (2): mnthtdevis, typint
+activites (2): Nomactivite, Numactivite
+ModeleRepertoireTechnique (2): nommod, nummod
+Marque (2): nommar, nummar
+Repere (2): Repere, id
+TypeAudit (2): Type, id
+TypeTel (2): TypeTelecommande, id
+dbo_ListeEtatVehicule (2): EtatVehicule, Numero
+intervention (2): mnthtdevis, typint
+Liste (1): staint
+Panne (1): libpan
+site (1): numsit
+DBO_HeuresTech (1): TypeInterv
+dbo_StatusInterv_1 (1): StatutInter

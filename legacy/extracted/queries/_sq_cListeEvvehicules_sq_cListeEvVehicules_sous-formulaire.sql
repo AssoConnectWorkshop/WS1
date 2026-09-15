@@ -1,0 +1,1 @@
+SELECT dbo_EvVehicules.DateEv,dbo_EvVehicules.Immat,[Utilisateur.Nomuti]+' '+[Utilisateur.Preuti],dbo_EvVehicules.Km,dbo_ListeEVVehicule.Evenement_Vehicule,dbo_EvVehicules.NumEV,dbo_EvVehicules.TypeEv FROM [dbo_EvVehicules],[Utilisateur],[dbo_ListeEVVehicule],[dbo_Vehicules] WHERE (((dbo_Vehicules.EtatVehicule)<>4)) ORDER BY dbo_EvVehicules.DateEv

@@ -1,0 +1,1 @@
+SELECT Intervenant.codint,Site.numsit,Site.nomsit,Site.typsit,Site.vilsit,Site.adrsit,Site.codpossit,Client.nomcli FROM [ZoneGeographique],[Intervenant],[Client],[Site],[parametre] ORDER BY Site.numsit

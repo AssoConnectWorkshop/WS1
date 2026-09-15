@@ -1,0 +1,1 @@
+SELECT  FROM [Client] WHERE 1=1 

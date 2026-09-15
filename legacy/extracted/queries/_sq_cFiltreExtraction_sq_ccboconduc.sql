@@ -1,0 +1,1 @@
+SELECT numuti,Nomuti+" "+preuti FROM [Utilisateur] WHERE (((Utilisateur.numsoc)=1 Or (Utilisateur.numsoc)=111 Or (Utilisateur.numsoc)=112 Or (Utilisateur.numsoc)=113) AND ((Utilisateur.typuti)=2) AND ((Utilisateur.codintuti)<>'')) ORDER BY Utilisateur.Nomuti

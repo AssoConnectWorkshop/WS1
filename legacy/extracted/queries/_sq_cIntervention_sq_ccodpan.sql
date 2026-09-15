@@ -1,0 +1,1 @@
+SELECT  FROM [Panne] WHERE 1=1 

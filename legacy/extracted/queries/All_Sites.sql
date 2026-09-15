@@ -1,0 +1,1 @@
+SELECT Site.* FROM [Site] 

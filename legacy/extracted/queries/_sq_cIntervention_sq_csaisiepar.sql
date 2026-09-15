@@ -1,0 +1,1 @@
+SELECT Utilisateur.numuti,[nomuti] & " " & [preuti],Utilisateur.typuti,Utilisateur.codintuti,Utilisateur.numsoc FROM [Utilisateur] WHERE (((Utilisateur.typuti)=1) AND ((Utilisateur.codintuti)<>"")) ORDER BY Utilisateur.numsoc

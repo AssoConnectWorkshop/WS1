@@ -1,0 +1,1 @@
+SELECT FicheIntervention.numIntInt,FicheIntervention.numBon,FicheIntervention.dateFicheInt,FicheIntervention.heureDebut,FicheIntervention.heureFin,FicheIntervention.tempsAller,FicheIntervention.tempsRetour FROM [FicheIntervention] ORDER BY FicheIntervention.numIntInt

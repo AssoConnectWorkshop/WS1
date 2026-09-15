@@ -1,0 +1,1 @@
+SELECT Client.nomcli,Count(Site.nomsit),Year([datint]) FROM [Client],[Site],[Intervention] WHERE (((Intervention.typint)="2" Or (Intervention.typint)="3" Or (Intervention.typint)="1") AND ((Client.numcli)=210)) ORDER BY Client.nomcli

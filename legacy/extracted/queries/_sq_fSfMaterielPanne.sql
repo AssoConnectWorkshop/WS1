@@ -1,0 +1,1 @@
+SELECT PanneMaterielSite.numintint,PanneMaterielSite.dateDebut,PanneMaterielSite.dateFin,SiteMarqueReference.nomref,Marque.nommar,SiteMarqueReference.numsitmarref FROM [PanneMaterielSite],[SiteMarqueReference],[Marque] 

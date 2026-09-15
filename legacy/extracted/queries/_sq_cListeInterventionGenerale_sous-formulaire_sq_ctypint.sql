@@ -1,0 +1,1 @@
+SELECT dbo_TypeInterv.IndexLigneSTRING,dbo_TypeInterv.TypeInter,dbo_TypeInterv.OrdreAffichage FROM [dbo_TypeInterv] WHERE (((dbo_TypeInterv.IndexLigneSTRING)>"0") AND ((dbo_TypeInterv.OrdreAffichage)<>-1)) ORDER BY dbo_TypeInterv.OrdreAffichage

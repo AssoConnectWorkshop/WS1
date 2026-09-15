@@ -1,0 +1,1 @@
+SELECT [AuditRegulationCommande].[numeroregulationcommande],[AuditRegulationCommande].[numaudit],[AuditRegulationCommande].[TypeTelecommande],[AuditRegulationCommande].[NbreTelecommande],[AuditRegulationCommande].[EmplacementTelecommande],[AuditRegulationCommande].[EtatTelecommande],[AuditRegulationCommande].[HauteurTelecommande] FROM [AuditRegulationCommande] 

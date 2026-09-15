@@ -1,0 +1,1 @@
+SELECT Trim([AC]),Trim([N°]),Trim([Magasin]),Trim([H/F]),Trim([Adresse]),Trim([code_postal]),Trim([Ville]),Trim([F8]),Trim([Directrice]),Trim([Téléphone]),Trim([abr# tél]),Trim([Fax]),Trim([Abr# Fax]) FROM [annuaire] 

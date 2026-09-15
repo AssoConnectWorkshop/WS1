@@ -1,0 +1,1 @@
+SELECT DISTINCT Site.numsit,Site.nomsit,Site.typsit,Site.vilsit,Site.adrsit,Site.codpossit,Client.nomcli,Site.mntredev,Site.surven FROM [ZoneGeographique],[Intervenant],[Client],[parametre],[Site] 

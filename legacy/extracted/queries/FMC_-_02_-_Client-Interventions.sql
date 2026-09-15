@@ -1,0 +1,1 @@
+SELECT DISTINCT Client.nomcli,Site.numsit,Site.nomsit,Intervention.typint,Count(Intervention.typint) FROM [Client],[Intervention],[Site] WHERE (((Intervention.datint) Between #1/1/2015# And #12/31/2015#)) ORDER BY Count(Intervention.typint) DESCENDING

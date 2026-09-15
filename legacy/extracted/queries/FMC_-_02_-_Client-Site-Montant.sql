@@ -1,0 +1,1 @@
+SELECT Client.nomcli,Site.numsit,Site.nomsit,Sum(Devis.montanthtdevis) FROM [Client],[Site],[Devis] WHERE (((Devis.StatutDevis)=6) AND ((Devis.DateEnvoiDevis) Between #1/1/2015# And #12/31/2015#)) ORDER BY Sum(Devis.montanthtdevis) DESCENDING

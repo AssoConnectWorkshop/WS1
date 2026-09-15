@@ -1,0 +1,1 @@
+SELECT SiteNombreEntretien.nbrentsit,SiteNombreEntretien.datfin,SiteNombreEntretien.cptsit FROM [SiteNombreEntretien] 

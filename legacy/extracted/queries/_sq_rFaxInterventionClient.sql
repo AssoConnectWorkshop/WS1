@@ -1,0 +1,1 @@
+SELECT Client.nomcli,Client.adrcli,Client.codposcli,Client.vilcli,Intervention.numint,Intervention.datint,Intervention.numint,Site.numsit,Site.nomsit,Site.adrsit,Site.codpossit,Contact.nomcon,Contact.precon,Contact.codcon,Intervention.nbrpagfax,Client.faxcli,Client.telcli,Site.typsit,Client.numcli,Intervention.numintint FROM [Client],[Contact],[Intervention],[Site] 

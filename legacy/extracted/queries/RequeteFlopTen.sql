@@ -1,0 +1,1 @@
+SELECT TOP 20 Site.numsit,Site.typsit,Site.indvetust,IIf(IsNull([Nombre d'interventions defaut matériel]),"0",[Nombre d'interventions defaut matériel]),IIf(IsNull([Nombre d'interventions total]),"0",[Nombre d'interventions total]),Site.nomsit FROM [Client],[parametre],[Site],[TopTen - Nb inter defaut Mat],[TopTen - Nb inter total],[Intervention] ORDER BY Site.indvetust

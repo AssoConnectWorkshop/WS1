@@ -1,0 +1,1 @@
+SELECT dbo_StatusInterv.IndexLigne,dbo_StatusInterv.StatutInter FROM [dbo_StatusInterv] WHERE dbo_StatusInterv.OrdreAffichage>0 ORDER BY dbo_StatusInterv.OrdreAffichage

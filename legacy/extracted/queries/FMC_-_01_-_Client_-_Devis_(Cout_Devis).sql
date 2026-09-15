@@ -1,0 +1,1 @@
+SELECT Client.nomcli,Devis.NumeroSite,Site.nomsit,Site.codpossit,Site.vilsit,Devis.StatutDevis,Count(Devis.StatutDevis),Sum(Devis.MontantHTDevisPartenaire),Sum(Devis.MontantHTDevis),Sum(Devis.MontantFournitureDevis),Sum(Devis.NbreDeplacementDevis) FROM [Client],[Devis],[Site] WHERE (((Devis.DateEnvoiDevis) Between #1/1/2015# And #12/31/2015#)) ORDER BY Client.nomcli

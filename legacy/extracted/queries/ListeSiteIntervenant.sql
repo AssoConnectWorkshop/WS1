@@ -1,0 +1,1 @@
+SELECT [nomzon] & " " & [codint],Intervenant.codint,Site.numsit,Site.nomsit,Site.typsit,Site.vilsit,Site.adrsit,Site.codpossit,Client.nomcli,ZoneGeographique.nomzon FROM [ZoneGeographique],[Client],[Site],[parametre],[Intervenant] 
