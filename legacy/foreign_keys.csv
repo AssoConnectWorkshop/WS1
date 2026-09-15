@@ -1,0 +1,11 @@
+name;from_table;from_col;to_table;to_col
+----;----------;--------;--------;------
+FK_HistoCnx_Utilisateur;HistoCnx;numuti;Utilisateur;numuti
+FK_Intervenant_ZoneGeographique;Intervenant;numzonint;ZoneGeographique;numzon
+FK_Intervention_Intervenant;Intervention;codint;Intervenant;codint
+FK_Intervention_Site;Intervention;cptsit;Site;cptsit
+FK_Intervention_Panne;Intervention;codpan;Panne;codpan
+FK_InterventionFicheFluide_Site;InterventionFicheFluide;cptsit;Site;cptsit
+FK_InterventionFourniture_Intervention;InterventionFourniture;numint;Intervention;numintint
+FK_ParametreRepertoireTechnique_ModeleRepertoireTechnique;ParametreRepertoireTechnique;nummod;ModeleRepertoireTechnique;nummod
+FK_ParametreRepertoireTechnique_ChampRepertoireTechnique;ParametreRepertoireTechnique;numcha;ChampRepertoireTechnique;numcha
