@@ -10,7 +10,8 @@ Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · AssoConnec
 
 ## Project: ClimAccess migration
 This repo hosts the rewrite of FMC's Access application "ClimAccess" (CVC maintenance management).
-- **Start here**: `docs/plan/README.md`, then the brief of the current step `docs/plan/etape-N.md`. Execute one step at a time.
+- **Start here**: `docs/README.md` (reading order), then `docs/CONTEXTE.md` (what the current app does), then `docs/plan/README.md` and the brief of the current step `docs/plan/etape-N.md`. Execute one step at a time.
+- Code attempts live on branches `tentative-N`; the directives (`docs/`, `legacy/`, `CLAUDE.md`) live on `main`.
 - Source knowledge: `legacy/SCHEMA_ANALYSIS.md`, `legacy/schema.sql`, `legacy/referentiels.txt`, `legacy/analysis/*.md` (business rules read from the VBA). Read the relevant analysis file before coding a screen.
 - Out of scope for now: tablet app and web portal, see `docs/hors-perimetre-tablette-portail.md`.
 - No real data in the repo, ever. Data transfer scripts run on the user's PC.
