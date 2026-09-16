@@ -51,3 +51,4 @@ Dans une nouvelle session Claude Code, prompt :
 | 4 Écrans de consultation | `etape-4.md` | L | Sonnet |
 | 5 Écrans de saisie | `etape-5.md` | L | Opus, ou Sonnet avec validation écran par écran |
 | 6 Compléments | `etape-6.md` | M | Opus, ou Sonnet avec validation |
+| 7 Mise en service (données réelles, e-mails, documents) | `etape-7.md` | S | Utilisateur, sur son PC |
