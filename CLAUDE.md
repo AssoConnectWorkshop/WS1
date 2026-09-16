@@ -29,6 +29,6 @@ This repo hosts the rewrite of FMC's Access application "ClimAccess" (CVC mainte
 
 ## Deployment
 - All env vars live on Vercel — never commit secrets.
-- Push to `main` → production (`https://assoconnect-ws1.vercel.app/`).
+- Push to `main` → production (`https://fmc-climatisation.vercel.app/`). The URL is never hard-coded: read `NEXT_PUBLIC_SITE_URL`.
 - Push to any branch + open a PR → Vercel Deploy Preview.
 - After pushing, tell the user the URL and what to look for.

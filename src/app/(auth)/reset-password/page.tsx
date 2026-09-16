@@ -10,7 +10,11 @@ async function requestReset(formData: FormData) {
     redirect("/reset-password?error=missing_email");
   }
 
-  const site = process.env.NEXT_PUBLIC_SITE_URL ?? "https://assoconnect-ws1.vercel.app";
+  const site = process.env.NEXT_PUBLIC_SITE_URL;
+  if (!site) {
+    console.error("reset-password: NEXT_PUBLIC_SITE_URL non défini");
+    redirect("/reset-password?error=envoi");
+  }
   // Liste blanche EMAILS_AUTORISES : hors liste, rien n'est envoyé et on le dit (public restreint,
   // l'anti-énumération compte moins que la clarté).
   if (!emailAutorise(email)) redirect("/reset-password?error=non_autorise");

@@ -21,7 +21,7 @@ Fermer l'application aux anonymes, connecter les gestionnaires FMC par e-mail et
 - Aucun mot de passe repris de l'ancienne base.
 - Les techniciens (`profil = 2`) ne sont pas invités à cette étape.
 - Variables Vercel nécessaires : `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (existantes), `SUPABASE_SERVICE_ROLE_KEY` (à ajouter par l'utilisateur, jamais `NEXT_PUBLIC_`).
-- Configurer dans Supabase Auth l'URL de redirection `https://assoconnect-ws1.vercel.app/auth/callback` (à faire par l'utilisateur, l'indiquer clairement).
+- Configurer dans Supabase Auth l'URL de redirection `https://fmc-climatisation.vercel.app/auth/callback` (à faire par l'utilisateur, l'indiquer clairement).
 
 ## Critères d'acceptation
 
@@ -63,7 +63,7 @@ Fermer l'application aux anonymes, connecter les gestionnaires FMC par e-mail et
 - [ ] **Non fait par cette session** (accès Supabase Auth réel requis) :
   - Lancer `scripts/bootstrap-admin.mjs` pour créer le premier administrateur.
   - Configurer dans Supabase Auth l'URL de redirection
-    `https://assoconnect-ws1.vercel.app/auth/callback`.
+    `https://fmc-climatisation.vercel.app/auth/callback`.
   - Ajouter `SUPABASE_SERVICE_ROLE_KEY` et `NEXT_PUBLIC_SITE_URL` sur Vercel.
   - Vérifier le critère d'acceptation complet (connexion, invitation d'un collègue,
     réception du mail, définition du mot de passe, connexion en gestionnaire).
@@ -71,9 +71,9 @@ Fermer l'application aux anonymes, connecter les gestionnaires FMC par e-mail et
 ### À faire par l'utilisateur
 
 1. Sur Vercel (projet `ws-1`) : ajouter `SUPABASE_SERVICE_ROLE_KEY` (clé service role
-   Supabase, *jamais* `NEXT_PUBLIC_`) et `NEXT_PUBLIC_SITE_URL=https://assoconnect-ws1.vercel.app`.
+   Supabase, *jamais* `NEXT_PUBLIC_`) et `NEXT_PUBLIC_SITE_URL=https://fmc-climatisation.vercel.app`.
 2. Sur Supabase (Authentication → URL Configuration) : ajouter
-   `https://assoconnect-ws1.vercel.app/auth/callback` aux Redirect URLs.
+   `https://fmc-climatisation.vercel.app/auth/callback` aux Redirect URLs.
 3. Lancer une fois, avec `SUPABASE_SERVICE_ROLE_KEY` en variable d'environnement locale :
    `node scripts/bootstrap-admin.mjs --email=<ton-email> --nom=... --prenom=...`
 4. Vérifier l'e-mail reçu, définir le mot de passe, se connecter sur le site : le nom et

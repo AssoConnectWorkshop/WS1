@@ -11,7 +11,7 @@ l'identique, aucune nouvelle fonctionnalité.
 
 ## Situation de départ
 
-- Étapes 1 à 7.1 terminées : application en production sur `https://assoconnect-ws1.vercel.app/`,
+- Étapes 1 à 7.1 terminées : application en production sur `https://fmc-climatisation.vercel.app/`,
   **vraies données chargées** (71 507 interventions, 6 163 sites, 2 323 clients…), compte
   administrateur créé. Voir `docs/plan/etape-6.md` et `docs/plan/etape-7.md` (sections État).
 - Ce qui reste hors code (Resend, cron, logos, script documents) est listé dans `etape-7.md` et ne
@@ -96,7 +96,7 @@ intervention, liste des sites, fiche site, fiche client, planification, puis le 
 | Fiche site, onglets Devis SAV / Travaux / Contrat (`DevisListe*`) | `/sites/[id]?onglet=sav…` | oui (lot 3) | fait (PR lot 2) |
 | Fiche client (`Form_Client`) | `/clients/[id]` | oui (lot 2) | fait (PR lot 2) |
 | Fiche intervention (`Form_Intervention`), onglets Clôture et Devis SAV | `/interventions/[id]` | oui (lot 3) | fait (PR lot 3-5) |
-| Rapport d'intervention (bon PDF) | `/interventions/[id]/bon.pdf` | oui (lot 3) | à comparer (document, pas un écran) |
+| Rapport d'intervention (bon PDF) | `/interventions/[id]/bon.pdf` | oui (démo 15/09) | fait (mise en page de l'état Access) |
 | Paramétrage (`Form_Parametrage`), Utilisateurs & Techniciens, Zones | `/parametrage`, `/parametrage/utilisateurs` | oui (lots 4-5) | fait (PR lot 3-5) |
 | Modification Véhicule (`Form_99`) | `/vehicules/[id]` | oui (lot 5) | fait (PR lot 3-5) |
 | Liste des sites : colonnes « Ct » (dossier) et « Co » (code) | `/sites` | oui (lot 4, capture nette) | fait (PR lot 3-5) |
