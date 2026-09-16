@@ -29,6 +29,8 @@ yarn-error.log*
 # scripts/migrate-legacy (étape 2 : jamais de données réelles ni de rapport dans le repo)
 scripts/migrate-legacy/node_modules
 scripts/migrate-legacy/last-run-report.md
+scripts/migrate-documents/node_modules
+scripts/migrate-documents/last-run-report.md
 
 # typescript
 *.tsbuildinfo
