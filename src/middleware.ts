@@ -1,6 +1,8 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+export const runtime = "nodejs";
+
 const PUBLIC_PREFIXES = ["/login", "/reset-password", "/auth"];
 
 function isPublicPath(pathname: string) {
