@@ -1,7 +1,35 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { ETATS_HORS_ALERTES, LIBELLES_ALERTES, calculerAlertes, type Alertes, type Evenement, type Vehicule } from "@/lib/vehicules";
 
 export const dynamic = "force-dynamic";
+
+/** Alerte_Voitures (analysis 04 §5.3) : compteurs par type de problème, véhicules vendus / état 5 exclus. */
+async function AlertesVehicules() {
+  const supabase = await createClient();
+  const [{ data: vehicules }, { data: evenements }] = await Promise.all([
+    supabase.from("vehicules").select("id, immatriculation, etat_code, date_mise_en_circulation, km_entre_revisions, mois_entre_revisions, garantie, garantie_mois, leasing, leasing_mois, leasing_date_fin"),
+    supabase.from("vehicule_evenements").select("vehicule_id, date_evenement, km, type_code"),
+  ]);
+  const compteurs: Record<keyof Alertes, string[]> = { ct: [], cc: [], revision: [], leasing: [], garantie: [] };
+  for (const v of (vehicules ?? []) as Vehicule[]) {
+    if (v.etat_code != null && ETATS_HORS_ALERTES.includes(v.etat_code)) continue;
+    const alertes = calculerAlertes(v, (evenements ?? []).filter((e): e is Evenement => e.vehicule_id === v.id));
+    for (const k of Object.keys(alertes) as (keyof Alertes)[]) if (alertes[k]) compteurs[k].push(v.immatriculation ?? `#${v.id}`);
+  }
+  const total = Object.values(compteurs).reduce((s, l) => s + l.length, 0);
+
+  return (
+    <section className="flex flex-col gap-2">
+      <h2 className="text-sm font-semibold opacity-70">Parc automobile{total === 0 ? " : tout est OK" : ""}</h2>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+        {(Object.keys(compteurs) as (keyof Alertes)[]).map((k) => (
+          <Tile key={k} href={`/vehicules?alerte=${k}`} value={compteurs[k].length} label={`Problème de ${LIBELLES_ALERTES[k].toLowerCase()}${compteurs[k].length ? ` : ${compteurs[k].slice(0, 3).join(", ")}${compteurs[k].length > 3 ? "…" : ""}` : ""}`} />
+        ))}
+      </div>
+    </section>
+  );
+}
 
 const NAV_TILES = [
   { href: "/clients", label: "Clients" },
@@ -9,7 +37,8 @@ const NAV_TILES = [
   { href: "/intervenants", label: "Intervenants" },
   { href: "/interventions", label: "Interventions" },
   { href: "/devis", label: "Devis" },
-  { href: "/statistiques", label: "Statistiques" },
+  { href: "/planification", label: "Planification" },
+  { href: "/carte", label: "Carte" },
   { href: "/vehicules", label: "Véhicules" },
   { href: "/parametrage", label: "Paramétrage" },
 ];
@@ -95,6 +124,8 @@ export default async function DashboardPage() {
           </div>
         </div>
       </section>
+
+      <AlertesVehicules />
 
       <section className="flex flex-col gap-2">
         <h2 className="text-sm font-semibold opacity-70">Navigation</h2>

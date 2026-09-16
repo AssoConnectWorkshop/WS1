@@ -1,6 +1,7 @@
 import ExcelJS from "exceljs";
 import { createClient } from "@/lib/supabase/server";
-import { exigerUtilisateur, feuille, paginer, parLots, reponseClasseur } from "@/lib/excel";
+import { feuille, paginer, parLots, reponseClasseur } from "@/lib/excel";
+import { exigerUtilisateur } from "@/lib/action-utils";
 
 export const dynamic = "force-dynamic";
 

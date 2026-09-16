@@ -2,7 +2,8 @@ import ExcelJS from "exceljs";
 import { createClient } from "@/lib/supabase/server";
 import { toStringParams } from "@/lib/list-params";
 import { appliquerFiltresInterventions } from "@/lib/interventions-filtres";
-import { exigerUtilisateur, feuille, paginer, parLots, reponseClasseur } from "@/lib/excel";
+import { feuille, paginer, parLots, reponseClasseur } from "@/lib/excel";
+import { exigerUtilisateur } from "@/lib/action-utils";
 import { formatNom } from "@/lib/format";
 
 export const dynamic = "force-dynamic";

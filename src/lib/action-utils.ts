@@ -24,3 +24,11 @@ export function redirectWithError(path: string, message: string): never {
 export function aujourdhui() {
   return new Date().toISOString().slice(0, 10);
 }
+
+/** Routes de téléchargement (PDF, Excel) : utilisateur connecté ou réponse 401. */
+export async function exigerUtilisateur(supabase: { auth: { getUser: () => Promise<{ data: { user: unknown | null } }> } }) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user ? null : new Response("Non autorisé", { status: 401 });
+}

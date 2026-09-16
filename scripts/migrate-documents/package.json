@@ -1,0 +1,12 @@
+{
+  "name": "ws1-migrate-documents",
+  "private": true,
+  "type": "module",
+  "description": "Copie les documents référencés par des chemins réseau (\\\\serveur\\...) vers Supabase Storage et remplace les chemins. À exécuter sur le PC de l'utilisateur.",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4"
+  }
+}

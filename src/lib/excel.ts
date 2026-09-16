@@ -48,11 +48,3 @@ export function parLots<T>(valeurs: T[], taille = 300): T[][] {
   for (let i = 0; i < valeurs.length; i += taille) lots.push(valeurs.slice(i, i + taille));
   return lots;
 }
-
-/** Utilisateur connecté ou réponse 401, pour les routes d'export. */
-export async function exigerUtilisateur(supabase: { auth: { getUser: () => Promise<{ data: { user: unknown | null } }> } }) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  return user ? null : new Response("Non autorisé", { status: 401 });
-}
