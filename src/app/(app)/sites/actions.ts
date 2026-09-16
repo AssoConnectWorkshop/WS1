@@ -171,7 +171,7 @@ const ContratSchema = z.object({
 export async function mettreAJourContrat(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const siteId = Number(formData.get("site_id"));
-  const retour = versSite(siteId, { onglet: "contrats" });
+  const retour = versSite(siteId);
   const parsed = ContratSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) redirectWithError(retour, premiereErreur(parsed));
 
@@ -193,7 +193,7 @@ export async function mettreAJourContrat(formData: FormData) {
 export async function mettreAJourHoraires(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const siteId = Number(formData.get("site_id"));
-  const retour = versSite(siteId, { onglet: "horaires" });
+  const retour = versSite(siteId, { onglet: "complements" });
   const heure = (v: FormDataEntryValue | null) => (typeof v === "string" && v.trim() ? v : null);
   const lignes = [1, 2, 3, 4, 5, 6, 7].map((jour) => ({
     site_id: siteId,

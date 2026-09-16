@@ -6,31 +6,31 @@ import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { KeyValue } from "@/components/ui/KeyValue";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { Chemin } from "@/components/ui/Chemin";
 import { Champ, CHAMP } from "@/components/ui/Champ";
-import { FormulaireSite } from "@/components/sites/FormulaireSite";
-import { ContratsSite, HorairesSite } from "@/components/sites/ContratsEtHoraires";
+import { FormulaireSite, FORM_SITE } from "@/components/sites/FormulaireSite";
+import { HorairesSite } from "@/components/sites/ContratsEtHoraires";
 import { MaterielSite } from "@/components/sites/MaterielSite";
-import { statutInterventionTone } from "@/lib/badges";
-import { formatDate, formatMontant, formatNombre, oui } from "@/lib/format";
+import { statutDevisTone, statutInterventionTone, typeInterventionTone } from "@/lib/badges";
+import { formatDate, formatMontant, oui } from "@/lib/format";
 import { toStringParams } from "@/lib/list-params";
-import { JOURS, LIBELLES_LOT, type Lot } from "@/lib/sites";
-import { basculerNePlusIntervenir, fermerSite, genererCertificats, geocoderSite, rouvrirSite } from "../actions";
+import { type FamilleDevis } from "@/lib/devis";
+import { basculerNePlusIntervenir, fermerSite, genererCertificats, rouvrirSite } from "../actions";
 
 export const dynamic = "force-dynamic";
 
+/** Onglets de la fiche Access (Form_Site) ; « Infos complémentaires Site » reçoit aussi horaires, documents et résumé devis. */
 const ONGLETS = [
   { key: "site", label: "Site" },
-  { key: "contrats", label: "Contrats" },
-  { key: "horaires", label: "Horaires" },
   { key: "interventions", label: "Interventions" },
+  { key: "contrat", label: "Contrat de maintenance" },
+  { key: "sav", label: "Devis SAV" },
+  { key: "travaux", label: "Devis Travaux" },
   { key: "materiel", label: "Matériel" },
-  { key: "registre", label: "Registre de sécurité" },
-  { key: "devis", label: "Devis" },
-  { key: "documents", label: "Documents" },
+  { key: "complements", label: "Infos complémentaires Site" },
 ];
 
-const BOUTON = "rounded-md border px-3 py-1.5 text-sm";
+const STATUTS_DEVIS_EN_COURS = [1, 2, 4];
+const BOUTON = "rounded border bg-white px-2 py-1 text-xs dark:bg-white/5";
 
 export default async function SitePage({
   params,
@@ -49,7 +49,7 @@ export default async function SitePage({
   const { data: site } = await supabase.from("sites").select("*").eq("id", id).maybeSingle();
   if (!site) notFound();
 
-  const [{ data: client }, { data: contrats }, { data: horaires }, { data: zones }, { data: intervenants }, { data: donneurs }, { data: fluides }, { data: clients }] =
+  const [{ data: client }, { data: contrats }, { data: horaires }, { data: zones }, { data: intervenants }, { data: donneurs }, { data: fluides }, { data: clients }, { data: registre }, { data: devisLies }] =
     await Promise.all([
       supabase.from("clients").select("id, nom").eq("id", site.client_id).maybeSingle(),
       supabase.from("site_contrats").select("*").eq("site_id", id),
@@ -59,10 +59,9 @@ export default async function SitePage({
       supabase.from("donneurs_ordre").select("id, nom").order("nom"),
       supabase.from("types_fluide").select("id, libelle").order("libelle"),
       deverrouille ? supabase.from("clients").select("id, nom").order("nom") : Promise.resolve({ data: [] as { id: number; nom: string }[] }),
+      supabase.from("site_registre_securite").select("date_mise_a_jour").eq("site_id", id).order("date_mise_a_jour", { ascending: false }),
+      supabase.from("devis").select("id, famille, numero, statut_code, montant_ht, date_envoi, fichier_chemin").eq("site_id", id).is("supprime_le", null).order("date_envoi", { ascending: false }),
     ]);
-
-  const { data: devisLies } = await supabase.from("devis").select("id, famille, numero, statut_code, montant_ht").eq("site_id", id).is("supprime_le", null);
-  const devisEnCours = (devisLies ?? []).filter((d) => [1, 2, 4].includes(d.statut_code ?? -1));
 
   const { count: ceAEditer } = await supabase
     .from("site_materiels")
@@ -79,27 +78,20 @@ export default async function SitePage({
     garantieEnCours = fin > new Date();
   }
 
+  // Badges d'état calculés par Form_Site.Form_Activate (analysis 03 §2.2).
+  const enCours = (famille: FamilleDevis) => (devisLies ?? []).some((d) => d.famille === famille && STATUTS_DEVIS_EN_COURS.includes(d.statut_code ?? -1));
+  const badges = [
+    enCours("sav") ? "DEVIS SAV EN COURS" : null,
+    enCours("travaux") ? "DEVIS TRAVAUX EN COURS" : null,
+    enCours("contrat") ? "CE EN COURS" : null,
+    garantieEnCours ? "GARANTIE EN COURS" : null,
+  ].filter((b): b is string => !!b);
+
   const enLibelle = (rows: { id: number; nom?: string | null; libelle?: string | null }[] | null) => (rows ?? []).map((r) => ({ id: r.id, libelle: r.nom ?? r.libelle ?? null }));
-  const intervenantTitulaire = intervenants?.find((i) => i.id === site.intervenant_id);
-  const donneurOrdre = donneurs?.find((d) => d.id === site.donneur_ordre_id);
-  const zone = zones?.find((z) => z.id === site.zone_id);
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-4 p-8">
+    <div className="flex flex-col gap-3 p-4">
       <Messages sp={sp} />
-
-      {(site.ne_plus_intervenir || site.retard_paiement || site.ferme) && (
-        <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
-          {site.ferme && (
-            <div>
-              Site fermé le {formatDate(site.date_fermeture)}
-              {site.motif_fermeture ? ` : ${site.motif_fermeture}` : ""}.
-            </div>
-          )}
-          {site.ne_plus_intervenir && <div>Ne plus intervenir sur ce site.</div>}
-          {site.retard_paiement && <div>Retard de paiement.</div>}
-        </div>
-      )}
 
       {sp.confirmer === "fermeture" && !site.ferme && (
         <form action={fermerSite} className="flex flex-col gap-3 rounded-md bg-orange-50 p-4 text-sm text-orange-900">
@@ -147,203 +139,175 @@ export default async function SitePage({
         </form>
       )}
 
-      <div className="flex flex-wrap items-center gap-2">
-        {site.ferme && <Badge tone="gray">Fermé</Badge>}
-        {devisEnCours.length > 0 && <Badge tone="yellow">{devisEnCours.length} devis en cours</Badge>}
-        {garantieEnCours && <Badge tone="green">Garantie en cours</Badge>}
-        {(ceAEditer ?? 0) > 0 && <Badge tone="orange">{ceAEditer} CE à éditer</Badge>}
-        {site.nacelle_necessaire && <Badge tone="purple">Nacelle</Badge>}
-        {site.particulier && <Badge tone="blue">Particulier</Badge>}
-        {site.rdv_a_prendre && <Badge tone="pink">RDV à prendre</Badge>}
-      </div>
-
-      <h1 className="text-xl font-semibold">
-        {site.nom} {site.numero_magasin ? `· n°${site.numero_magasin}` : ""}
-      </h1>
-      <p className="text-sm opacity-70">
-        {client && (
-          <>
-            Client :{" "}
-            <Link href={`/clients/${client.id}`} className="underline">
+      {/* En-tête Access : « Site : NOM - Ville : VILLE », création d'intervention, Enregistrer, Fermer */}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-2">
+        <h1 className="text-base font-bold">
+          Site : {site.nom}
+          {site.numero_magasin ? ` (n° ${site.numero_magasin})` : ""} - Ville : {site.ville ?? "—"}
+          {client && (
+            <Link href={`/clients/${client.id}`} className="ml-3 text-xs font-normal underline opacity-70">
               {client.nom}
             </Link>
-          </>
-        )}
-        {site.ville ? ` · ${site.ville}` : ""}
-        {site.latitude != null && site.longitude != null ? ` · ${site.latitude}, ${site.longitude} (${site.precision_geo ?? "précision inconnue"})` : " · non géocodé"}
-      </p>
-
-      <div className="flex flex-wrap gap-2">
-        <Link href={`/interventions/nouvelle?site=${id}`} className="rounded-md bg-black px-3 py-1.5 text-sm text-white">
-          Nouvelle intervention
-        </Link>
-        <Link href={`/devis/nouveau?site=${id}`} className={BOUTON}>
-          Nouveau devis
-        </Link>
-        <form action={geocoderSite}>
-          <input type="hidden" name="site_id" value={id} />
-          <button type="submit" className={BOUTON}>
-            Géocoder l&apos;adresse
-          </button>
-        </form>
-        {(ceAEditer ?? 0) > 0 && (
-          <form action={genererCertificats}>
-            <input type="hidden" name="site_id" value={id} />
-            <button type="submit" className={BOUTON}>
-              Éditer les certificats d&apos;étanchéité ({ceAEditer})
-            </button>
-          </form>
-        )}
-        <Link href={`/sites/${id}?confirmer=ne_plus_intervenir`} className={BOUTON}>
-          {site.ne_plus_intervenir ? "Reprendre les interventions" : "Ne plus intervenir"}
-        </Link>
-        {site.ferme ? (
-          <form action={rouvrirSite}>
-            <input type="hidden" name="site_id" value={id} />
-            <button type="submit" className={BOUTON}>
-              Rouvrir le site
-            </button>
-          </form>
-        ) : (
-          <Link href={`/sites/${id}?confirmer=fermeture`} className={`${BOUTON} border-red-300 text-red-700`}>
-            Fermer le site
+          )}
+          {site.ferme && (
+            <span className="ml-3">
+              <Badge tone="gray">Fermé</Badge>
+            </span>
+          )}
+        </h1>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link href={`/interventions/nouvelle?site=${id}`} className={BOUTON}>
+            Créer une intervention
           </Link>
-        )}
+          {(ceAEditer ?? 0) > 0 && (
+            <form action={genererCertificats}>
+              <input type="hidden" name="site_id" value={id} />
+              <button type="submit" className={BOUTON}>
+                {ceAEditer} CE à éditer
+              </button>
+            </form>
+          )}
+          {site.ferme && (
+            <form action={rouvrirSite}>
+              <input type="hidden" name="site_id" value={id} />
+              <button type="submit" className={BOUTON}>
+                Rouvrir le site
+              </button>
+            </form>
+          )}
+          {onglet === "site" && (
+            <button type="submit" form={FORM_SITE} className="rounded bg-black px-3 py-1 text-xs text-white" title="Enregistrer la fiche">
+              💾 Enregistrer
+            </button>
+          )}
+          <Link href="/sites" className="rounded bg-red-600 px-3 py-1 text-xs text-white" title="Fermer la fiche">
+            ✕ Fermer
+          </Link>
+        </div>
       </div>
 
       <Tabs tabs={ONGLETS} active={onglet} searchParams={sp} />
 
       {onglet === "site" && (
-        <div className="flex flex-col gap-6">
-          <KeyValue
-            items={[
-              { label: "Adresse", value: `${site.adresse ?? ""} ${site.code_postal ?? ""} ${site.ville ?? ""}`.trim() || "—" },
-              { label: "Zone", value: zone?.libelle },
-              { label: "Intervenant", value: intervenantTitulaire ? <Link className="underline" href={`/intervenants/${intervenantTitulaire.id}`}>{intervenantTitulaire.nom}</Link> : "—" },
-              { label: "Donneur d'ordre", value: donneurOrdre ? <Link className="underline" href={`/donneurs-ordre/${donneurOrdre.id}`}>{donneurOrdre.nom}</Link> : "—" },
-              { label: "Visites/an (pivot)", value: formatNombre(site.visites_entretien_par_an) },
-              { label: "Dernière visite entretien", value: formatDate(site.date_derniere_visite_entretien) },
-              { label: "Tarifs", value: site.tarifs_specifiques ? `Site : ${formatMontant(site.tarif_heure_mo)} / ${formatMontant(site.tarif_deplacement)}` : "Tarifs du client" },
-              { label: "Investissement", value: oui(site.investissement) },
-            ]}
-          />
-          <FormulaireSite
-            site={site}
-            deverrouille={deverrouille}
-            clients={enLibelle(clients)}
-            donneurs={enLibelle(donneurs)}
-            intervenants={enLibelle(intervenants)}
-            zones={enLibelle(zones)}
-            fluides={enLibelle(fluides)}
-          />
-        </div>
-      )}
-
-      {onglet === "contrats" && (
-        <div className="flex flex-col gap-4">
-          <ul className="flex flex-wrap gap-3 text-sm">
-            {(contrats ?? []).map((c) => (
-              <li key={c.id} className="rounded-md border px-3 py-1.5">
-                {LIBELLES_LOT[c.lot as Lot]} : {formatNombre(c.visites_par_an)} visite(s)/an · {formatMontant(c.redevance)}
-              </li>
-            ))}
-          </ul>
-          <ContratsSite siteId={siteId} contrats={contrats ?? []} intervenants={enLibelle(intervenants)} />
-        </div>
-      )}
-
-      {onglet === "horaires" && (
-        <div className="flex flex-col gap-4">
-          {horaires && horaires.length > 0 && (
-            <ul className="grid grid-cols-2 gap-1 text-sm sm:grid-cols-4">
-              {horaires.map((h) => (
-                <li key={h.id}>
-                  {JOURS[h.jour - 1]} : {h.ouverture?.slice(0, 5) ?? "—"} – {h.fermeture?.slice(0, 5) ?? "—"}
-                </li>
-              ))}
-            </ul>
-          )}
-          <HorairesSite siteId={siteId} horaires={horaires ?? []} />
-        </div>
+        <FormulaireSite
+          site={site}
+          deverrouille={deverrouille}
+          clients={enLibelle(clients)}
+          donneurs={enLibelle(donneurs)}
+          intervenants={enLibelle(intervenants)}
+          zones={enLibelle(zones)}
+          fluides={enLibelle(fluides)}
+          contrats={contrats ?? []}
+          registre={(registre ?? []).map((r) => r.date_mise_a_jour).filter((d): d is string => !!d)}
+          badges={badges}
+        />
       )}
 
       {onglet === "interventions" && <SiteInterventions siteId={id} />}
+
+      {(onglet === "contrat" || onglet === "sav" || onglet === "travaux") && <SiteDevis famille={onglet} devis={(devisLies ?? []).filter((d) => d.famille === onglet)} siteId={id} />}
+
       {onglet === "materiel" && <MaterielSite siteId={siteId} modifierId={sp.modifier} />}
-      {onglet === "registre" && <SiteRegistre siteId={id} />}
 
-      {onglet === "devis" &&
-        (devisLies && devisLies.length > 0 ? (
-          <ul className="flex flex-col gap-2">
-            {devisLies.map((d) => (
-              <li key={d.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-                <Link href={`/devis/${d.id}`} className="capitalize underline">
-                  {d.famille} · {d.numero ?? `#${d.id}`}
-                </Link>
-                <span>{formatMontant(d.montant_ht)}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState message="Aucun devis pour ce site." />
-        ))}
-
-      {onglet === "documents" && (
-        <KeyValue
-          items={[
-            { label: "Dossier réseau", value: <Chemin value={site.dossier_chemin} /> },
-            { label: "Résumé devis envoyés", value: site.resume_devis_html ? <span className="whitespace-pre-line">{String(site.resume_devis_html).replace(/<br\s*\/?>/gi, "\n")}</span> : "—" },
-          ]}
-        />
+      {onglet === "complements" && (
+        <div className="flex flex-col gap-4">
+          <KeyValue
+            items={[
+              { label: "Investissement", value: oui(site.investissement) },
+              { label: "Descriptif investissement", value: site.descriptif_investissement || "—" },
+              { label: "Nom de société", value: site.nom_societe || "—" },
+              { label: "Nombre de plans / photos", value: `${site.nombre_plans ?? "—"} / ${site.nombre_photos ?? "—"}` },
+              { label: "Dernière visite désenfumage", value: formatDate(site.date_derniere_visite_desenfumage) },
+              { label: "Dernière visite entretien", value: formatDate(site.date_derniere_visite_entretien) },
+              { label: "Résumé devis envoyés (tablette)", value: site.resume_devis_html ? <span className="whitespace-pre-line">{String(site.resume_devis_html).replace(/<br\s*\/?>/gi, "\n")}</span> : "—" },
+            ]}
+          />
+          <HorairesSite siteId={siteId} horaires={horaires ?? []} />
+        </div>
       )}
     </div>
   );
 }
 
+type LigneIntervention = {
+  id: number;
+  intervenant_nom: string | null;
+  date_limite: string | null;
+  date_realisee: string | null;
+  date_demande: string | null;
+  devis_a_faire: boolean | null;
+  devis_fait: boolean | null;
+  numero_bon: number | null;
+  numero_devis_accepte: string | null;
+  reference_client: string | null;
+  type_code: number | null;
+  type_libelle: string | null;
+  statut_code: number | null;
+  statut_libelle: string | null;
+  statut_facturation_libelle: string | null;
+  commentaire_interne: string | null;
+};
+
+const COLONNES_INTERVENTIONS = "id, intervenant_nom, date_limite, date_realisee, date_demande, devis_a_faire, devis_fait, numero_bon, numero_devis_accepte, reference_client, type_code, type_libelle, statut_code, statut_libelle, statut_facturation_libelle, commentaire_interne";
+
+/** Onglet « Interventions » Access : deux feuilles de données, en cours puis clôturées (analysis 03 §2.2). */
 async function SiteInterventions({ siteId }: { siteId: string }) {
   const supabase = await createClient();
   const [{ data: enCours }, { data: cloturees }] = await Promise.all([
-    supabase
-      .from("v_interventions_liste")
-      .select("id, type_libelle, statut_code, statut_libelle, date_limite, objet")
-      .eq("site_id", siteId)
-      .not("statut_code", "in", "(7,8,10,20)")
-      .order("date_limite", { ascending: false })
-      .limit(50),
-    supabase
-      .from("v_interventions_liste")
-      .select("id, type_libelle, statut_code, statut_libelle, date_realisee, objet")
-      .eq("site_id", siteId)
-      .in("statut_code", [7, 8, 10, 20])
-      .order("date_realisee", { ascending: false })
-      .limit(50),
+    supabase.from("v_interventions_liste").select(COLONNES_INTERVENTIONS).eq("site_id", siteId).not("statut_code", "in", "(7,8,10,20)").order("date_prevue", { ascending: false, nullsFirst: false }).order("date_realisee", { ascending: false, nullsFirst: false }).limit(200),
+    supabase.from("v_interventions_liste").select(COLONNES_INTERVENTIONS).eq("site_id", siteId).in("statut_code", [7, 8, 10, 20]).order("date_realisee", { ascending: false, nullsFirst: false }).limit(200),
   ]);
 
-  type Ligne = {
-    id: number;
-    type_libelle: string | null;
-    statut_code: number | null;
-    statut_libelle: string | null;
-    objet: string | null;
-    date_limite?: string | null;
-    date_realisee?: string | null;
-  };
-  const Liste = ({ titre, rows, date, vide }: { titre: string; rows: Ligne[] | null; date: "date_limite" | "date_realisee"; vide: string }) => (
-    <div>
-      <h2 className="mb-2 text-sm font-semibold opacity-70">{titre}</h2>
+  const Tableau = ({ titre, rows, vide }: { titre: string; rows: LigneIntervention[] | null; vide: string }) => (
+    <div className="flex flex-col gap-1">
+      <h2 className="text-sm font-semibold">{titre}</h2>
       {rows && rows.length > 0 ? (
-        <ul className="flex flex-col gap-2">
-          {rows.map((i) => (
-            <li key={i.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-              <Link href={`/interventions/${i.id}`} className="underline">
-                {i.objet ?? i.type_libelle}
-              </Link>
-              <span className="flex items-center gap-2">
-                <Badge tone={statutInterventionTone(i.statut_code)}>{i.statut_libelle}</Badge>
-                {formatDate(i[date])}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <div className="overflow-x-auto rounded border">
+          <table className="w-full border-collapse text-xs">
+            <thead>
+              <tr className="border-b bg-black/[0.03] text-left dark:bg-white/[0.05]">
+                {["Intervenant", "Date limite", "Effectuée le", "Date d'appel", "Devis à faire", "Devis fait", "N° Bon", "N° Devis Accepté", "N° DI", "Type Interv", "Statut Inter", "Statut Facturation", "Comm. Inter."].map((h) => (
+                  <th key={h} className="whitespace-nowrap px-2 py-1 font-medium">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((i) => (
+                <tr key={i.id} className="border-b last:border-0 hover:bg-blue-50 dark:hover:bg-blue-950/30">
+                  <td className="whitespace-nowrap px-2 py-1">
+                    <Link href={`/interventions/${i.id}`} className="underline">
+                      {i.intervenant_nom ?? "—"}
+                    </Link>
+                  </td>
+                  <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_limite)}</td>
+                  <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_realisee)}</td>
+                  <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_demande)}</td>
+                  <td className="px-2 py-1 text-center">
+                    <input type="checkbox" readOnly checked={!!i.devis_a_faire} aria-label="Devis à faire" />
+                  </td>
+                  <td className="px-2 py-1 text-center">
+                    <input type="checkbox" readOnly checked={!!i.devis_fait} aria-label="Devis fait" />
+                  </td>
+                  <td className="px-2 py-1">{i.numero_bon ?? ""}</td>
+                  <td className="px-2 py-1">{i.numero_devis_accepte ?? ""}</td>
+                  <td className="px-2 py-1">{i.reference_client ?? ""}</td>
+                  <td className="whitespace-nowrap px-2 py-1">
+                    <Badge tone={typeInterventionTone(i.type_code)}>{i.type_libelle ?? "—"}</Badge>
+                  </td>
+                  <td className="whitespace-nowrap px-2 py-1">
+                    <Badge tone={statutInterventionTone(i.statut_code)}>{i.statut_libelle ?? "—"}</Badge>
+                  </td>
+                  <td className="whitespace-nowrap px-2 py-1">{i.statut_facturation_libelle ?? ""}</td>
+                  <td className="max-w-xs truncate px-2 py-1" title={i.commentaire_interne ?? ""}>
+                    {i.commentaire_interne ?? ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <EmptyState message={vide} />
       )}
@@ -351,24 +315,64 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
   );
 
   return (
-    <div className="flex flex-col gap-6">
-      <Liste titre="En cours" rows={enCours} date="date_limite" vide="Aucune intervention en cours." />
-      <Liste titre="Clôturées" rows={cloturees} date="date_realisee" vide="Aucune intervention clôturée." />
+    <div className="flex flex-col gap-4">
+      <Tableau titre="Interventions en cours :" rows={enCours as LigneIntervention[] | null} vide="Aucune intervention en cours." />
+      <Tableau titre="Interventions clôturées :" rows={cloturees as LigneIntervention[] | null} vide="Aucune intervention clôturée." />
     </div>
   );
 }
 
-async function SiteRegistre({ siteId }: { siteId: string }) {
-  const supabase = await createClient();
-  const { data } = await supabase.from("site_registre_securite").select("id, date_mise_a_jour").eq("site_id", siteId).order("date_mise_a_jour", { ascending: false });
+type LigneDevis = { id: number; numero: string | null; statut_code: number | null; montant_ht: number | null; date_envoi: string | null; fichier_chemin: string | null };
 
-  if (!data || data.length === 0) return <EmptyState message="Aucune mise à jour du registre." />;
+/** Onglets « Contrat de maintenance », « Devis SAV », « Devis Travaux » : la liste des devis du site pour la famille. */
+async function SiteDevis({ famille, devis, siteId }: { famille: FamilleDevis; devis: LigneDevis[]; siteId: string }) {
+  const supabase = await createClient();
+  const { data: statuts } = await supabase.from("statuts_devis").select("code, libelle");
+  const libelle = (code: number | null) => statuts?.find((s) => s.code === code)?.libelle ?? (code == null ? "—" : `Statut ${code}`);
 
   return (
-    <ul className="flex flex-col gap-1 text-sm">
-      {data.map((r) => (
-        <li key={r.id}>{formatDate(r.date_mise_a_jour)}</li>
-      ))}
-    </ul>
+    <div className="flex flex-col gap-2">
+      <div>
+        <Link href={`/devis/nouveau?site=${siteId}&famille=${famille}`} className={BOUTON}>
+          Nouveau devis
+        </Link>
+      </div>
+      {devis.length === 0 ? (
+        <EmptyState message="Aucun devis de cette famille pour ce site." />
+      ) : (
+        <div className="overflow-x-auto rounded border">
+          <table className="w-full border-collapse text-xs">
+            <thead>
+              <tr className="border-b bg-black/[0.03] text-left dark:bg-white/[0.05]">
+                {["N° devis", "Statut", "Date d'envoi", "Montant HT", "Fichier"].map((h) => (
+                  <th key={h} className="whitespace-nowrap px-2 py-1 font-medium">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {devis.map((d) => (
+                <tr key={d.id} className="border-b last:border-0 hover:bg-blue-50 dark:hover:bg-blue-950/30">
+                  <td className="px-2 py-1">
+                    <Link href={`/devis/${d.id}`} className="underline">
+                      {d.numero ?? `#${d.id}`}
+                    </Link>
+                  </td>
+                  <td className="px-2 py-1">
+                    <Badge tone={statutDevisTone(d.statut_code)}>{libelle(d.statut_code)}</Badge>
+                  </td>
+                  <td className="px-2 py-1">{formatDate(d.date_envoi)}</td>
+                  <td className="px-2 py-1 text-right">{formatMontant(d.montant_ht)}</td>
+                  <td className="max-w-xs truncate px-2 py-1" title={d.fichier_chemin ?? ""}>
+                    {d.fichier_chemin ?? ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }

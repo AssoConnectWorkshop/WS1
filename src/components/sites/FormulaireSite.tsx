@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { Case, Champ, CHAMP, Section } from "@/components/ui/Champ";
+import { Chemin } from "@/components/ui/Chemin";
 import { ETOILES, INDICES_QUALITE, SITUATIONS, TYPES_SITE } from "@/lib/sites";
-import { mettreAJourSite } from "@/app/(app)/sites/actions";
+import { formatDate } from "@/lib/format";
+import { geocoderSite, mettreAJourSite } from "@/app/(app)/sites/actions";
+import { ContratsSite, type Contrat } from "./ContratsEtHoraires";
 
 type Option = { id: number; libelle: string | null };
 
@@ -14,11 +16,33 @@ type Props = {
   intervenants: Option[];
   zones: Option[];
   fluides: Option[];
+  contrats: Contrat[];
+  registre: string[];
+  badges: string[];
 };
 
-function Selection({ name, valeur, options, vide = "—", disabled }: { name: string; valeur: unknown; options: Option[]; vide?: string; disabled?: boolean }) {
+/** Identifiant du formulaire principal : les champs sont dispersés dans la grille et rattachés par l'attribut `form`. */
+export const FORM_SITE = "fiche-site";
+
+const CHAMP = "w-full rounded border bg-white px-1.5 py-0.5 text-sm dark:bg-white/5";
+const LIGNE = "grid grid-cols-[minmax(0,7.5rem)_1fr] items-center gap-x-2 gap-y-1 text-xs";
+
+function Cadre({ titre, children, className = "" }: { titre?: string; children: React.ReactNode; className?: string }) {
   return (
-    <select name={name} defaultValue={valeur == null ? "" : String(valeur)} disabled={disabled} className={CHAMP}>
+    <fieldset className={`flex flex-col gap-1.5 rounded border px-2 pb-2 pt-1 ${className}`}>
+      {titre && <legend className="px-1 text-xs font-semibold">{titre}</legend>}
+      {children}
+    </fieldset>
+  );
+}
+
+function Texte({ name, valeur, type = "text", disabled, step, className = "" }: { name: string; valeur: unknown; type?: string; disabled?: boolean; step?: string; className?: string }) {
+  return <input form={FORM_SITE} name={name} type={type} step={step} disabled={disabled} defaultValue={valeur == null ? "" : String(valeur)} className={`${CHAMP} ${disabled ? "opacity-60" : ""} ${className}`} />;
+}
+
+function Selection({ name, valeur, options, vide = "", disabled }: { name: string; valeur: unknown; options: Option[]; vide?: string; disabled?: boolean }) {
+  return (
+    <select form={FORM_SITE} name={name} defaultValue={valeur == null ? "" : String(valeur)} disabled={disabled} className={`${CHAMP} ${disabled ? "opacity-60" : ""}`}>
       <option value="">{vide}</option>
       {options.map((o) => (
         <option key={o.id} value={o.id}>
@@ -31,261 +55,324 @@ function Selection({ name, valeur, options, vide = "—", disabled }: { name: st
 
 function Etoiles({ name, valeur }: { name: string; valeur: unknown }) {
   return (
-    <select name={name} defaultValue={valeur == null ? "" : String(valeur)} className={CHAMP}>
-      <option value="">—</option>
+    <select form={FORM_SITE} name={name} defaultValue={valeur == null ? "" : String(valeur)} className={CHAMP}>
+      <option value=""></option>
       {ETOILES.map((n) => (
         <option key={n} value={n}>
-          {"★".repeat(n)}
+          {"★".repeat(n) + "☆".repeat(5 - n)}
         </option>
       ))}
     </select>
   );
 }
 
-export function FormulaireSite({ site, deverrouille, clients, donneurs, intervenants, zones, fluides }: Props) {
+function Case({ name, label, checked, disabled, className = "" }: { name?: string; label: React.ReactNode; checked: boolean; disabled?: boolean; className?: string }) {
+  return (
+    <label className={`flex items-center gap-1.5 text-xs ${className}`}>
+      <input form={FORM_SITE} type="checkbox" name={name} value="1" defaultChecked={checked} disabled={disabled} />
+      {label}
+    </label>
+  );
+}
+
+/** Onglet « Site » de la fiche Access (Form_Site, analysis 03 §2.2) : quatre colonnes de cadres. */
+export function FormulaireSite({ site, deverrouille, clients, donneurs, intervenants, zones, fluides, contrats, registre, badges }: Props) {
   const s = site as Record<string, string | number | boolean | null>;
   const texte = (k: string) => (s[k] == null ? "" : String(s[k]));
   const date = (k: string) => texte(k).slice(0, 10);
   const bool = (k: string) => !!s[k];
+  const alerte = bool("ne_plus_intervenir") || bool("retard_paiement");
 
   return (
-    <form action={mettreAJourSite} className="flex flex-col gap-4">
-      <input type="hidden" name="site_id" value={site.id} />
-      {deverrouille && <input type="hidden" name="deverrouille" value="1" />}
+    <div className={`flex flex-col gap-3 rounded p-2 ${alerte ? "bg-red-100 dark:bg-red-950/40" : ""}`}>
+      <form id={FORM_SITE} action={mettreAJourSite}>
+        <input type="hidden" name="site_id" value={site.id} />
+        {deverrouille && <input type="hidden" name="deverrouille" value="1" />}
+        <input type="hidden" name="nom_societe" value={texte("nom_societe")} />
+        <input type="hidden" name="zone_secondaire_id" value={texte("zone_secondaire_id")} />
+        <input type="hidden" name="responsable_prenom" value={texte("responsable_prenom")} />
+        <input type="hidden" name="nombre_plans" value={texte("nombre_plans")} />
+        <input type="hidden" name="nombre_photos" value={texte("nombre_photos")} />
+        <input type="hidden" name="date_derniere_visite_desenfumage" value={date("date_derniere_visite_desenfumage")} />
+      </form>
 
-      <Section titre="Infos site">
-        <div className="flex items-center justify-between text-xs opacity-70">
-          <span>Client, nom du site et donneur d&apos;ordre sont protégés contre la modification accidentelle.</span>
-          <Link href={`/sites/${site.id}${deverrouille ? "" : "?deverrouiller=1"}`} className="underline">
-            {deverrouille ? "Verrouiller" : "Déverrouiller"}
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <Champ label="Client *">
-            {deverrouille ? (
-              <Selection name="client_id" valeur={site.client_id} options={clients} vide="— Choisir —" />
-            ) : (
-              <input disabled value={clients.find((c) => c.id === site.client_id)?.libelle ?? `#${site.client_id}`} className={`${CHAMP} opacity-60`} />
-            )}
-          </Champ>
-          <Champ label="Donneur d'ordre">
+      <div className="grid gap-3 lg:grid-cols-[1.1fr_1fr_1fr_1fr]">
+        {/* Colonne 1 : donneur, intervenant, infos site, zone, géolocalisation, tarifs */}
+        <div className="flex flex-col gap-2">
+          <div className={LIGNE}>
+            <span className="flex items-center gap-1">
+              <Link href={`/sites/${site.id}${deverrouille ? "" : "?deverrouiller=1"}`} title={deverrouille ? "Verrouiller" : "Déverrouiller client, nom du site et donneur d'ordre"} className="text-[10px] underline">
+                {deverrouille ? "🔓" : "🔒"}
+              </Link>
+              Donneur d&apos;ordre
+            </span>
             <Selection name="donneur_ordre_id" valeur={s.donneur_ordre_id} options={donneurs} disabled={!deverrouille} />
-          </Champ>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          <Champ label="Nom du site *">
-            <input name="nom" defaultValue={texte("nom")} disabled={!deverrouille} required={deverrouille} className={`${CHAMP} ${deverrouille ? "" : "opacity-60"}`} />
-          </Champ>
-          <Champ label="N° de magasin (client)">
-            <input name="numero_magasin" type="number" defaultValue={texte("numero_magasin")} className={CHAMP} />
-          </Champ>
-          <Champ label="Code">
-            <input name="code_client" defaultValue={texte("code_client")} className={CHAMP} />
-          </Champ>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <Champ label="Nom de société">
-            <input name="nom_societe" defaultValue={texte("nom_societe")} className={CHAMP} />
-          </Champ>
-          <Champ label="Intervenant clim (titulaire)">
+            <span>Nom intervenant Clim</span>
             <Selection name="intervenant_id" valeur={s.intervenant_id} options={intervenants} />
-          </Champ>
-        </div>
-        <Champ label="Adresse">
-          <input name="adresse" defaultValue={texte("adresse")} className={CHAMP} />
-        </Champ>
-        <div className="grid grid-cols-4 gap-3">
-          <Champ label="Code postal">
-            <input name="code_postal" defaultValue={texte("code_postal")} className={CHAMP} />
-          </Champ>
-          <Champ label="Ville">
-            <input name="ville" defaultValue={texte("ville")} className={CHAMP} />
-          </Champ>
-          <Champ label="Zone d'intervention">
-            <Selection name="zone_id" valeur={s.zone_id} options={zones} />
-          </Champ>
-          <Champ label="Zone secondaire">
-            <Selection name="zone_secondaire_id" valeur={s.zone_secondaire_id} options={zones} />
-          </Champ>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          <Champ label="Téléphone">
-            <input name="telephone" defaultValue={texte("telephone")} className={CHAMP} />
-          </Champ>
-          <Champ label="Fax">
-            <input name="fax" defaultValue={texte("fax")} className={CHAMP} />
-          </Champ>
-          <Champ label="E-mail">
-            <input name="email" type="email" defaultValue={texte("email")} className={CHAMP} />
-          </Champ>
-        </div>
-        <div className="grid grid-cols-4 gap-3">
-          <Champ label="Civilité responsable">
-            <input name="responsable_civilite" defaultValue={texte("responsable_civilite")} className={CHAMP} />
-          </Champ>
-          <Champ label="Nom responsable">
-            <input name="responsable_nom" defaultValue={texte("responsable_nom")} className={CHAMP} />
-          </Champ>
-          <Champ label="Prénom responsable">
-            <input name="responsable_prenom" defaultValue={texte("responsable_prenom")} className={CHAMP} />
-          </Champ>
-          <Champ label="Tél. centre commercial">
-            <input name="telephone_centre_commercial" defaultValue={texte("telephone_centre_commercial")} className={CHAMP} />
-          </Champ>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          <Champ label="Surface de vente (m²)">
-            <input name="surface_vente" type="number" step="0.01" defaultValue={texte("surface_vente")} className={CHAMP} />
-          </Champ>
-          <Champ label="Surface totale (m²)">
-            <input name="surface_totale" type="number" step="0.01" defaultValue={texte("surface_totale")} className={CHAMP} />
-          </Champ>
-          <Champ label="N° Esabora site">
-            <input name="numero_esabora" defaultValue={texte("numero_esabora")} className={CHAMP} />
-          </Champ>
-        </div>
-        <Champ label="Raccourci réseau vers le dossier du site">
-          <input name="dossier_chemin" defaultValue={texte("dossier_chemin")} className={CHAMP} />
-        </Champ>
-      </Section>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Case name="particulier" checked={bool("particulier")} label={<span className="bg-yellow-300 px-1 font-semibold text-black">Particulier</span>} />
+            <Case name="rdv_a_prendre" checked={bool("rdv_a_prendre")} label={<span className="bg-yellow-300 px-1 font-semibold text-black">RDV à Prendre</span>} />
+          </div>
+          <div className={LIGNE}>
+            <span>N° unique Esabora</span>
+            <Texte name="numero_esabora" valeur={s.numero_esabora} />
+          </div>
 
-      <Section titre="Infos installation">
-        <div className="grid grid-cols-3 gap-3">
-          <Champ label="En service le">
-            <input name="date_mise_en_service" type="date" defaultValue={date("date_mise_en_service")} className={CHAMP} />
-          </Champ>
-          <Champ label="Situation">
-            <select name="situation" defaultValue={texte("situation")} className={CHAMP}>
-              <option value="">—</option>
-              {SITUATIONS.map((v) => (
-                <option key={v} value={v}>
-                  {v}
-                </option>
+          <Cadre titre="Infos Site">
+            <div className={LIGNE}>
+              <span>Client</span>
+              {deverrouille ? (
+                <Selection name="client_id" valeur={site.client_id} options={clients} vide="— Choisir —" />
+              ) : (
+                <input disabled value={clients.find((c) => c.id === site.client_id)?.libelle ?? `#${site.client_id}`} className={`${CHAMP} opacity-60`} />
+              )}
+              <span>N° du site</span>
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1">
+                <Texte name="numero_magasin" type="number" valeur={s.numero_magasin} />
+                <span>Code</span>
+                <Texte name="code_client" valeur={s.code_client} />
+              </div>
+              <span>Nom du site</span>
+              <Texte name="nom" valeur={s.nom} disabled={!deverrouille} />
+              <span>Adresse</span>
+              <Texte name="adresse" valeur={s.adresse} />
+              <span>CP / Ville</span>
+              <div className="grid grid-cols-[5rem_1fr] gap-1">
+                <Texte name="code_postal" valeur={s.code_postal} />
+                <Texte name="ville" valeur={s.ville} />
+              </div>
+              <span>Téléphone</span>
+              <Texte name="telephone" valeur={s.telephone} />
+              <span>Fax</span>
+              <Texte name="fax" valeur={s.fax} />
+              <span>Email</span>
+              <Texte name="email" type="email" valeur={s.email} />
+            </div>
+          </Cadre>
+
+          <Cadre>
+            <div className={LIGNE}>
+              <span>Surface de vente</span>
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1">
+                <Texte name="surface_vente" type="number" step="0.01" valeur={s.surface_vente} />
+                <span>Surface totale</span>
+                <Texte name="surface_totale" type="number" step="0.01" valeur={s.surface_totale} />
+              </div>
+              <span>Nom responsable</span>
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-1">
+                <Texte name="responsable_nom" valeur={s.responsable_nom} />
+                <span>Tél.</span>
+                <Texte name="telephone_centre_commercial" valeur={s.telephone_centre_commercial} />
+              </div>
+              <span title="Colonne « civilité responsable » réaffectée dans Access">Mail responsable</span>
+              <Texte name="responsable_civilite" valeur={s.responsable_civilite} />
+            </div>
+          </Cadre>
+
+          <Cadre titre="Zone d'intervention">
+            <div className={LIGNE}>
+              <span>Zone d&apos;intervention</span>
+              <Selection name="zone_id" valeur={s.zone_id} options={zones} />
+            </div>
+          </Cadre>
+
+          <Cadre titre="Géolocalisation">
+            <div className="grid grid-cols-[auto_1fr_auto_1fr_auto_1fr] items-center gap-1 text-xs">
+              <span>Latitude</span>
+              <input disabled value={texte("latitude")} className={`${CHAMP} opacity-60`} />
+              <span>Longitude</span>
+              <input disabled value={texte("longitude")} className={`${CHAMP} opacity-60`} />
+              <span>Précision</span>
+              <input disabled value={texte("precision_geo")} className={`${CHAMP} opacity-60`} />
+            </div>
+            <form action={geocoderSite}>
+              <input type="hidden" name="site_id" value={site.id} />
+              <button type="submit" className="rounded border px-2 py-0.5 text-xs">
+                Géocoder
+              </button>
+            </form>
+          </Cadre>
+
+          <Cadre titre="Tarif MO et DP">
+            <Case name="tarifs_specifiques" checked={bool("tarifs_specifiques")} label="Tarifs propres au site (sinon tarifs du client)" />
+            <div className={LIGNE}>
+              <span>Tarif heure Main d&apos;œuvre</span>
+              <Texte name="tarif_heure_mo" type="number" step="0.01" valeur={s.tarif_heure_mo} />
+              <span>Tarif d&apos;un déplacement</span>
+              <Texte name="tarif_deplacement" type="number" step="0.01" valeur={s.tarif_deplacement} />
+            </div>
+          </Cadre>
+        </div>
+
+        {/* Colonne 2 : installation et trois contrats */}
+        <div className="flex flex-col gap-2">
+          <Cadre titre="Infos Install">
+            <div className={LIGNE}>
+              <span>En service le</span>
+              <Texte name="date_mise_en_service" type="date" valeur={date("date_mise_en_service")} />
+              <span>Indicateur</span>
+              <select form={FORM_SITE} name="indice_qualite" defaultValue={texte("indice_qualite")} className={CHAMP}>
+                <option value=""></option>
+                {Object.entries(INDICES_QUALITE).map(([code, libelle]) => (
+                  <option key={code} value={code}>
+                    {libelle}
+                  </option>
+                ))}
+              </select>
+              <span>Situation</span>
+              <select form={FORM_SITE} name="situation" defaultValue={texte("situation")} className={CHAMP}>
+                <option value=""></option>
+                {SITUATIONS.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+              <span>Type (H / F)</span>
+              <select form={FORM_SITE} name="type_site" defaultValue={texte("type_site")} className={CHAMP}>
+                <option value=""></option>
+                {TYPES_SITE.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+              <span>Type de fluide</span>
+              <Selection name="fluide_id" valeur={s.fluide_id} options={fluides} />
+              <span>Temp. entrante</span>
+              <div className="grid grid-cols-[1fr_auto_auto_1fr_auto] items-center gap-1">
+                <Texte name="temperature_entree" valeur={s.temperature_entree} />
+                <span>°C</span>
+                <span>Temp. sortante</span>
+                <Texte name="temperature_sortie" valeur={s.temperature_sortie} />
+                <span>°C</span>
+              </div>
+              <span>Indice Qualité</span>
+              <Etoiles name="indice_vetuste" valeur={s.indice_vetuste} />
+              <span>Accessibilité</span>
+              <Etoiles name="indice_accessibilite" valeur={s.indice_accessibilite} />
+              <span>Indice Puissance</span>
+              <Etoiles name="indice_puissance" valeur={s.indice_puissance} />
+            </div>
+          </Cadre>
+          <ContratsSite siteId={site.id} contrats={contrats} intervenants={intervenants} />
+        </div>
+
+        {/* Colonne 3 : dossier, garanties, registre, informations diverses, à faire, divers, site fermé */}
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-wrap items-start gap-2">
+            <Link href={`/interventions/nouvelle?site=${site.id}`} className="rounded border bg-white px-2 py-1 text-xs dark:bg-white/5">
+              Créer une intervention
+            </Link>
+            <div className="flex min-w-40 flex-1 flex-col gap-0.5 text-xs">
+              <span>Raccourci réseau vers le dossier du site</span>
+              <Texte name="dossier_chemin" valeur={s.dossier_chemin} />
+              {s.dossier_chemin && <Chemin value={String(s.dossier_chemin)} />}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <Cadre titre="Garanties">
+              <div className={`${LIGNE} grid-cols-[1fr_3.5rem]`}>
+                <span>Pièces et M.O.</span>
+                <Texte name="garantie_pieces_mo_annees" type="number" valeur={s.garantie_pieces_mo_annees} />
+                <span>Pièces</span>
+                <Texte name="garantie_pieces_annees" type="number" valeur={s.garantie_pieces_annees} />
+                <span>Compresseur</span>
+                <Texte name="garantie_compresseur_annees" type="number" valeur={s.garantie_compresseur_annees} />
+              </div>
+            </Cadre>
+            <Cadre titre="Registre de sécurité">
+              <ul className="max-h-24 overflow-y-auto rounded border bg-white text-xs dark:bg-white/5">
+                {registre.length === 0 && <li className="px-1 opacity-60">Aucune date</li>}
+                {registre.map((d) => (
+                  <li key={d} className="border-b px-1 last:border-0">
+                    {formatDate(d)}
+                  </li>
+                ))}
+              </ul>
+            </Cadre>
+          </div>
+
+          <Cadre titre="Information divers">
+            <Case name="nacelle_necessaire" checked={bool("nacelle_necessaire")} label="NACELLE NECESSAIRE" />
+            <label className="flex items-center gap-1.5 text-xs">
+              <input type="checkbox" checked={bool("ne_plus_intervenir")} disabled />
+              NE PLUS INTERVENIR
+              <Link href={`/sites/${site.id}?confirmer=ne_plus_intervenir`} className="underline">
+                {bool("ne_plus_intervenir") ? "reprendre" : "modifier"}
+              </Link>
+            </label>
+            <Case name="retard_paiement" checked={bool("retard_paiement")} label="RETARD PAIEMENT" />
+            <Case name="detection_fuite_permanente" checked={bool("detection_fuite_permanente")} label="Système de détection de fuite" />
+          </Cadre>
+
+          <div className="grid grid-cols-2 gap-2">
+            <Cadre titre="A Faire">
+              <div className="grid grid-cols-2 gap-1">
+                <Case name="audit_a_faire" checked={bool("audit_a_faire")} label="Audit à faire" />
+                <Case name="audit_fait" checked={bool("audit_fait")} label="Audit fait" />
+                <Case name="controle_etancheite_a_faire" checked={bool("controle_etancheite_a_faire")} label="CE à faire" />
+                <Case name="controle_etancheite_fait" checked={bool("controle_etancheite_fait")} label="CE fait" />
+                <Case name="photo_a_faire" checked={bool("photo_a_faire")} label="Photo à faire" />
+                <Case name="photo_faite" checked={bool("photo_faite")} label="Photo faite" />
+              </div>
+            </Cadre>
+            <Cadre titre="Divers">
+              <Case name="gtb" checked={bool("gtb")} label="GTB" />
+              <Case name="allumage_clim" checked={bool("allumage_clim")} label="Allumage Clim." />
+              <Case name="arret_urgence_clim_oui" checked={bool("arret_urgence_clim_oui")} label="Arrêt d'urgence clim (OUI)" />
+              <Case name="arret_urgence_clim_non" checked={bool("arret_urgence_clim_non")} label="Arrêt d'urgence clim (NON)" />
+            </Cadre>
+          </div>
+
+          <Cadre titre="Site fermé">
+            <label className="flex items-center gap-1.5 text-xs">
+              <input type="checkbox" checked={bool("ferme")} disabled />
+              Fermé
+              {!bool("ferme") && (
+                <Link href={`/sites/${site.id}?confirmer=fermeture`} className="underline">
+                  fermer le site
+                </Link>
+              )}
+            </label>
+            <div className={LIGNE}>
+              <span>Date de fermeture</span>
+              <input disabled value={bool("ferme") ? formatDate(texte("date_fermeture")) : ""} className={`${CHAMP} opacity-60`} />
+              <span>Motif de fermeture</span>
+              <input disabled value={texte("motif_fermeture")} className={`${CHAMP} opacity-60`} />
+            </div>
+          </Cadre>
+
+          <Cadre titre="Investissement">
+            <Case name="investissement" checked={bool("investissement")} label="Investissement" />
+            <textarea form={FORM_SITE} name="descriptif_investissement" rows={2} defaultValue={texte("descriptif_investissement")} placeholder="Descriptif investissement" className={CHAMP} />
+          </Cadre>
+        </div>
+
+        {/* Colonne 4 : badges et commentaires */}
+        <div className="flex flex-col gap-2">
+          {badges.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
+              <span className="text-2xl" aria-hidden>
+                ⚠️
+              </span>
+              {badges.map((b) => (
+                <span key={b}>{b}</span>
               ))}
-            </select>
-          </Champ>
-          <Champ label="Type (H chaud / F froid)">
-            <select name="type_site" defaultValue={texte("type_site")} className={CHAMP}>
-              <option value="">—</option>
-              {TYPES_SITE.map((v) => (
-                <option key={v} value={v}>
-                  {v}
-                </option>
-              ))}
-            </select>
-          </Champ>
+            </div>
+          )}
+          <label className="flex flex-col gap-0.5 text-xs">
+            Commentaire général Magasin (visible sur liste technicien)
+            <textarea form={FORM_SITE} name="commentaire_general" rows={14} defaultValue={texte("commentaire_general")} className={CHAMP} />
+          </label>
+          <label className="flex flex-col gap-0.5 text-xs">
+            Commentaire divers
+            <textarea form={FORM_SITE} name="commentaire_divers" rows={12} defaultValue={texte("commentaire_divers")} className={CHAMP} />
+          </label>
         </div>
-        <div className="grid grid-cols-4 gap-3">
-          <Champ label="Indice qualité">
-            <select name="indice_qualite" defaultValue={texte("indice_qualite")} className={CHAMP}>
-              <option value="">—</option>
-              {Object.entries(INDICES_QUALITE).map(([code, libelle]) => (
-                <option key={code} value={code}>
-                  {libelle}
-                </option>
-              ))}
-            </select>
-          </Champ>
-          <Champ label="Vétusté">
-            <Etoiles name="indice_vetuste" valeur={s.indice_vetuste} />
-          </Champ>
-          <Champ label="Puissance">
-            <Etoiles name="indice_puissance" valeur={s.indice_puissance} />
-          </Champ>
-          <Champ label="Accessibilité">
-            <Etoiles name="indice_accessibilite" valeur={s.indice_accessibilite} />
-          </Champ>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          <Champ label="Type de fluide">
-            <Selection name="fluide_id" valeur={s.fluide_id} options={fluides} />
-          </Champ>
-          <Champ label="Temp. entrante (°C)">
-            <input name="temperature_entree" defaultValue={texte("temperature_entree")} className={CHAMP} />
-          </Champ>
-          <Champ label="Temp. sortante (°C)">
-            <input name="temperature_sortie" defaultValue={texte("temperature_sortie")} className={CHAMP} />
-          </Champ>
-        </div>
-        <div className="flex flex-wrap gap-4">
-          <Case name="gtb" label="GTB" checked={bool("gtb")} />
-          <Case name="allumage_clim" label="Allumage clim." checked={bool("allumage_clim")} />
-          <Case name="arret_urgence_clim_oui" label="Arrêt d'urgence clim (OUI)" checked={bool("arret_urgence_clim_oui")} />
-          <Case name="arret_urgence_clim_non" label="Arrêt d'urgence clim (NON)" checked={bool("arret_urgence_clim_non")} />
-          <Case name="detection_fuite_permanente" label="Système de détection de fuite" checked={bool("detection_fuite_permanente")} />
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          <Champ label="Garantie pièces et MO (années)">
-            <input name="garantie_pieces_mo_annees" type="number" min={0} defaultValue={texte("garantie_pieces_mo_annees")} className={CHAMP} />
-          </Champ>
-          <Champ label="Garantie pièces (années)">
-            <input name="garantie_pieces_annees" type="number" min={0} defaultValue={texte("garantie_pieces_annees")} className={CHAMP} />
-          </Champ>
-          <Champ label="Garantie compresseur (années)">
-            <input name="garantie_compresseur_annees" type="number" min={0} defaultValue={texte("garantie_compresseur_annees")} className={CHAMP} />
-          </Champ>
-        </div>
-      </Section>
-
-      <Section titre="Tarifs MO et déplacement">
-        <Case name="tarifs_specifiques" label="Le site surcharge les tarifs du client" checked={bool("tarifs_specifiques")} />
-        <div className="grid grid-cols-2 gap-3">
-          <Champ label="Tarif heure main d'œuvre (site)">
-            <input name="tarif_heure_mo" type="number" step="0.01" defaultValue={texte("tarif_heure_mo")} className={CHAMP} />
-          </Champ>
-          <Champ label="Tarif d'un déplacement (site)">
-            <input name="tarif_deplacement" type="number" step="0.01" defaultValue={texte("tarif_deplacement")} className={CHAMP} />
-          </Champ>
-        </div>
-      </Section>
-
-      <Section titre="À faire">
-        <div className="flex flex-wrap gap-4">
-          <Case name="photo_a_faire" label="Photo à faire" checked={bool("photo_a_faire")} />
-          <Case name="photo_faite" label="Photo faite" checked={bool("photo_faite")} />
-          <Case name="audit_a_faire" label="Audit à faire" checked={bool("audit_a_faire")} />
-          <Case name="audit_fait" label="Audit fait" checked={bool("audit_fait")} />
-          <Case name="controle_etancheite_a_faire" label="Contrôle d'étanchéité à faire" checked={bool("controle_etancheite_a_faire")} />
-          <Case name="controle_etancheite_fait" label="Contrôle d'étanchéité fait" checked={bool("controle_etancheite_fait")} />
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          <Champ label="Nombre de plans">
-            <input name="nombre_plans" type="number" min={0} defaultValue={texte("nombre_plans")} className={CHAMP} />
-          </Champ>
-          <Champ label="Nombre de photos">
-            <input name="nombre_photos" type="number" min={0} defaultValue={texte("nombre_photos")} className={CHAMP} />
-          </Champ>
-          <Champ label="Dernière visite désenfumage">
-            <input name="date_derniere_visite_desenfumage" type="date" defaultValue={date("date_derniere_visite_desenfumage")} className={CHAMP} />
-          </Champ>
-        </div>
-      </Section>
-
-      <Section titre="Alertes">
-        <div className="flex flex-wrap gap-4">
-          <Case name="retard_paiement" label="Retard de paiement" checked={bool("retard_paiement")} />
-          <Case name="nacelle_necessaire" label="Nacelle nécessaire" checked={bool("nacelle_necessaire")} />
-          <Case name="particulier" label="Particulier" checked={bool("particulier")} />
-          <Case name="rdv_a_prendre" label="RDV à prendre" checked={bool("rdv_a_prendre")} />
-          <Case name="investissement" label="Investissement" checked={bool("investissement")} />
-        </div>
-        <Champ label="Descriptif investissement">
-          <textarea name="descriptif_investissement" rows={2} defaultValue={texte("descriptif_investissement")} className={CHAMP} />
-        </Champ>
-      </Section>
-
-      <Section titre="Commentaires">
-        <Champ label="Commentaire général (visible sur la liste technicien)">
-          <textarea name="commentaire_general" rows={3} defaultValue={texte("commentaire_general")} className={CHAMP} />
-        </Champ>
-        <Champ label="Commentaire divers">
-          <textarea name="commentaire_divers" rows={2} defaultValue={texte("commentaire_divers")} className={CHAMP} />
-        </Champ>
-      </Section>
-
-      <button type="submit" className="w-fit rounded-md bg-black px-4 py-1.5 text-sm text-white">
-        Enregistrer la fiche
-      </button>
-    </form>
+      </div>
+    </div>
   );
 }
