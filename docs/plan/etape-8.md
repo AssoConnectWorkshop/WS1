@@ -158,7 +158,8 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   saisie » est portée par la date de retour de fiche ; l'onglet Historique a été retiré (les autres
   interventions du site sont sur la fiche site).
 - **Paramétrage** : « Access Gestion Mot de passe » (génération et envoi des mots de passe du
-  portail web) non reproduit ; l'invitation à l'application le remplace. « Références » ouvre le
+  portail web) non reproduit ; les comptes sont créés dans le tableau de bord Supabase (voir
+  `docs/securite-emails.md`), sans e-mail. « Références » ouvre le
   catalogue matériel de l'application (colonnes différentes du sous-formulaire Access).
 - **Fiche véhicule** : les dates et km « dernier entretien / CT / CC / relevé » sont calculés depuis
   les événements et affichés en lecture seule (comme Access) ; la saisie des événements reste sous

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { inviteUtilisateur, changerRole } from "./actions";
+import { changerRole } from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +28,6 @@ export default async function UtilisateursPage({ searchParams }: { searchParams:
   const current = await getCurrentUser();
   if (!current?.utilisateur) redirect("/login");
   const estAdmin = current.role === "administrateur";
-  const listeBlancheActive = Boolean(process.env.EMAILS_AUTORISES?.trim());
 
   const supabase = await createClient();
   const { data } = await supabase
@@ -51,9 +50,10 @@ export default async function UtilisateursPage({ searchParams }: { searchParams:
         </div>
       </div>
       <p className="text-xs opacity-70">
-        Les gestionnaires (type 1) peuvent être invités à se connecter ; l&apos;accès à l&apos;application remplace le mot de passe Access. Le rôle « comptable » remplace le mot de passe Kadi : seul rôle, avec l&apos;administrateur, à poser les statuts de facturation réservés.
-        {!estAdmin && " Consultation seule : les invitations et rôles sont réservés à l'administrateur."}
-        {estAdmin && ` Une invitation n'est envoyée que si l'adresse est retapée à l'identique et figure dans la liste blanche (${listeBlancheActive ? "active" : "vide : aucun e-mail ne peut partir"}).`}
+        L&apos;accès à l&apos;application remplace le mot de passe Access. Le rôle « comptable » remplace le mot de passe Kadi : seul rôle, avec l&apos;administrateur, à poser les statuts de facturation réservés.
+        {!estAdmin && " Consultation seule : les rôles sont réservés à l'administrateur."}
+        {estAdmin &&
+          " Les comptes se créent dans le tableau de bord Supabase (Authentication › Users › Create new user, Auto Confirm) : aucun e-mail n'est envoyé. À la première connexion, le compte est rattaché à la ligne dont le « Mail » est identique."}
       </p>
       {erreur && <p className="rounded border border-red-300 bg-red-50 px-3 py-2 text-xs text-red-700 dark:bg-red-950/30">{erreur}</p>}
       {info && <p className="rounded border border-green-300 bg-green-50 px-3 py-2 text-xs text-green-700 dark:bg-green-950/30">{info}</p>}
@@ -88,25 +88,8 @@ export default async function UtilisateursPage({ searchParams }: { searchParams:
                 <td className="whitespace-nowrap px-2 py-1">{u.code_intervenant ?? ""}</td>
                 <td className="whitespace-nowrap px-2 py-1">{u.login_legacy ?? ""}</td>
                 <td className="whitespace-nowrap px-2 py-1">{u.email ?? ""}</td>
-                <td className="whitespace-nowrap px-2 py-1">{u.auth_user_id ? `invité · ${u.role ?? "gestionnaire"}` : ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.auth_user_id ? `compte actif · ${u.role ?? "gestionnaire"}` : ""}</td>
                 <td className="whitespace-nowrap px-2 py-1 text-right">
-                  {estAdmin && u.profil !== 2 && !u.auth_user_id && u.email && (
-                    <form action={inviteUtilisateur} className="flex items-center gap-1">
-                      <input type="hidden" name="utilisateurId" value={u.id} />
-                      <input
-                        name="confirmation"
-                        type="email"
-                        required
-                        autoComplete="off"
-                        placeholder="Retaper l'e-mail pour inviter"
-                        title="Sécurité : retapez l'adresse exacte de la ligne. Elle doit aussi figurer dans la liste blanche EMAILS_AUTORISES."
-                        className="w-48 rounded border px-1 py-0.5 text-[11px]"
-                      />
-                      <button type="submit" className="rounded border px-2 py-0.5 text-[11px]">
-                        Inviter
-                      </button>
-                    </form>
-                  )}
                   {estAdmin && u.auth_user_id && (
                     <form action={changerRole} className="flex items-center gap-1">
                       <input type="hidden" name="utilisateurId" value={u.id} />

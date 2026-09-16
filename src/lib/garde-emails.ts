@@ -1,7 +1,7 @@
 import "server-only";
 
 /**
- * Liste blanche des destinataires d'e-mails (invitations, réinitialisations, e-mails Resend).
+ * Liste blanche des destinataires d'e-mails (réinitialisations de mot de passe, e-mails Resend).
  * `EMAILS_AUTORISES` : adresses complètes ou domaines (`@team.blue`), séparés par des virgules.
  * Variable absente ou vide → aucun e-mail ne part, quel que soit le déclencheur.
  */
