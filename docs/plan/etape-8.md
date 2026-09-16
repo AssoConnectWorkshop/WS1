@@ -162,6 +162,11 @@ Comportements Access visibles sur les captures mais absents de l'application, à
 - **Menu, icône « Entretien / Dépannage Devis acceptés »** : l'analyse VBA (`ImgEntretien` → OpenArgs
   « AValider ») disait statut 9 ; la capture de la démo du 15/09 montre la liste ouverte sur « A
   Planifier » (statut 1). L'écran fait foi : pré-filtre statut 1.
+- **Liste des interventions, clôturées** : Access (`Filtre_OM_Test`) ne masque jamais les
+  clôturées ; « Afficher les clôturées » étend le statut choisi à `in (<statut>, 7)`. L'application
+  garde le masquage par défaut (statut 7 exclu quand aucun statut n'est choisi) mais ne l'applique
+  plus quand un statut de facturation est filtré : ce statut n'est posé qu'après clôture, le filtre
+  « A facturer » renvoyait donc toujours 0 ligne.
 - **Captures hors périmètre du CDC** (non traitées) : fiche intervention web du technicien (p.3),
   planning Outlook et planning prévisionnel Excel (p.4), trois écrans Esabora (p.5-6).
 
