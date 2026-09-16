@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError } from "@/lib/action-utils";
-import { booleen, entier, identifiant, nombre, obligatoire, texte } from "@/lib/zod-form";
+import { booleen, entier, identifiant, nombre, obligatoire, texte, premiereErreur } from "@/lib/zod-form";
 
 const DOUBLON = "23505";
 
@@ -35,7 +35,7 @@ const ClientSchema = z.object({
 export async function creerClient(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const parsed = ClientSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError("/clients/nouveau", parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError("/clients/nouveau", premiereErreur(parsed));
 
   const supabase = await createClient();
   const { data: created, error } = await supabase.from("clients").insert(parsed.data).select("id").single();
@@ -51,7 +51,7 @@ export async function mettreAJourClient(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const clientId = Number(formData.get("client_id"));
   const parsed = ClientSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(`/clients/${clientId}`, parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError(`/clients/${clientId}`, premiereErreur(parsed));
 
   const supabase = await createClient();
   const { error } = await supabase.from("clients").update(parsed.data).eq("id", clientId);
@@ -85,7 +85,7 @@ const DonneurSchema = z.object({
 export async function creerDonneur(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const parsed = DonneurSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError("/donneurs-ordre/nouveau", parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError("/donneurs-ordre/nouveau", premiereErreur(parsed));
 
   const supabase = await createClient();
   const { data: created, error } = await supabase.from("donneurs_ordre").insert(parsed.data).select("id").single();
@@ -100,7 +100,7 @@ export async function mettreAJourDonneur(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const donneurId = Number(formData.get("donneur_ordre_id"));
   const parsed = DonneurSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(`/donneurs-ordre/${donneurId}`, parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError(`/donneurs-ordre/${donneurId}`, premiereErreur(parsed));
 
   const supabase = await createClient();
   const { error } = await supabase.from("donneurs_ordre").update(parsed.data).eq("id", donneurId);
@@ -132,7 +132,7 @@ export async function enregistrerContact(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const retour = retourSur(formData, "/clients");
   const parsed = ContactSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(retour, parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError(retour, premiereErreur(parsed));
   const { contact_id, ...contact } = parsed.data;
   if (!contact.client_id && !contact.donneur_ordre_id) redirectWithError(retour, "Le contact doit être rattaché à un client ou à un donneur d'ordre.");
 

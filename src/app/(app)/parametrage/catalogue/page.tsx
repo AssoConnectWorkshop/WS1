@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Messages } from "@/components/ui/Messages";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
 import { toStringParams } from "@/lib/list-params";
@@ -46,8 +47,7 @@ export default async function CataloguePage({ searchParams }: { searchParams: Pr
           </Link>
         )}
       </div>
-      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
-      {sp.info && <p className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">{sp.info}</p>}
+      <Messages sp={sp} />
 
       <form method="GET" className="flex items-end gap-2 text-sm">
         <Champ label="Rechercher (référence, repère, type)">

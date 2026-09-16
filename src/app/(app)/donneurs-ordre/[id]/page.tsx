@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { KeyValue } from "@/components/ui/KeyValue";
@@ -41,8 +42,7 @@ export default async function DonneurOrdrePage({
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-4 p-8">
-      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
-      {sp.info && <p className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">{sp.info}</p>}
+      <Messages sp={sp} />
 
       <div className="flex flex-wrap items-center gap-2">{!donneur.actif && <Badge tone="gray">Non affiché</Badge>}</div>
       <h1 className="text-xl font-semibold">{donneur.nom}</h1>

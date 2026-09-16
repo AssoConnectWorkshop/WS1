@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
@@ -94,8 +95,7 @@ export default async function ReferentielPage({
           </Link>
         )}
       </div>
-      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
-      {sp.info && <p className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">{sp.info}</p>}
+      <Messages sp={sp} />
 
       {afficherFormulaire && (
         <form action={enregistrerReferentiel} className="flex flex-col gap-3 rounded-xl border border-black/30 p-4">

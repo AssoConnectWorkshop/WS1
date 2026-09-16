@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Tabs } from "@/components/ui/Tabs";
@@ -62,8 +63,7 @@ export default async function IntervenantPage({
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
-      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
-      {sp.info && <p className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">{sp.info}</p>}
+      <Messages sp={sp} />
 
       {intervenant.ne_plus_intervenir && (
         <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700">Ne plus intervenir{intervenant.motif_ne_plus_intervenir ? ` : ${intervenant.motif_ne_plus_intervenir}` : ""}.</div>

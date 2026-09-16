@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError } from "@/lib/action-utils";
-import { booleen, entier, nombre, obligatoire, texte } from "@/lib/zod-form";
+import { booleen, entier, nombre, obligatoire, texte, premiereErreur } from "@/lib/zod-form";
 import { MAX_ACTIVITES, MAX_ZONES } from "@/lib/intervenants";
 
 const DOUBLON = "23505";
@@ -60,7 +60,7 @@ const FicheSchema = z.object({
 export async function creerIntervenant(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const parsed = FicheSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError("/intervenants/nouveau", parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError("/intervenants/nouveau", premiereErreur(parsed));
 
   const supabase = await createClient();
   const { data: created, error } = await supabase.from("intervenants").insert({ ...parsed.data, cree_par_id: utilisateur.id }).select("id").single();
@@ -76,7 +76,7 @@ export async function mettreAJourIntervenant(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const id = Number(formData.get("intervenant_id"));
   const parsed = FicheSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(versIntervenant(id), parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError(versIntervenant(id), premiereErreur(parsed));
 
   const supabase = await createClient();
   const { error } = await supabase.from("intervenants").update(parsed.data).eq("id", id);
@@ -102,7 +102,7 @@ export async function mettreAJourActivites(formData: FormData) {
     const ligne = z
       .object({ tarif_mo: nombre, tarif_deplacement: nombre, date_tarif: texte })
       .safeParse({ tarif_mo: formData.get(`tarif_mo_${i}`), tarif_deplacement: formData.get(`tarif_deplacement_${i}`), date_tarif: formData.get(`date_tarif_${i}`) });
-    if (!ligne.success) redirectWithError(retour, `Ligne ${i} : ${ligne.error.issues[0]?.message ?? "valeur invalide."}`);
+    if (!ligne.success) redirectWithError(retour, `Ligne ${i} : ${premiereErreur(ligne, "valeur invalide.")}`);
     lignes.push({ intervenant_id: id, rang: lignes.length + 1, activite_id: activite, ...ligne.data });
   }
 

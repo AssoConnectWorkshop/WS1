@@ -1,4 +1,4 @@
-import { Case, Champ, CHAMP } from "@/components/ui/Champ";
+import { Case, Champ, CHAMP, Section } from "@/components/ui/Champ";
 import { ETOILES } from "@/lib/sites";
 
 type Option = { id: number; libelle: string };
@@ -15,15 +15,6 @@ function Note({ name, valeur, label }: { name: string; valeur: number | null | u
         ))}
       </select>
     </Champ>
-  );
-}
-
-function Section({ titre, children }: { titre: string; children: React.ReactNode }) {
-  return (
-    <fieldset className="flex flex-col gap-3 rounded-xl border p-4">
-      <legend className="px-1 text-sm font-semibold opacity-70">{titre}</legend>
-      {children}
-    </fieldset>
   );
 }
 

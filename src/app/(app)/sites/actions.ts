@@ -6,14 +6,10 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError, aujourdhui } from "@/lib/action-utils";
-import { booleen, entier, nombre, obligatoire, texte } from "@/lib/zod-form";
+import { booleen, entier, nombre, obligatoire, texte, premiereErreur } from "@/lib/zod-form";
 import { CLES_LOTS, STATUTS_EN_COURS, STATUT_A_PLANIFIER, STATUT_NE_PLUS_INTERVENIR } from "@/lib/sites";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
-
-function messageErreur(parsed: { error: z.ZodError }) {
-  return parsed.error.issues[0]?.message ?? "Formulaire invalide.";
-}
 
 function versSite(siteId: number, params?: Record<string, string>) {
   const query = new URLSearchParams(params).toString();
@@ -95,7 +91,7 @@ export async function mettreAJourSite(formData: FormData) {
   const siteId = Number(formData.get("site_id"));
   const raw = Object.fromEntries(formData);
   const parsed = SiteSchema.safeParse(raw);
-  if (!parsed.success) redirectWithError(versSite(siteId), messageErreur(parsed));
+  if (!parsed.success) redirectWithError(versSite(siteId), premiereErreur(parsed));
 
   const supabase = await createClient();
   const { data: site } = await supabase.from("sites").select("client_id").eq("id", siteId).maybeSingle();
@@ -105,7 +101,7 @@ export async function mettreAJourSite(formData: FormData) {
   let nouveauClient: number | null = null;
   if (raw.deverrouille === "1") {
     const verrou = VerrouSchema.safeParse(raw);
-    if (!verrou.success) redirectWithError(versSite(siteId, { deverrouiller: "1" }), messageErreur(verrou));
+    if (!verrou.success) redirectWithError(versSite(siteId, { deverrouiller: "1" }), premiereErreur(verrou));
     Object.assign(payload, verrou.data);
     if (verrou.data.client_id !== site.client_id) nouveauClient = verrou.data.client_id;
   }
@@ -143,7 +139,7 @@ export async function creerSite(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const retour = `/sites/nouveau${formData.get("client_id") ? `?client=${formData.get("client_id")}` : ""}`;
   const parsed = CreationSiteSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(retour, messageErreur(parsed));
+  if (!parsed.success) redirectWithError(retour, premiereErreur(parsed));
 
   const supabase = await createClient();
   const { data: created, error } = await supabase.from("sites").insert(parsed.data).select("id").single();
@@ -175,7 +171,7 @@ export async function mettreAJourContrat(formData: FormData) {
   const siteId = Number(formData.get("site_id"));
   const retour = versSite(siteId, { onglet: "contrats" });
   const parsed = ContratSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(retour, messageErreur(parsed));
+  if (!parsed.success) redirectWithError(retour, premiereErreur(parsed));
 
   const supabase = await createClient();
   const { error } = await supabase.from("site_contrats").upsert({ site_id: siteId, ...parsed.data }, { onConflict: "site_id,lot" });
@@ -467,7 +463,7 @@ export async function mettreAJourMateriel(formData: FormData) {
   const materielId = Number(formData.get("materiel_id"));
   const retour = versSite(siteId, { onglet: "materiel" });
   const parsed = MaterielSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(versSite(siteId, { onglet: "materiel", modifier: String(materielId) }), messageErreur(parsed));
+  if (!parsed.success) redirectWithError(versSite(siteId, { onglet: "materiel", modifier: String(materielId) }), premiereErreur(parsed));
 
   const supabase = await createClient();
   const { data: fluide } = parsed.data.fluide_libelle

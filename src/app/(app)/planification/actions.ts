@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError, aujourdhui } from "@/lib/action-utils";
-import { entier, identifiant, obligatoire, texte } from "@/lib/zod-form";
+import { entier, identifiant, obligatoire, texte, premiereErreur } from "@/lib/zod-form";
 import { CLES_LOTS, LIBELLES_LOT, STATUT_A_PLANIFIER, STATUT_NE_PLUS_INTERVENIR } from "@/lib/sites";
 import { CLIENTS_LEGACY_CALENDRIER_FIXE, MAX_DATES, TYPE_INTERVENTION_PAR_LOT, datesPrevues, intervenantFmcId, joursFeries, sitesConcernes } from "@/lib/planification";
 
@@ -134,7 +134,7 @@ export async function genererDatesPrevues(formData: FormData) {
   const parsed = CalculSchema.safeParse(Object.fromEntries(formData));
   const clientId = Number(formData.get("client_id")) || undefined;
   const retour = versPlanification({ client_id: clientId });
-  if (!parsed.success) redirectWithError(retour, parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError(retour, premiereErreur(parsed));
   const { client_id, site_id, date_fin } = parsed.data;
   const dateDebut = parsed.data.date_debut ?? aujourdhui();
   if (!client_id && !site_id) redirectWithError(retour, "Choisissez un client ou un site.");

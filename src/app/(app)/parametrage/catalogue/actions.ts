@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireAdministrateur, redirectWithError } from "@/lib/action-utils";
-import { booleen, entier, identifiant, obligatoire, texte } from "@/lib/zod-form";
+import { booleen, entier, identifiant, obligatoire, texte, premiereErreur } from "@/lib/zod-form";
 
 const RETOUR = "/parametrage/catalogue";
 
@@ -42,7 +42,7 @@ export async function enregistrerReference(formData: FormData) {
   const parsed = ReferenceSchema.safeParse(Object.fromEntries(formData));
   const modifierId = Number(formData.get("reference_id")) || null;
   const retourFormulaire = modifierId ? `${RETOUR}?modifier=${modifierId}` : RETOUR;
-  if (!parsed.success) redirectWithError(retourFormulaire, parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError(retourFormulaire, premiereErreur(parsed));
   const { propager, reference_id, ...ligne } = parsed.data;
 
   const supabase = await createClient();
