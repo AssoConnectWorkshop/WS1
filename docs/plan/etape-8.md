@@ -95,10 +95,11 @@ intervention, liste des sites, fiche site, fiche client, planification, puis le 
 | Fiche site, onglet Interventions | `/sites/[id]?onglet=interventions` | oui (lot 2) | fait (PR lot 2) |
 | Fiche site, onglets Devis SAV / Travaux / Contrat (`DevisListe*`) | `/sites/[id]?onglet=sav…` | oui (lot 3) | fait (PR lot 2) |
 | Fiche client (`Form_Client`) | `/clients/[id]` | oui (lot 2) | fait (PR lot 2) |
-| Fiche intervention (`Form_Intervention`), onglets Clôture et Devis SAV | `/interventions/[id]` | oui (lot 3) | à faire |
-| Rapport d'intervention (état `Test Cerfa` / bon PDF) | `/interventions/[id]/bon.pdf` | oui (lot 3) | à comparer |
-| Paramétrage (`Form_Parametrage`), Utilisateurs & Techniciens, Zones | `/parametrage`, `/parametrage/utilisateurs` | oui (lots 4-5) | à faire |
-| Modification Véhicule (`Form_99`) | `/vehicules/[id]` | oui (lot 5) | à faire |
+| Fiche intervention (`Form_Intervention`), onglets Clôture et Devis SAV | `/interventions/[id]` | oui (lot 3) | fait (PR lot 3-5) |
+| Rapport d'intervention (bon PDF) | `/interventions/[id]/bon.pdf` | oui (lot 3) | à comparer (document, pas un écran) |
+| Paramétrage (`Form_Parametrage`), Utilisateurs & Techniciens, Zones | `/parametrage`, `/parametrage/utilisateurs` | oui (lots 4-5) | fait (PR lot 3-5) |
+| Modification Véhicule (`Form_99`) | `/vehicules/[id]` | oui (lot 5) | fait (PR lot 3-5) |
+| Liste des sites : colonnes « Ct » (dossier) et « Co » (code) | `/sites` | oui (lot 4, capture nette) | fait (PR lot 3-5) |
 | Planification | `/planification` | non | attendre la capture |
 | Explorateur du serveur de fichiers (dossiers devis) | — | oui (lots 3-4, contexte) | hors code : arborescence `Commun\Commercial\A4- DEVIS\{A0- FMC Maintenance, A1- FMC Climatisation}\Devis AAAA SAV|TR` |
 
@@ -144,6 +145,19 @@ Comportements Access visibles sur les captures mais absents de l'application, à
 - **Fiche client** : le bouton carte ouvre `/carte` filtrée sur le nom du client ; les onglets
   Planifications et Exports Excel (absents d'Access, qui passe par Statistiques) sont conservés
   après les trois onglets Access.
+- **Fiche intervention** : l'onglet « Création d'intervention » n'a pas encore été capturé (contenu
+  actuel conservé, bloc facturation déplacé dans cet onglet comme dans Access) ; le statut n'est
+  pas modifiable par liste déroulante : les transitions passent par les boutons Clôturer /
+  Déclôturer / Valider (règles métier : PDF obligatoire, replanification) ; « Liste Sous Traitants
+  Possibles » renvoie à l'annuaire des intervenants sans filtre par activité ; « Date réelle de
+  saisie » est portée par la date de retour de fiche ; l'onglet Historique a été retiré (les autres
+  interventions du site sont sur la fiche site).
+- **Paramétrage** : « Access Gestion Mot de passe » (génération et envoi des mots de passe du
+  portail web) non reproduit ; l'invitation à l'application le remplace. « Références » ouvre le
+  catalogue matériel de l'application (colonnes différentes du sous-formulaire Access).
+- **Fiche véhicule** : les dates et km « dernier entretien / CT / CC / relevé » sont calculés depuis
+  les événements et affichés en lecture seule (comme Access) ; la saisie des événements reste sous
+  la fiche (Access : formulaire séparé « Saisie_EV_Vehicule »).
 - **Captures hors périmètre du CDC** (non traitées) : fiche intervention web du technicien (p.3),
   planning Outlook et planning prévisionnel Excel (p.4), trois écrans Esabora (p.5-6).
 
@@ -213,6 +227,20 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   des sites), champs disposés comme Access, onglet Sites en tableau (N° de magasin, Site,
   Situation, Adresse, CP, Ville). Vue `v_interventions_liste` complétée (migration
   `20260916190000_etape8_v_interventions_liste_generale.sql`).
-- [ ] Lot 3-5 restant : fiche intervention (onglets Clôture et Devis SAV), paramétrage et
-  utilisateurs, fiche véhicule, colonnes dossier / Code de la liste des sites, comparaison du
-  rapport d'intervention PDF.
+- [x] Lots 3 à 5 : fiche intervention `/interventions/[id]` (titre « Création et Clôture
+  d'intervention - TYPE » sur fond coloré par type, boutons Envoyer un mail au contact / partenaire
+  / client, onglets Création d'intervention, Clôture de l'intervention en cours, Devis SAV, Devis
+  Travaux, Signatures ; onglet Clôture en trois colonnes avec tous les champs de la capture et un
+  seul bouton Enregistrer, bandeau rouge « GARANTIE ENCORE EN COURS », onglets devis façon
+  `DevisListe` avec « INFORMATIONS SUR LE DEVIS ») ; action de clôture étendue à tous les champs
+  (retour fiche, contrôles, gaz, temps, saisie par, commentaires, statut facturation avec règle des
+  statuts réservés, panne, devis à faire, duplicata) ; paramétrage `/parametrage` avec la colonne
+  de boutons Access à gauche sur toutes les pages du paramétrage, page « Utilisateurs &
+  Techniciens » en feuille de données (Nom, Prénom, Type utilisateur, Immat, Intervenant, Société,
+  Code FMC, Login FMC, Mail) ouverte à tous en lecture ; fiche véhicule `/vehicules/[id]` disposée
+  comme « Modification Véhicule » (cadres Garantie, Revision(2), Divers, Leasing, Contrôles,
+  Raccourci vers le PC, boutons Quitter (SANS SAUVEGARDE) et enregistrer) ; liste des sites :
+  colonnes « Ct » (dossier réseau) et « Co » (code). Migration
+  `20260916200000_etape8_v_sites_liste_dossier.sql`.
+- [ ] À faire quand les captures arriveront : onglet « Création d'intervention », planification,
+  fiche intervenant, listes de devis générales, comparaison du rapport d'intervention PDF.

@@ -16,7 +16,7 @@ export default async function NouveauVehiculePage({ searchParams }: { searchPara
   ]);
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-4 p-8">
+    <div className="flex flex-col gap-4 p-4">
       <h1 className="text-2xl font-bold">Nouveau véhicule</h1>
       <Messages sp={sp} />
       <form action={creerVehicule} className="flex flex-col gap-4">
