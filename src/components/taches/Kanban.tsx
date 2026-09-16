@@ -2,30 +2,36 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { COLONNES, type Colonne } from "@/lib/taches";
+import { TABLEAUX, colonnesDe, type Tableau } from "@/lib/taches";
+
+type Colonne = string;
 import { creerTache, deposerTache, modifierTache, supprimerTache } from "@/app/(app)/taches/actions";
 
 export type Tache = { id: number; titre: string; description: string | null; colonne: Colonne; ordre: number; created_at: string; updated_at: string };
 
-const COULEUR: Record<Colonne, string> = {
+const COULEUR: Record<string, string> = {
   backlog: "bg-gray-400",
   next: "bg-blue-500",
   in_progress: "bg-amber-500",
   to_validate: "bg-purple-500",
   suspended: "bg-red-400",
   done: "bg-green-500",
+  todo: "bg-gray-400",
+  doing: "bg-amber-500",
 };
 
 const date = (v: string) => new Date(v).toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" });
 
 /** Kanban « À faire » : glisser-déposer natif HTML5, panneau de détail façon Notion (titre en grand, propriétés, description). */
-export function Kanban({ taches: initiales }: { taches: Tache[] }) {
+export function Kanban({ taches: initiales, tableau }: { taches: Tache[]; tableau: Tableau }) {
   const router = useRouter();
+  const COLONNES = colonnesDe(tableau);
+  const config = TABLEAUX[tableau];
   const [taches, setTaches] = useState(initiales);
   const [glissee, setGlissee] = useState<number | null>(null);
   const [survol, setSurvol] = useState<Colonne | null>(null);
   const [ouverte, setOuverte] = useState<Tache | null | "nouvelle">(null);
-  const [colonneNouvelle, setColonneNouvelle] = useState<Colonne>("backlog");
+  const [colonneNouvelle, setColonneNouvelle] = useState<Colonne>(COLONNES[0].key);
   const [, lancer] = useTransition();
 
   const deposer = (colonne: Colonne) => {
@@ -41,7 +47,7 @@ export function Kanban({ taches: initiales }: { taches: Tache[] }) {
     setGlissee(null);
     setSurvol(null);
     lancer(async () => {
-      const r = await deposerTache(tache.id, colonne, ordre);
+      const r = await deposerTache(tache.id, tableau, colonne, ordre);
       if (!r.ok) setTaches(initiales);
       router.refresh();
     });
@@ -50,11 +56,20 @@ export function Kanban({ taches: initiales }: { taches: Tache[] }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-xl font-bold">À faire</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-xl font-bold">{config.label}</h1>
+          <nav className="flex gap-1 text-xs">
+            {(Object.keys(TABLEAUX) as Tableau[]).map((t) => (
+              <a key={t} href={TABLEAUX[t].href} className={`rounded px-2 py-0.5 ${t === tableau ? "bg-black text-white dark:bg-white dark:text-black" : "border"}`}>
+                {TABLEAUX[t].label}
+              </a>
+            ))}
+          </nav>
+        </div>
         <button
           type="button"
           onClick={() => {
-            setColonneNouvelle("backlog");
+            setColonneNouvelle(COLONNES[0].key);
             setOuverte("nouvelle");
           }}
           className="rounded border bg-white px-2 py-1 text-xs dark:bg-white/5"
@@ -63,7 +78,7 @@ export function Kanban({ taches: initiales }: { taches: Tache[] }) {
         </button>
       </div>
 
-      <div className="grid gap-2 lg:grid-cols-6">
+      <div className={`grid gap-2 ${COLONNES.length > 3 ? "lg:grid-cols-6" : "lg:grid-cols-3"}`}>
         {COLONNES.map((colonne) => {
           const cartes = taches.filter((t) => t.colonne === colonne.key).sort((a, b) => a.ordre - b.ordre || a.id - b.id);
           return (
@@ -124,6 +139,7 @@ export function Kanban({ taches: initiales }: { taches: Tache[] }) {
           <aside className="flex h-full w-full max-w-xl flex-col gap-4 overflow-y-auto bg-white p-6 shadow-2xl dark:bg-neutral-900" onClick={(e) => e.stopPropagation()}>
             <form action={ouverte === "nouvelle" ? creerTache : modifierTache} className="flex flex-col gap-4">
               {ouverte !== "nouvelle" && <input type="hidden" name="tache_id" value={ouverte.id} />}
+              <input type="hidden" name="tableau" value={tableau} />
               <div className="flex items-start justify-between gap-2">
                 <input
                   name="titre"
