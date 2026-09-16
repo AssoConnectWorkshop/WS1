@@ -1,12 +1,19 @@
-/** Chemin réseau ou URL : lien si http(s), sinon affichage monospace. */
+import { hyperlienAccess } from "@/lib/format";
+
+/** Chemin réseau, URL ou hyperlien Access (`texte#adresse`) : lien si http(s), sinon affichage monospace. */
 export function Chemin({ value }: { value: string | null | undefined }) {
-  if (!value) return <>—</>;
-  if (/^https?:\/\//i.test(value)) {
+  const { libelle, chemin } = hyperlienAccess(value);
+  if (!chemin) return <>—</>;
+  if (/^https?:\/\//i.test(chemin)) {
     return (
-      <a href={value} target="_blank" rel="noreferrer" className="underline">
-        {value}
+      <a href={chemin} target="_blank" rel="noreferrer" className="underline">
+        {libelle || chemin}
       </a>
     );
   }
-  return <span className="font-mono text-xs">{value}</span>;
+  return (
+    <span className="font-mono text-xs" title={chemin}>
+      {chemin}
+    </span>
+  );
 }

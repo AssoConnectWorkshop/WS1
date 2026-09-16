@@ -143,6 +143,10 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   reproduit) ; colonnes de devis SAV / TR (Devis SAV Fait, Statut Devis, Devis TR…) non reprises.
 - **Onglets Devis SAV / Travaux / Contrat** (fiche site) : « Rendre Insertion Devis Possible »
   ouvre la création de devis ; les fiches sont en lecture, la modification se fait sur `/devis/[id]`.
+  « Vers Fichier » copie le chemin réseau du devis dans le presse-papiers (un navigateur ne peut pas
+  ouvrir un partage de fichiers) ; le chemin complet est visible au survol. Le chemin est stocké au
+  format hyperlien Access `texte#adresse` : le libellé est affiché, l'adresse est copiée. « Générer
+  intervention suite à accord devis » est affiché sur tous les devis, comme dans Access.
 - **Fiche client** : le bouton carte ouvre `/carte` filtrée sur le nom du client ; les onglets
   Planifications et Exports Excel (absents d'Access, qui passe par Statistiques) sont conservés
   après les trois onglets Access.
