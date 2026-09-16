@@ -89,7 +89,7 @@ intervention, liste des sites, fiche site, fiche client, planification, puis le 
 |---|---|---|---|
 | Menu d'accueil (`Form_MenuClimAccess`) | `/` | oui (CDC p.1) | fait (PR menu d'accueil) |
 | Liste des sites (`Form_ListeSiteGenerale`) | `/sites` | oui (CDC p.2) | fait (PR liste des sites) |
-| Fiche site | `/sites/[id]` | oui (CDC p.2) | à faire |
+| Fiche site (`Form_Site`) | `/sites/[id]` | oui (CDC p.2) | fait (PR fiche site) |
 | Carte | `/carte` | oui (CDC p.3, module PHP) | à faire |
 | Liste des interventions | `/interventions` | non | attendre la capture |
 | Fiche intervention | `/interventions/[id]` | non | attendre la capture |
@@ -111,6 +111,15 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   ici deux états (coché = filtre actif). La ligne sélectionnée surlignée en bleu n'a pas
   d'équivalent (pas de sélection de ligne) ; la colonne « Cl » (bouton d'ouverture) est remplacée
   par le lien sur le nom.
+- **Fiche site** : bouton « Créer une intervention Résolu Par Téléphone » non reproduit (la
+  résolution par téléphone se fait sur la fiche intervention après création) ; « N° Esabora Clim /
+  Maint » du client remplacés par le seul « N° unique Esabora » du site ; « Nb.(Infos) » du tarif
+  Clim 1 (nombre de visites techniques) absent du modèle cible ; les onglets « Contrat de
+  maintenance », « Devis SAV », « Devis Travaux » listent les devis du site sans les colonnes
+  détaillées des sous-formulaires Access ; les boutons « Renseigner Colonne Nom Tech » et
+  « Régénérer le planning prévisionnel des entretiens » de l'onglet Interventions ne sont pas
+  reproduits. Les cases « NE PLUS INTERVENIR » et « Fermé » passent par une confirmation (effets de
+  bord sur les interventions) au lieu d'un simple clic.
 - **Captures hors périmètre du CDC** (non traitées) : fiche intervention web du technicien (p.3),
   planning Outlook et planning prévisionnel Excel (p.4), trois écrans Esabora (p.5-6).
 
@@ -141,4 +150,14 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   Contrat client, Tarif 1 Cl, Tarif 2 Cl, Nb Entretien, Nom, Adresse, CP, Ville, Commentaire.
   Filtre « non rooftop » aligné sur Access (précision du géocodage ≠ ROOFTOP). Vue `v_sites_liste`
   complétée (migration `20260916170000_etape8_v_sites_liste.sql`).
-- [ ] Fiche site, carte : à suivre dans les PR suivantes.
+- [x] Fiche site `/sites/[id]` : en-tête « Site : NOM (n°) - Ville : VILLE » avec Créer une
+  intervention, N CE à éditer, Enregistrer, Fermer ; onglets Access (Site, Interventions, Contrat de
+  maintenance, Devis SAV, Devis Travaux, Matériel, Infos complémentaires Site) ; onglet Site en
+  quatre colonnes de cadres comme la capture : donneur d'ordre / intervenant clim / Particulier /
+  RDV à prendre / Esabora, Infos Site, surfaces et responsable, Zone d'intervention,
+  Géolocalisation, Tarif MO et DP | Infos Install, Contrat Entretien Clim / Chaudière /
+  Désenfumage | dossier réseau, Garanties, Registre de sécurité, Information divers, A Faire,
+  Divers, Site fermé, Investissement | badges (DEVIS SAV EN COURS…), Commentaire général Magasin,
+  Commentaire divers. Fond rouge si « Ne plus intervenir » ou « Retard paiement ». Onglet
+  Interventions en deux tableaux (en cours, clôturées) avec les colonnes principales d'Access.
+- [ ] Carte : PR suivante.
