@@ -1,7 +1,7 @@
-/** Kanbans de l'application : « À faire » (projet, points à discuter) et « Todo tech » (tâches de développement). */
+/** Kanbans de l'application : « Todo product » (produit, points à discuter) et « Todo tech » (tâches de développement). */
 export const TABLEAUX = {
   projet: {
-    label: "À faire",
+    label: "Todo product",
     href: "/taches",
     colonnes: [
       { key: "backlog", label: "Backlog" },

@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 
 export type Role = "gestionnaire" | "administrateur" | "comptable";
@@ -26,15 +27,15 @@ export type CurrentUser = {
  * Retourne `null` si personne n'est authentifié. `utilisateur` est `null` si le compte
  * Supabase Auth n'est rattaché à aucune ligne `utilisateurs` (cf. étape 3, layout applicatif).
  */
-export async function getCurrentUser(): Promise<CurrentUser | null> {
+export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const supabase = await createClient();
 
-  let user = null;
+  // Jeton vérifié localement (getClaims) : pas d'appel réseau au service Auth. Mis en cache React :
+  // un seul appel par requête, partagé entre layout, page et actions.
+  let user: { id: string; email?: string } | null = null;
   try {
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-    user = authUser;
+    const { data } = await supabase.auth.getClaims();
+    user = data?.claims?.sub ? { id: data.claims.sub, email: data.claims.email } : null;
   } catch {
     return null;
   }
@@ -52,4 +53,4 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     utilisateur: (utilisateur as Utilisateur | null) ?? null,
     role: (utilisateur?.role as Role | null | undefined) ?? null,
   };
-}
+});
