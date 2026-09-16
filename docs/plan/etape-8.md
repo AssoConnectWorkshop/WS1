@@ -90,7 +90,7 @@ intervention, liste des sites, fiche site, fiche client, planification, puis le 
 | Menu d'accueil (`Form_MenuClimAccess`) | `/` | oui (CDC p.1) | fait (PR menu d'accueil) |
 | Liste des sites (`Form_ListeSiteGenerale`) | `/sites` | oui (CDC p.2) | fait (PR liste des sites) |
 | Fiche site (`Form_Site`) | `/sites/[id]` | oui (CDC p.2) | fait (PR fiche site) |
-| Carte | `/carte` | oui (CDC p.3, module PHP) | à faire |
+| Carte (module PHP, `Form_Carte`) | `/carte` | oui (CDC p.3) | fait (PR carte) |
 | Liste des interventions | `/interventions` | non | attendre la capture |
 | Fiche intervention | `/interventions/[id]` | non | attendre la capture |
 | Fiche client | `/clients/[id]` | non | attendre la capture |
@@ -120,6 +120,11 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   « Régénérer le planning prévisionnel des entretiens » de l'onglet Interventions ne sont pas
   reproduits. Les cases « NE PLUS INTERVENIR » et « Fermé » passent par une confirmation (effets de
   bord sur les interventions) au lieu d'un simple clic.
+- **Carte** : le module PHP affiche aussi le lieu de vie des techniciens (épingle « Technicien ») ;
+  l'application n'a pas d'adresse de domicile des techniciens, la case « Technicien » n'est donc pas
+  reproduite. Les icônes Access (cône pour « En travaux », pictogrammes de statut) sont remplacées par
+  des épingles colorées uniformes. Les filtres par zone et par donneur d'ordre, absents de la
+  capture, ont été retirés de la page carte (ils restent sur la liste des interventions).
 - **Captures hors périmètre du CDC** (non traitées) : fiche intervention web du technicien (p.3),
   planning Outlook et planning prévisionnel Excel (p.4), trois écrans Esabora (p.5-6).
 
@@ -160,4 +165,16 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   Divers, Site fermé, Investissement | badges (DEVIS SAV EN COURS…), Commentaire général Magasin,
   Commentaire divers. Fond rouge si « Ne plus intervenir » ou « Retard paiement ». Onglet
   Interventions en deux tableaux (en cours, clôturées) avec les colonnes principales d'Access.
-- [ ] Carte : PR suivante.
+- [x] Carte `/carte` : en-tête « Retour Menu - Carte des interventions à réaliser du … au … Nb
+  Résultats », légende cliquable par type avec épingles colorées (Maintenance, Dépannage, Devis
+  SAV, Devis SAV (Pour TR), En Travaux, Désenfumage, Audit, Entretien Chaudière, Attente Fiche,
+  Tout), liste des techniciens, cases Intervenant FMC / Intervenant Ponctuel, légende des statuts
+  (A planifier, A Commander, En attente de matériel, Devis SAV) à droite ; carte plein écran, fonds
+  STREETS / SATELLITE, une épingle par site numérotée du nombre d'interventions, halo orange si
+  date limite dépassée ; info-bulle au format Access (type, site, adresse, zone, intervenant, date
+  limite, dernière visite de maintenance, tech. prévu, date prévue, commentaire général site,
+  commentaire intervention, liens Devis Encours / Liste Sous Traitants, boutons Copie Titre / Copie
+  Intervention). Vue `v_interventions_liste` complétée (migration
+  `20260916180000_etape8_v_interventions_liste_carte.sql`).
+- [ ] Lots suivants : attendre les captures (liste des interventions, fiche intervention, fiche
+  client, planification, puis le reste).
