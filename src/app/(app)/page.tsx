@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
+import { lienVue } from "@/lib/vues-tableau-de-bord";
 import { createClient } from "@/lib/supabase/server";
 import { ETATS_HORS_ALERTES, calculerAlertes, type Alertes, type Evenement, type Vehicule } from "@/lib/vehicules";
 
@@ -121,7 +122,7 @@ export default async function MenuPage() {
       <section className="grid grid-cols-3 items-start gap-6 md:grid-cols-[repeat(3,8rem)_1fr_repeat(2,8rem)]">
         <Icone href="/clients" label="Clients" icone="🤝" />
         <Icone href="/sites" label="Sites" icone="🛒" />
-        <Icone href="/interventions?vue=a-valider" label="Entretien / Dépannage Devis acceptés" icone="🧰" />
+        <Icone href={lienVue("a-valider")} label="Entretien / Dépannage Devis acceptés" icone="🧰" />
         <p className="col-span-3 self-center text-center text-lg md:col-span-1">Utilisateur choisi : {nomUtilisateur}</p>
         <Icone href="/interventions/gaz" label="Utilisation FF" icone="🧪" />
         <Icone href="/parametrage/utilisateurs" label="Utilisateurs" icone="🔑" />
@@ -129,7 +130,7 @@ export default async function MenuPage() {
 
       <section className="grid grid-cols-3 items-start gap-6 md:grid-cols-[repeat(4,8rem)_10rem_repeat(2,8rem)]">
         <Icone
-          href="/interventions?vue=duplicata"
+          href={lienVue("duplicata")}
           label="Duplicata"
           icone="📋"
           pastilles={[
@@ -138,12 +139,12 @@ export default async function MenuPage() {
             { valeur: c.duplicata_traitees, couleur: "rose", titre: "Attente offre de prix", petite: true },
           ]}
         />
-        <Icone href="/interventions?vue=a-commander" label="Matériel à commander" icone="📦" pastilles={[{ valeur: c.materiel_a_commander, couleur: "rose", titre: "Matériel à commander" }]} />
-        <Icone href="/interventions?vue=attente-materiel" label="Attente matériel" icone="🚚" pastilles={[{ valeur: c.attente_materiel, couleur: "rose", titre: "Attente matériel" }]} />
-        <Icone href="/interventions?vue=a-valider" label="Fiches d'interventions à valider" icone="📝" pastilles={[{ valeur: c.a_valider, couleur: "rouge", titre: "À valider" }]} />
+        <Icone href={lienVue("a-commander")} label="Matériel à commander" icone="📦" pastilles={[{ valeur: c.materiel_a_commander, couleur: "rose", titre: "Matériel à commander" }]} />
+        <Icone href={lienVue("attente-materiel")} label="Attente matériel" icone="🚚" pastilles={[{ valeur: c.attente_materiel, couleur: "rose", titre: "Attente matériel" }]} />
+        <Icone href={lienVue("a-valider")} label="Fiches d'interventions à valider" icone="📝" pastilles={[{ valeur: c.a_valider, couleur: "rouge", titre: "À valider" }]} />
         <div className="flex flex-col items-center gap-1.5">
           <Icone
-            href="/interventions?vue=a-facturer"
+            href={lienVue("a-facturer")}
             label="Fiches d'interventions à facturer"
             icone="💶"
             pastilles={[
@@ -159,7 +160,7 @@ export default async function MenuPage() {
             MAJ
           </Link>
         </div>
-        <Icone href="/interventions?vue=direction" label="À valider par le Boss" icone="🪑" pastilles={[{ valeur: c.a_definir_direction, couleur: "rouge", titre: "À valider par la direction" }]} />
+        <Icone href={lienVue("direction")} label="À valider par le Boss" icone="🪑" pastilles={[{ valeur: c.a_definir_direction, couleur: "rouge", titre: "À valider par la direction" }]} />
         <Icone label="Filtre extraction" icone="📊" indisponible={HORS_VERSION} />
       </section>
 

@@ -61,3 +61,13 @@ export async function supprimerTache(formData: FormData) {
   revalidatePath("/taches");
   redirect("/taches");
 }
+
+/** Glisser-déposer : appel direct depuis le composant client, sans redirection. */
+export async function deposerTache(id: number, colonne: string, ordre: number) {
+  await requireUtilisateur();
+  if (!id || !estColonne(colonne)) return { ok: false };
+  const supabase = await createClient();
+  const { error } = await supabase.from("taches").update({ colonne, ordre }).eq("id", id);
+  revalidatePath("/taches");
+  return { ok: !error };
+}
