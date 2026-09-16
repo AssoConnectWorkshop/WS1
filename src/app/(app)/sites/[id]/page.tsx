@@ -5,14 +5,23 @@ import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { KeyValue } from "@/components/ui/KeyValue";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Chemin } from "@/components/ui/Chemin";
+import { Champ, CHAMP } from "@/components/ui/Champ";
+import { FormulaireSite } from "@/components/sites/FormulaireSite";
+import { ContratsSite, HorairesSite } from "@/components/sites/ContratsEtHoraires";
+import { MaterielSite } from "@/components/sites/MaterielSite";
 import { statutInterventionTone } from "@/lib/badges";
 import { formatDate, formatMontant, formatNombre, oui } from "@/lib/format";
 import { toStringParams } from "@/lib/list-params";
+import { JOURS, LIBELLES_LOT, type Lot } from "@/lib/sites";
+import { basculerNePlusIntervenir, fermerSite, geocoderSite, rouvrirSite } from "../actions";
 
 export const dynamic = "force-dynamic";
 
 const ONGLETS = [
   { key: "site", label: "Site" },
+  { key: "contrats", label: "Contrats" },
+  { key: "horaires", label: "Horaires" },
   { key: "interventions", label: "Interventions" },
   { key: "materiel", label: "Matériel" },
   { key: "registre", label: "Registre de sécurité" },
@@ -20,7 +29,7 @@ const ONGLETS = [
   { key: "documents", label: "Documents" },
 ];
 
-const JOURS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+const BOUTON = "rounded-md border px-3 py-1.5 text-sm";
 
 export default async function SitePage({
   params,
@@ -30,21 +39,26 @@ export default async function SitePage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { id } = await params;
+  const siteId = Number(id);
   const sp = toStringParams(await searchParams);
   const onglet = ONGLETS.some((o) => o.key === sp.onglet) ? sp.onglet! : "site";
+  const deverrouille = sp.deverrouiller === "1";
 
   const supabase = await createClient();
   const { data: site } = await supabase.from("sites").select("*").eq("id", id).maybeSingle();
   if (!site) notFound();
 
-  const [{ data: client }, { data: contrats }, { data: horaires }, { data: zone }, { data: intervenant }, { data: donneur }] = await Promise.all([
-    supabase.from("clients").select("id, nom").eq("id", site.client_id).maybeSingle(),
-    supabase.from("site_contrats").select("*").eq("site_id", id),
-    supabase.from("site_horaires").select("*").eq("site_id", id).order("jour"),
-    site.zone_id ? supabase.from("zones_geographiques").select("libelle").eq("id", site.zone_id).maybeSingle() : Promise.resolve({ data: null }),
-    site.intervenant_id ? supabase.from("intervenants").select("id, nom").eq("id", site.intervenant_id).maybeSingle() : Promise.resolve({ data: null }),
-    site.donneur_ordre_id ? supabase.from("donneurs_ordre").select("id, nom").eq("id", site.donneur_ordre_id).maybeSingle() : Promise.resolve({ data: null }),
-  ]);
+  const [{ data: client }, { data: contrats }, { data: horaires }, { data: zones }, { data: intervenants }, { data: donneurs }, { data: fluides }, { data: clients }] =
+    await Promise.all([
+      supabase.from("clients").select("id, nom").eq("id", site.client_id).maybeSingle(),
+      supabase.from("site_contrats").select("*").eq("site_id", id),
+      supabase.from("site_horaires").select("*").eq("site_id", id).order("jour"),
+      supabase.from("zones_geographiques").select("id, libelle").order("libelle"),
+      supabase.from("intervenants").select("id, nom").order("nom"),
+      supabase.from("donneurs_ordre").select("id, nom").order("nom"),
+      supabase.from("types_fluide").select("id, libelle").order("libelle"),
+      deverrouille ? supabase.from("clients").select("id, nom").order("nom") : Promise.resolve({ data: [] as { id: number; nom: string }[] }),
+    ]);
 
   const { data: devisLies } = await supabase.from("devis").select("id, famille, numero, statut_code, montant_ht").eq("site_id", id).is("supprime_le", null);
   const devisEnCours = (devisLies ?? []).filter((d) => [1, 2, 4].includes(d.statut_code ?? -1));
@@ -64,19 +78,83 @@ export default async function SitePage({
     garantieEnCours = fin > new Date();
   }
 
+  const enLibelle = (rows: { id: number; nom?: string | null; libelle?: string | null }[] | null) => (rows ?? []).map((r) => ({ id: r.id, libelle: r.nom ?? r.libelle ?? null }));
+  const intervenantTitulaire = intervenants?.find((i) => i.id === site.intervenant_id);
+  const donneurOrdre = donneurs?.find((d) => d.id === site.donneur_ordre_id);
+  const zone = zones?.find((z) => z.id === site.zone_id);
+
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
-      {(site.ne_plus_intervenir || site.retard_paiement) && (
+    <div className="mx-auto flex max-w-6xl flex-col gap-4 p-8">
+      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
+      {sp.info && <p className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">{sp.info}</p>}
+
+      {(site.ne_plus_intervenir || site.retard_paiement || site.ferme) && (
         <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+          {site.ferme && (
+            <div>
+              Site fermé le {formatDate(site.date_fermeture)}
+              {site.motif_fermeture ? ` : ${site.motif_fermeture}` : ""}.
+            </div>
+          )}
           {site.ne_plus_intervenir && <div>Ne plus intervenir sur ce site.</div>}
           {site.retard_paiement && <div>Retard de paiement.</div>}
         </div>
       )}
 
+      {sp.confirmer === "fermeture" && !site.ferme && (
+        <form action={fermerSite} className="flex flex-col gap-3 rounded-md bg-orange-50 p-4 text-sm text-orange-900">
+          <input type="hidden" name="site_id" value={id} />
+          <p className="font-medium">
+            Êtes-vous sûr de vouloir clôturer le site ? Il sera rattaché au client « sites fermés » ; le client actuel ({client?.nom}) est conservé dans la fiche pour une
+            éventuelle réouverture.
+          </p>
+          <div className="grid grid-cols-[10rem_1fr] gap-3">
+            <Champ label="Date de fermeture">
+              <input name="date_fermeture" type="date" defaultValue={new Date().toISOString().slice(0, 10)} className={CHAMP} />
+            </Champ>
+            <Champ label="Motif">
+              <input name="motif_fermeture" className={CHAMP} />
+            </Champ>
+          </div>
+          <div className="flex gap-3">
+            <button type="submit" className="rounded-md bg-orange-700 px-3 py-1.5 text-white">
+              Confirmer la fermeture
+            </button>
+            <Link href={`/sites/${id}`} className={BOUTON}>
+              Annuler
+            </Link>
+          </div>
+        </form>
+      )}
+
+      {sp.confirmer === "ne_plus_intervenir" && (
+        <form action={basculerNePlusIntervenir} className="flex flex-col gap-3 rounded-md bg-orange-50 p-4 text-sm text-orange-900">
+          <input type="hidden" name="site_id" value={id} />
+          <input type="hidden" name="actif" value={site.ne_plus_intervenir ? "0" : "1"} />
+          <p className="font-medium">
+            {site.ne_plus_intervenir
+              ? "Attention, vous allez faire passer les interventions du statut « Ne plus intervenir » au statut « À planifier » (réservé à l'administrateur). Confirmez-vous ?"
+              : "Attention, vous allez faire passer toutes les interventions en cours au statut « Ne plus intervenir » (pensez à noter leur statut précédent). Confirmez-vous ?"}
+          </p>
+          <div className="flex gap-3">
+            <button type="submit" className="rounded-md bg-orange-700 px-3 py-1.5 text-white">
+              Confirmer
+            </button>
+            <Link href={`/sites/${id}`} className={BOUTON}>
+              Annuler
+            </Link>
+          </div>
+        </form>
+      )}
+
       <div className="flex flex-wrap items-center gap-2">
+        {site.ferme && <Badge tone="gray">Fermé</Badge>}
         {devisEnCours.length > 0 && <Badge tone="yellow">{devisEnCours.length} devis en cours</Badge>}
         {garantieEnCours && <Badge tone="green">Garantie en cours</Badge>}
         {(ceAEditer ?? 0) > 0 && <Badge tone="orange">{ceAEditer} CE à éditer</Badge>}
+        {site.nacelle_necessaire && <Badge tone="purple">Nacelle</Badge>}
+        {site.particulier && <Badge tone="blue">Particulier</Badge>}
+        {site.rdv_a_prendre && <Badge tone="pink">RDV à prendre</Badge>}
       </div>
 
       <h1 className="text-xl font-semibold">
@@ -91,7 +169,39 @@ export default async function SitePage({
             </Link>
           </>
         )}
+        {site.ville ? ` · ${site.ville}` : ""}
+        {site.latitude != null && site.longitude != null ? ` · ${site.latitude}, ${site.longitude} (${site.precision_geo ?? "précision inconnue"})` : " · non géocodé"}
       </p>
+
+      <div className="flex flex-wrap gap-2">
+        <Link href={`/interventions/nouvelle?site=${id}`} className="rounded-md bg-black px-3 py-1.5 text-sm text-white">
+          Nouvelle intervention
+        </Link>
+        <Link href={`/devis/nouveau?site=${id}`} className={BOUTON}>
+          Nouveau devis
+        </Link>
+        <form action={geocoderSite}>
+          <input type="hidden" name="site_id" value={id} />
+          <button type="submit" className={BOUTON}>
+            Géocoder l&apos;adresse
+          </button>
+        </form>
+        <Link href={`/sites/${id}?confirmer=ne_plus_intervenir`} className={BOUTON}>
+          {site.ne_plus_intervenir ? "Reprendre les interventions" : "Ne plus intervenir"}
+        </Link>
+        {site.ferme ? (
+          <form action={rouvrirSite}>
+            <input type="hidden" name="site_id" value={id} />
+            <button type="submit" className={BOUTON}>
+              Rouvrir le site
+            </button>
+          </form>
+        ) : (
+          <Link href={`/sites/${id}?confirmer=fermeture`} className={`${BOUTON} border-red-300 text-red-700`}>
+            Fermer le site
+          </Link>
+        )}
+      </div>
 
       <Tabs tabs={ONGLETS} active={onglet} searchParams={sp} />
 
@@ -99,104 +209,81 @@ export default async function SitePage({
         <div className="flex flex-col gap-6">
           <KeyValue
             items={[
-              { label: "Code", value: site.code_client },
-              { label: "Adresse", value: `${site.adresse ?? ""} ${site.code_postal ?? ""} ${site.ville ?? ""}`.trim() },
-              { label: "Téléphone", value: site.telephone },
+              { label: "Adresse", value: `${site.adresse ?? ""} ${site.code_postal ?? ""} ${site.ville ?? ""}`.trim() || "—" },
               { label: "Zone", value: zone?.libelle },
-              { label: "Intervenant", value: intervenant ? <Link className="underline" href={`/intervenants/${intervenant.id}`}>{intervenant.nom}</Link> : "—" },
-              { label: "Donneur d'ordre", value: donneur ? <Link className="underline" href={`/donneurs-ordre/${donneur.id}`}>{donneur.nom}</Link> : "—" },
-              { label: "Situation", value: site.situation },
-              { label: "Type (H/F)", value: site.type_site },
-              { label: "Date de mise en service", value: formatDate(site.date_mise_en_service) },
-              { label: "Indice qualité", value: "★".repeat(site.indice_qualite ?? 0) || "—" },
-              { label: "Indice vétusté", value: "★".repeat(site.indice_vetuste ?? 0) || "—" },
+              { label: "Intervenant", value: intervenantTitulaire ? <Link className="underline" href={`/intervenants/${intervenantTitulaire.id}`}>{intervenantTitulaire.nom}</Link> : "—" },
+              { label: "Donneur d'ordre", value: donneurOrdre ? <Link className="underline" href={`/donneurs-ordre/${donneurOrdre.id}`}>{donneurOrdre.nom}</Link> : "—" },
               { label: "Visites/an (pivot)", value: formatNombre(site.visites_entretien_par_an) },
               { label: "Dernière visite entretien", value: formatDate(site.date_derniere_visite_entretien) },
-              { label: "Tarifs spécifiques", value: oui(site.tarifs_specifiques) },
-              { label: "Tarif horaire MO", value: formatMontant(site.tarif_heure_mo) },
-              { label: "Tarif déplacement", value: formatMontant(site.tarif_deplacement) },
-              { label: "Particulier", value: oui(site.particulier) },
-              { label: "Nacelle nécessaire", value: oui(site.nacelle_necessaire) },
+              { label: "Tarifs", value: site.tarifs_specifiques ? `Site : ${formatMontant(site.tarif_heure_mo)} / ${formatMontant(site.tarif_deplacement)}` : "Tarifs du client" },
               { label: "Investissement", value: oui(site.investissement) },
-              { label: "Fermé", value: oui(site.ferme) },
             ]}
           />
+          <FormulaireSite
+            site={site}
+            deverrouille={deverrouille}
+            clients={enLibelle(clients)}
+            donneurs={enLibelle(donneurs)}
+            intervenants={enLibelle(intervenants)}
+            zones={enLibelle(zones)}
+            fluides={enLibelle(fluides)}
+          />
+        </div>
+      )}
 
-          <div>
-            <h2 className="mb-2 text-sm font-semibold opacity-70">Contrats par lot</h2>
-            {contrats && contrats.length > 0 ? (
-              <table className="w-full border-collapse text-sm">
-                <thead>
-                  <tr className="border-b text-left">
-                    <th className="py-1">Lot</th>
-                    <th>N° contrat</th>
-                    <th>Visites/an</th>
-                    <th>Redevance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {contrats.map((c) => (
-                    <tr key={c.id} className="border-b">
-                      <td className="py-1 capitalize">{c.lot}</td>
-                      <td>{c.numero_contrat ?? "—"}</td>
-                      <td>{formatNombre(c.visites_par_an)}</td>
-                      <td>{formatMontant(c.redevance)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <EmptyState message="Aucun contrat." />
-            )}
-          </div>
+      {onglet === "contrats" && (
+        <div className="flex flex-col gap-4">
+          <ul className="flex flex-wrap gap-3 text-sm">
+            {(contrats ?? []).map((c) => (
+              <li key={c.id} className="rounded-md border px-3 py-1.5">
+                {LIBELLES_LOT[c.lot as Lot]} : {formatNombre(c.visites_par_an)} visite(s)/an · {formatMontant(c.redevance)}
+              </li>
+            ))}
+          </ul>
+          <ContratsSite siteId={siteId} contrats={contrats ?? []} intervenants={enLibelle(intervenants)} />
+        </div>
+      )}
 
-          <div>
-            <h2 className="mb-2 text-sm font-semibold opacity-70">Horaires</h2>
-            {horaires && horaires.length > 0 ? (
-              <ul className="grid grid-cols-2 gap-1 text-sm sm:grid-cols-3">
-                {horaires.map((h) => (
-                  <li key={h.id}>
-                    {JOURS[h.jour - 1]} : {h.ouverture ?? "—"} – {h.fermeture ?? "—"}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <EmptyState message="Aucun horaire renseigné." />
-            )}
-          </div>
+      {onglet === "horaires" && (
+        <div className="flex flex-col gap-4">
+          {horaires && horaires.length > 0 && (
+            <ul className="grid grid-cols-2 gap-1 text-sm sm:grid-cols-4">
+              {horaires.map((h) => (
+                <li key={h.id}>
+                  {JOURS[h.jour - 1]} : {h.ouverture?.slice(0, 5) ?? "—"} – {h.fermeture?.slice(0, 5) ?? "—"}
+                </li>
+              ))}
+            </ul>
+          )}
+          <HorairesSite siteId={siteId} horaires={horaires ?? []} />
         </div>
       )}
 
       {onglet === "interventions" && <SiteInterventions siteId={id} />}
-      {onglet === "materiel" && <SiteMateriel siteId={id} />}
+      {onglet === "materiel" && <MaterielSite siteId={siteId} modifierId={sp.modifier} />}
       {onglet === "registre" && <SiteRegistre siteId={id} />}
 
-      {onglet === "devis" && (
-        <div className="flex flex-col gap-3">
-          <Link href={`/devis/nouveau?site=${id}`} className="w-fit rounded-md border px-3 py-1.5 text-sm">
-            Nouveau devis
-          </Link>
-          {devisLies && devisLies.length > 0 ? (
-            <ul className="flex flex-col gap-2">
-              {devisLies.map((d) => (
-                <li key={d.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-                  <Link href={`/devis/${d.id}`} className="capitalize underline">
-                    {d.famille} · {d.numero ?? `#${d.id}`}
-                  </Link>
-                  <span>{formatMontant(d.montant_ht)}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <EmptyState message="Aucun devis pour ce site." />
-          )}
-        </div>
-      )}
+      {onglet === "devis" &&
+        (devisLies && devisLies.length > 0 ? (
+          <ul className="flex flex-col gap-2">
+            {devisLies.map((d) => (
+              <li key={d.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
+                <Link href={`/devis/${d.id}`} className="capitalize underline">
+                  {d.famille} · {d.numero ?? `#${d.id}`}
+                </Link>
+                <span>{formatMontant(d.montant_ht)}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState message="Aucun devis pour ce site." />
+        ))}
 
       {onglet === "documents" && (
         <KeyValue
           items={[
-            { label: "Dossier réseau", value: site.dossier_chemin ? <span className="font-mono text-xs">{site.dossier_chemin}</span> : "—" },
+            { label: "Dossier réseau", value: <Chemin value={site.dossier_chemin} /> },
+            { label: "Résumé devis envoyés", value: site.resume_devis_html ? <span className="whitespace-pre-line">{String(site.resume_devis_html).replace(/<br\s*\/?>/gi, "\n")}</span> : "—" },
           ]}
         />
       )}
@@ -223,104 +310,49 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
       .limit(50),
   ]);
 
-  return (
-    <div className="flex flex-col gap-6">
-      <Link href={`/interventions/nouvelle?site=${siteId}`} className="w-fit rounded-md bg-black px-3 py-1.5 text-sm text-white">
-        Nouvelle intervention
-      </Link>
-      <div>
-        <h2 className="mb-2 text-sm font-semibold opacity-70">En cours</h2>
-        {enCours && enCours.length > 0 ? (
-          <ul className="flex flex-col gap-2">
-            {enCours.map((i) => (
-              <li key={i.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-                <Link href={`/interventions/${i.id}`} className="underline">
-                  {i.objet ?? i.type_libelle}
-                </Link>
-                <span className="flex items-center gap-2">
-                  <Badge tone={statutInterventionTone(i.statut_code)}>{i.statut_libelle}</Badge>
-                  {formatDate(i.date_limite)}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState message="Aucune intervention en cours." />
-        )}
-      </div>
-      <div>
-        <h2 className="mb-2 text-sm font-semibold opacity-70">Clôturées</h2>
-        {cloturees && cloturees.length > 0 ? (
-          <ul className="flex flex-col gap-2">
-            {cloturees.map((i) => (
-              <li key={i.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-                <Link href={`/interventions/${i.id}`} className="underline">
-                  {i.objet ?? i.type_libelle}
-                </Link>
-                <span className="flex items-center gap-2">
-                  <Badge tone={statutInterventionTone(i.statut_code)}>{i.statut_libelle}</Badge>
-                  {formatDate(i.date_realisee)}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState message="Aucune intervention clôturée." />
-        )}
-      </div>
+  type Ligne = {
+    id: number;
+    type_libelle: string | null;
+    statut_code: number | null;
+    statut_libelle: string | null;
+    objet: string | null;
+    date_limite?: string | null;
+    date_realisee?: string | null;
+  };
+  const Liste = ({ titre, rows, date, vide }: { titre: string; rows: Ligne[] | null; date: "date_limite" | "date_realisee"; vide: string }) => (
+    <div>
+      <h2 className="mb-2 text-sm font-semibold opacity-70">{titre}</h2>
+      {rows && rows.length > 0 ? (
+        <ul className="flex flex-col gap-2">
+          {rows.map((i) => (
+            <li key={i.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
+              <Link href={`/interventions/${i.id}`} className="underline">
+                {i.objet ?? i.type_libelle}
+              </Link>
+              <span className="flex items-center gap-2">
+                <Badge tone={statutInterventionTone(i.statut_code)}>{i.statut_libelle}</Badge>
+                {formatDate(i[date])}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <EmptyState message={vide} />
+      )}
     </div>
   );
-}
-
-async function SiteMateriel({ siteId }: { siteId: string }) {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("site_materiels")
-    .select("id, repere, marque, type_equipement, reference, numero_serie, fluide_libelle, charge_fluide_kg, certificat_etancheite_edite")
-    .eq("site_id", siteId)
-    .order("repere_sur_site");
-
-  if (!data || data.length === 0) return <EmptyState message="Aucun matériel enregistré." />;
 
   return (
-    <table className="w-full border-collapse text-sm">
-      <thead>
-        <tr className="border-b text-left">
-          <th className="py-1">Repère</th>
-          <th>Marque</th>
-          <th>Type</th>
-          <th>Référence</th>
-          <th>N° série</th>
-          <th>Fluide</th>
-          <th className="text-right">Charge (kg)</th>
-          <th>CE</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((m) => (
-          <tr key={m.id} className="border-b">
-            <td className="py-1">{m.repere ?? "—"}</td>
-            <td>{m.marque ?? "—"}</td>
-            <td>{m.type_equipement ?? "—"}</td>
-            <td>{m.reference ?? "—"}</td>
-            <td>{m.numero_serie ?? "—"}</td>
-            <td>{m.fluide_libelle ?? "—"}</td>
-            <td className="text-right">{formatNombre(m.charge_fluide_kg)}</td>
-            <td>{oui(m.certificat_etancheite_edite)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="flex flex-col gap-6">
+      <Liste titre="En cours" rows={enCours} date="date_limite" vide="Aucune intervention en cours." />
+      <Liste titre="Clôturées" rows={cloturees} date="date_realisee" vide="Aucune intervention clôturée." />
+    </div>
   );
 }
 
 async function SiteRegistre({ siteId }: { siteId: string }) {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("site_registre_securite")
-    .select("id, date_mise_a_jour")
-    .eq("site_id", siteId)
-    .order("date_mise_a_jour", { ascending: false });
+  const { data } = await supabase.from("site_registre_securite").select("id, date_mise_a_jour").eq("site_id", siteId).order("date_mise_a_jour", { ascending: false });
 
   if (!data || data.length === 0) return <EmptyState message="Aucune mise à jour du registre." />;
 

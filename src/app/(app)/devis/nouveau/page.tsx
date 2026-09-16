@@ -4,20 +4,10 @@ import { getCurrentUser } from "@/lib/auth";
 import { toStringParams } from "@/lib/list-params";
 import { formatDate } from "@/lib/format";
 import { FAMILLES_DEVIS, LIBELLES_FAMILLE, chargerSiteEtTarifs, estFamille } from "@/lib/devis";
+import { Champ, CHAMP } from "@/components/ui/Champ";
 import { creerDevis } from "../actions";
 
 export const dynamic = "force-dynamic";
-
-const CHAMP = "rounded-md border px-3 py-2";
-
-function Champ({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="flex flex-col gap-1 text-sm">
-      {label}
-      {children}
-    </label>
-  );
-}
 
 export default async function NouveauDevisPage({
   searchParams,

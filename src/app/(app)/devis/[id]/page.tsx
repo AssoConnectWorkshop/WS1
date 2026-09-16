@@ -5,25 +5,15 @@ import { Badge } from "@/components/ui/Badge";
 import { KeyValue } from "@/components/ui/KeyValue";
 import { Chemin } from "@/components/ui/Chemin";
 import { statutDevisTone } from "@/lib/badges";
-import { formatDate, formatMontant } from "@/lib/format";
+import { formatDate, formatMontant, formatNom } from "@/lib/format";
 import { toStringParams } from "@/lib/list-params";
 import { LIBELLES_FAMILLE, calculerMontantHt, type FamilleDevis } from "@/lib/devis";
+import { Champ, CHAMP } from "@/components/ui/Champ";
 import { mettreAJourDevis, genererIntervention, supprimerDevis } from "../actions";
 
 export const dynamic = "force-dynamic";
 
-const CHAMP = "rounded-md border px-3 py-2";
-
-function Champ({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="flex flex-col gap-1 text-sm">
-      {label}
-      {children}
-    </label>
-  );
-}
-
-const nomComplet = (u: { nom: string | null; prenom: string | null } | null | undefined) => (u ? [u.prenom, u.nom].filter(Boolean).join(" ") : "—");
+const nomComplet = (u: { nom: string | null; prenom: string | null } | null | undefined) => (u ? formatNom(u.prenom, u.nom) : "—");
 
 export default async function DevisPage({
   params,
