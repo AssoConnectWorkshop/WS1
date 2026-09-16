@@ -1,6 +1,7 @@
 import "server-only";
 import { Resend } from "resend";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { MOTIF_BLOCAGE, emailAutorise } from "@/lib/garde-emails";
 
 export type Courriel = {
   destinataire: string;
@@ -10,14 +11,20 @@ export type Courriel = {
   interventionId?: number | null;
 };
 
-/** Envoi via Resend (clé serveur) ; sans `RESEND_API_KEY`, l'envoi est simulé. Chaque tentative est journalisée. */
+/**
+ * Envoi via Resend (clé serveur) ; sans `RESEND_API_KEY`, l'envoi est simulé. Destinataire hors
+ * liste blanche `EMAILS_AUTORISES` → bloqué. Chaque tentative est journalisée.
+ */
 export async function envoyerCourriel(journal: SupabaseClient, courriel: Courriel): Promise<{ ok: boolean; statut: string; detail?: string }> {
   const cle = process.env.RESEND_API_KEY;
   const expediteur = process.env.EMAIL_FROM ?? "ClimAccess <no-reply@example.com>";
   let statut = "simule";
   let detail: string | undefined;
 
-  if (cle) {
+  if (!emailAutorise(courriel.destinataire)) {
+    statut = "bloque";
+    detail = MOTIF_BLOCAGE;
+  } else if (cle) {
     try {
       const { error } = await new Resend(cle).emails.send({ from: expediteur, to: courriel.destinataire, subject: courriel.objet, text: courriel.texte });
       statut = error ? "echec" : "envoye";
