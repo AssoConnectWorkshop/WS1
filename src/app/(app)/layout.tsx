@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { NavPrincipale } from "@/components/ui/NavPrincipale";
+import { estMasterAdmin } from "@/lib/acces";
 
 const BOUTON_ENTETE = "cursor-pointer rounded-md border px-3 py-1 shadow-sm transition hover:bg-black/[0.05] hover:shadow active:translate-y-px dark:hover:bg-white/10";
 
@@ -36,6 +37,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
 
   if (!current.utilisateur) {
+    if (current.diagnostic.length) console.error("rattachement:", current.authUser.id, current.diagnostic.join(" | "));
     return (
       <main className="flex min-h-screen items-center justify-center p-8">
         <div className="flex max-w-md flex-col gap-3 text-center">
@@ -44,7 +46,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             Impossible de rattacher votre compte ({current.authUser.email ?? "sans e-mail"}) à
             l&apos;application. Réessayez ; si le problème persiste, contactez un administrateur.
           </p>
-          {current.diagnostic.length > 0 && (
+          {estMasterAdmin(current.authUser.email) && current.diagnostic.length > 0 && (
             <ul className="rounded border border-red-300 bg-red-50 p-3 text-left text-xs text-red-700 dark:bg-red-950/30">
               {current.diagnostic.map((d) => (
                 <li key={d}>{d}</li>
