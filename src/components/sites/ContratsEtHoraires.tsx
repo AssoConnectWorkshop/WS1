@@ -1,4 +1,5 @@
 import { CHAMP } from "@/components/ui/Champ";
+import { Euro } from "@/components/ui/Euro";
 import { CLES_LOTS, JOURS, type Lot } from "@/lib/sites";
 import { mettreAJourContrat, mettreAJourHoraires } from "@/app/(app)/sites/actions";
 
@@ -55,12 +56,12 @@ function FormulaireContrat({ siteId, lot, contrat, intervenants }: { siteId: num
           <input name="visites_par_an" type="number" min={0} defaultValue={contrat?.visites_par_an ?? ""} className={`${PETIT} border-red-500`} />
         </div>
         <span>{l.tarif}</span>
-        <input name="redevance" type="number" step="0.01" defaultValue={contrat?.redevance ?? ""} className={PETIT} />
+        <Euro><input name="redevance" type="number" step="0.01" defaultValue={contrat?.redevance ?? ""} className={`${PETIT} pr-6`} /></Euro>
         {lot === "clim" && (
           <>
             <span>Tarif Clim 2 FMC</span>
             <div className="grid grid-cols-[1fr_auto_3.5rem] items-center gap-1">
-              <input name="redevance_secondaire" type="number" step="0.01" defaultValue={contrat?.redevance_secondaire ?? ""} className={PETIT} />
+              <Euro><input name="redevance_secondaire" type="number" step="0.01" defaultValue={contrat?.redevance_secondaire ?? ""} className={`${PETIT} pr-6`} /></Euro>
               <span>Nb.(Infos)</span>
               <input name="visites_secondaires" type="number" min={0} defaultValue={contrat?.visites_secondaires ?? ""} className={PETIT} />
             </div>
@@ -76,7 +77,7 @@ function FormulaireContrat({ siteId, lot, contrat, intervenants }: { siteId: num
           ))}
         </select>
         <span>Tarif Sous Traitant</span>
-        <input name="tarif_sous_traitant" type="number" step="0.01" defaultValue={contrat?.tarif_sous_traitant ?? ""} className={PETIT} />
+        <Euro><input name="tarif_sous_traitant" type="number" step="0.01" defaultValue={contrat?.tarif_sous_traitant ?? ""} className={`${PETIT} pr-6`} /></Euro>
         <span>Date signature</span>
         <input name="date_signature" type="date" defaultValue={contrat?.date_signature ?? ""} className={PETIT} />
       </div>
