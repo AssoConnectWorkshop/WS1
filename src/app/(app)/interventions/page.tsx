@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { parseListParams, toStringParams, toArrayParam } from "@/lib/list-params";
-import { VUE_FILTERS } from "@/lib/vues-tableau-de-bord";
+import { appliquerFiltresInterventions, chaineFiltres } from "@/lib/interventions-filtres";
 import { DataTable, type Column } from "@/components/ui/DataTable";
 import { FilterBar, type FilterField } from "@/components/ui/FilterBar";
 import { Badge } from "@/components/ui/Badge";
@@ -38,59 +38,6 @@ type InterventionRow = {
   minutes_telephone: number | null;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function applyFilters(query: any, sp: Record<string, string | undefined>, zonesSel: string[]) {
-  const vue = sp.vue ? VUE_FILTERS[sp.vue] : undefined;
-  if (vue) {
-    if (vue.statut_code != null) query = query.eq("statut_code", vue.statut_code);
-    if (vue.statut_facturation_code != null) query = query.eq("statut_facturation_code", vue.statut_facturation_code);
-    if (vue.devis_a_faire != null) query = query.eq("devis_a_faire", vue.devis_a_faire);
-  }
-
-  if (sp.client) query = query.ilike("client_nom", `%${sp.client}%`);
-  if (sp.site) {
-    const n = Number(sp.site);
-    query = Number.isFinite(n) && sp.site.trim() !== ""
-      ? query.or(`numero_magasin.eq.${n},site_nom.ilike.%${sp.site}%`)
-      : query.ilike("site_nom", `%${sp.site}%`);
-  }
-  if (sp.type) query = query.eq("type_code", Number(sp.type));
-  if (sp.statut) {
-    query = query.eq("statut_code", Number(sp.statut));
-  } else if (!vue?.statut_code && sp.clotures !== "1") {
-    query = query.neq("statut_code", 7);
-  }
-  if (sp.intervenant) query = query.eq("intervenant_id", Number(sp.intervenant));
-  if (sp.donneur) query = query.eq("donneur_ordre_id", Number(sp.donneur));
-  if (sp.facturation) query = query.eq("statut_facturation_code", Number(sp.facturation));
-  if (zonesSel.length) query = query.in("zone_id", zonesSel.map(Number));
-
-  const champPeriode = sp.periode_champ === "realisee" ? "date_realisee" : "date_limite";
-  if (sp.periode_debut) query = query.gte(champPeriode, sp.periode_debut);
-  if (sp.periode_fin) query = query.lte(champPeriode, sp.periode_fin);
-
-  if (sp.devis_a_faire === "1") query = query.eq("devis_a_faire", true);
-  if (sp.audit_fait === "1") query = query.eq("audit_fait", true);
-  if (sp.controle_etancheite === "1") query = query.eq("controle_etancheite_annuel", true);
-  if (sp.photo_faite === "1") query = query.eq("photo_faite", true);
-  if (sp.registre_maj === "1") query = query.eq("registre_securite_mis_a_jour", true);
-  if (sp.sous_type_vide === "1") query = query.is("sous_type_code", null);
-  if (sp.particulier === "1") query = query.eq("particulier", true);
-  if (sp.entretien_proche === "1") {
-    // Simplification documentée (règle exacte legacy/analysis/02_interventions.md §8.1 non
-    // reprise à l'identique) : entretien (type 1) à planifier (statut 1) dans les 30 jours.
-    const today = new Date();
-    const in30 = new Date(today.getTime() + 30 * 86400000);
-    query = query
-      .eq("type_code", 1)
-      .eq("statut_code", 1)
-      .gte("date_limite", today.toISOString())
-      .lte("date_limite", in30.toISOString());
-  }
-
-  return query;
-}
-
 export default async function InterventionsPage({
   searchParams,
 }: {
@@ -114,7 +61,7 @@ export default async function InterventionsPage({
   const { page, sort, dir, from, to, pageSize } = parseListParams(sp, "date_limite", 50);
 
   let query = supabase.from("v_interventions_liste").select("*", { count: "exact" });
-  query = applyFilters(query, sp, zonesSel);
+  query = appliquerFiltresInterventions(query, sp, zonesSel);
   query = query.order(sort, { ascending: dir === "asc" }).range(from, to);
 
   const { data, count } = await query;
@@ -123,7 +70,7 @@ export default async function InterventionsPage({
   let sommeMinutes: number | null = null;
   if (sp.statut === "10") {
     let sumQuery = supabase.from("v_interventions_liste").select("minutes_telephone");
-    sumQuery = applyFilters(sumQuery, sp, zonesSel);
+    sumQuery = appliquerFiltresInterventions(sumQuery, sp, zonesSel);
     const { data: sumRows } = await sumQuery;
     sommeMinutes = (sumRows ?? []).reduce((acc, r) => acc + (r.minutes_telephone ?? 0), 0);
   }
@@ -226,14 +173,9 @@ export default async function InterventionsPage({
           <Link href="/interventions/nouvelle" className="rounded-md bg-black px-3 py-1.5 text-sm text-white">
             Nouvelle intervention
           </Link>
-          <button
-            type="button"
-            disabled
-            title="Disponible à l'étape 6"
-            className="cursor-not-allowed rounded-md border px-3 py-1.5 text-sm opacity-40"
-          >
+          <a href={`/interventions/liste.xlsx?${chaineFiltres(raw)}`} className="rounded-md border px-3 py-1.5 text-sm">
             Exporter Excel
-          </button>
+          </a>
         </div>
       </div>
 
