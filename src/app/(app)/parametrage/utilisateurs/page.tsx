@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { changerRole } from "./actions";
+import { ajouterUtilisateur, changerRole } from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -21,21 +21,25 @@ type UtilisateurRow = {
 };
 
 const PROFILS: Record<number, string> = { 1: "Gestionnaire", 2: "Technicien", 3: "Gestionnaire(Tech)" };
+const CHAMP = "rounded border bg-white px-2 py-1 text-xs dark:bg-white/5";
 
 /** Sous-formulaire « Utilisateurs & Techniciens » de Form_Parametrage : feuille de données avec les colonnes Access. */
-export default async function UtilisateursPage({ searchParams }: { searchParams: Promise<{ erreur?: string; info?: string }> }) {
-  const { erreur, info } = await searchParams;
+export default async function UtilisateursPage({ searchParams }: { searchParams: Promise<{ erreur?: string; info?: string; q?: string }> }) {
+  const { erreur, info, q } = await searchParams;
   const current = await getCurrentUser();
   if (!current?.utilisateur) redirect("/login");
   const estAdmin = current.role === "administrateur";
 
   const supabase = await createClient();
-  const { data } = await supabase
+  let requete = supabase
     .from("utilisateurs")
     .select("id, nom, prenom, email, profil, immatriculation, code_intervenant, login_legacy, role, auth_user_id, societes(libelle)")
-    .eq("compte_application", false)
-    .order("nom")
-    .order("prenom");
+    .eq("compte_application", false);
+  if (q?.trim()) {
+    const motif = `%${q.trim().replace(/[%_,]/g, "")}%`;
+    requete = requete.or(`nom.ilike.${motif},prenom.ilike.${motif},email.ilike.${motif},login_legacy.ilike.${motif}`);
+  }
+  const { data } = await requete.order("nom").order("prenom");
 
   const utilisateurs = (data ?? []) as unknown as UtilisateurRow[];
 
@@ -65,6 +69,35 @@ export default async function UtilisateursPage({ searchParams }: { searchParams:
       </p>
       {erreur && <p className="rounded border border-red-300 bg-red-50 px-3 py-2 text-xs text-red-700 dark:bg-red-950/30">{erreur}</p>}
       {info && <p className="rounded border border-green-300 bg-green-50 px-3 py-2 text-xs text-green-700 dark:bg-green-950/30">{info}</p>}
+
+      <form method="GET" className="flex items-center gap-2 text-xs">
+        <input name="q" defaultValue={q ?? ""} placeholder="Rechercher (nom, prénom, mail, login)" className="w-72 rounded border px-2 py-1" />
+        <button type="submit" className="rounded border px-2 py-1">
+          Rechercher
+        </button>
+        {q && (
+          <Link href="/parametrage/utilisateurs" className="underline opacity-70">
+            Effacer
+          </Link>
+        )}
+        <span className="opacity-70">Enr : {utilisateurs.length}</span>
+      </form>
+
+      {estAdmin && (
+        <form action={ajouterUtilisateur} className="grid gap-2 rounded border p-3 text-xs sm:grid-cols-[1fr_1fr_1.4fr_10rem_auto]">
+          <input name="nom" required placeholder="Nom" className={CHAMP} />
+          <input name="prenom" placeholder="Prénom" className={CHAMP} />
+          <input name="email" type="email" placeholder="Mail" className={CHAMP} />
+          <select name="profil" defaultValue="1" className={CHAMP}>
+            <option value="1">Gestionnaire</option>
+            <option value="3">Gestionnaire(Tech)</option>
+            <option value="2">Technicien</option>
+          </select>
+          <button type="submit" className="rounded border bg-black px-3 py-1 text-white">
+            Ajouter
+          </button>
+        </form>
+      )}
 
       <div className="overflow-x-auto rounded border">
         <table className="w-full border-collapse text-xs">
