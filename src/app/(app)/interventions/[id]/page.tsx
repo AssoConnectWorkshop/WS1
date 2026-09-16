@@ -25,6 +25,7 @@ import {
   retirerTechnicien,
   nouvelleInterventionDepuis,
   creerPartieSuivante,
+  genererEtEnregistrerBon,
 } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -248,6 +249,15 @@ export default async function InterventionPage({
           <input type="hidden" name="intervention_id" value={id} />
           <button type="submit" className="rounded-md border px-3 py-1.5 text-sm">
             Partie suivante
+          </button>
+        </form>
+        <a href={`/interventions/${id}/bon.pdf`} target="_blank" rel="noreferrer" className="rounded-md border px-3 py-1.5 text-sm">
+          Voir le rapport (PDF)
+        </a>
+        <form action={genererEtEnregistrerBon}>
+          <input type="hidden" name="intervention_id" value={id} />
+          <button type="submit" className="rounded-md border px-3 py-1.5 text-sm">
+            {intervention.chemin_bon_pdf ? "Régénérer et archiver le PDF" : "Générer et archiver le PDF"}
           </button>
         </form>
       </div>

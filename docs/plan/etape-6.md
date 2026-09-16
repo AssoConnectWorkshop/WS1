@@ -52,4 +52,6 @@ au bureau (la tablette et le portail restent hors périmètre, voir `docs/hors-p
 
 ## État
 
-- [ ] Non commencée
+- [x] Buckets Storage privés `bons`, `certificats`, `logos` (migration, lecture/écriture par le serveur).
+- [x] 6.1 Rapport d'intervention PDF (`pdf-lib`) : rendu à la volée sur `/interventions/[id]/bon.pdf` (authentifié) et « Générer et archiver le PDF » → `bons/<année>/<id>.pdf`, `chemin_bon_pdf` renseigné (prérequis du statut 7). Contenu de l'état Access : logo (Storage `logos/donneur-<id>` ou `logos/fmc`, sinon coordonnées FMC en texte), n° de fiche, n° site et code, date, client, site, adresse, temps de trajet et temps sur site (masqués si `masquer_heures_sur_bon`), nombre de techniciens, registre de sécurité, prestations, à prévoir / reste à faire, commentaire, type, signature client (nom, image si URL), techniciens (noms, image si URL), mention obligatoire. Nom de fichier proposé « jj.mm.aaaa (Selon <devis ou DI>) ».
+- [ ] 6.2 à 6.8 : à faire.
