@@ -22,7 +22,7 @@ règles génériques suivantes, sauf mention contraire dans le tableau de sa tab
 | `entier`/`numeric` | `int`, `tinyint`, `smallint`, `real`, `float`, `money` | passthrough typé, `null` si non convertible. |
 | `datetime Europe/Paris` | `datetime`, `smalldatetime` → `timestamptz` | la valeur « murale » lue en SQL Server (sans fuseau) est interprétée comme heure de Paris puis convertie en instant UTC (gère le changement heure été/hiver). |
 | `heure seule` | colonnes `datetime` ne portant qu'une heure (souvent sentinelle `1899-12-30`) → `time`/`interval` | seule la partie heure est extraite, la date sentinelle est ignorée. |
-| `date texte libre` | `nvarchar` contenant une date (`Site.datcresit`, `SiteMateriel.DateMiseEnService`) | essaie `yyyy-MM-dd`, `dd/MM/yyyy`, `dd/MM/yy` ; sinon `null` + copie brute dans `<colonne>_brut`. |
+| `date texte libre` | `nvarchar` contenant une date (`Site.datcresit`, `SiteMateriel.DateMiseEnService`) | essaie `yyyy-MM-dd`, `dd/MM/yyyy`, `dd/MM/yy` et vérifie que la date existe (mois 1–12, jour valide, année 1900–2100) ; sinon `null` + copie brute dans `<colonne>_brut` (ex. `2012-16-05` rencontré en source). |
 | `HH:MM` | `varchar(5)` horaires d'ouverture (`hor_*_ouv/fer`) | `null` si vide, `00:00` ou heure impossible (ex. `18:93` rencontré en source), sinon `HH:MM:00`. |
 | `code texte → entier` | `typint` (et assimilés) | entier si purement numérique, sinon `null` + `<colonne>_brut`. |
 | `puissance texte → numeric` | `Reference.PuissanceFrigo/PuissanceCalo` | numeric si convertible, sinon `null` + `<colonne>_brut`. |
