@@ -171,6 +171,11 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   garde le masquage par défaut (statut 7 exclu quand aucun statut n'est choisi) mais ne l'applique
   plus quand un statut de facturation est filtré : ce statut n'est posé qu'après clôture, le filtre
   « A facturer » renvoyait donc toujours 0 ligne.
+- **Rapport d'intervention PDF** (état `FicheIntervention`, capture de la démo du 15/09) : mise en
+  page reprise (en-tête logo + activité, titre encadré, bloc client/site à gauche et numéros/date à
+  droite, cadres titrés, cases OUI/NON, quatre cases de signature, pied de page). Le logo du donneur
+  d'ordre vient du bucket `logos` (`donneur-<id>`), sinon logo FMC, sinon le nom en texte. Les
+  textes longs font grandir le cadre au lieu d'être tronqués comme dans Access.
 - **Captures hors périmètre du CDC** (non traitées) : fiche intervention web du technicien (p.3),
   planning Outlook et planning prévisionnel Excel (p.4), trois écrans Esabora (p.5-6).
 
