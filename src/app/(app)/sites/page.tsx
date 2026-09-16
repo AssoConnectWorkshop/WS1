@@ -3,8 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { parseListParams, toStringParams, mergeRestrict } from "@/lib/list-params";
 import { DataTable, type Column } from "@/components/ui/DataTable";
 import { FilterBar, type FilterField } from "@/components/ui/FilterBar";
-import { Badge } from "@/components/ui/Badge";
-import { formatDate, formatMontant, formatNombre } from "@/lib/format";
+import { formatMontant, formatNombre } from "@/lib/format";
+import { STATUT_NE_PLUS_INTERVENIR } from "@/lib/sites";
 
 export const dynamic = "force-dynamic";
 
@@ -14,17 +14,23 @@ type SiteRow = {
   nom: string | null;
   client_id: number;
   client_nom: string | null;
+  adresse: string | null;
+  code_postal: string | null;
   ville: string | null;
   zone_libelle: string | null;
   intervenant_nom: string | null;
+  donneur_ordre_nom: string | null;
+  contrat_clim_numero: string | null;
   contrat_clim_visites_par_an: number | null;
   contrat_clim_redevance: number | null;
-  contrat_clim_sous_traitant_id: number | null;
-  date_derniere_visite_entretien: string | null;
+  contrat_clim_redevance_secondaire: number | null;
+  commentaire_general: string | null;
+  rdv_a_prendre: boolean | null;
   retard_paiement: boolean | null;
   ne_plus_intervenir: boolean | null;
 };
 
+/** Liste des sites Access (Form_ListeSiteGenerale, analysis 03 §6.1) : filtres et colonnes dans le même ordre. */
 export default async function SitesPage({
   searchParams,
 }: {
@@ -34,31 +40,24 @@ export default async function SitesPage({
   const supabase = await createClient();
   const { page, sort, dir, from, to, pageSize } = parseListParams(sp, "nom", 50);
 
+  const { data: clients } = await supabase.from("clients").select("id, nom").eq("actif", true).is("supprime_le", null).order("nom");
+
   // Filtres nécessitant une jointure (deux passes : d'abord les site_id concernés).
   let restrictToIds: number[] | null = null;
 
   if (sp.reference_materiel) {
     const { data } = await supabase.from("site_materiels").select("site_id").ilike("reference", `%${sp.reference_materiel}%`);
-    const ids = (data ?? []).map((r) => r.site_id).filter((v): v is number => v != null);
-    restrictToIds = mergeRestrict(restrictToIds, ids);
+    restrictToIds = mergeRestrict(restrictToIds, (data ?? []).map((r) => r.site_id).filter((v): v is number => v != null));
   }
   if (sp.ce_a_editer === "1") {
-    const now = new Date();
+    const annee = new Date().getFullYear();
     const { data } = await supabase
       .from("site_materiels")
       .select("site_id")
       .eq("certificat_etancheite_edite", false)
-      .gte("date_controle_etancheite", `${now.getFullYear()}-01-01`)
-      .lte("date_controle_etancheite", `${now.getFullYear()}-12-31`);
-    const ids = (data ?? []).map((r) => r.site_id).filter((v): v is number => v != null);
-    restrictToIds = mergeRestrict(restrictToIds, ids);
-  }
-  if (sp.non_rooftop === "1") {
-    const { data } = await supabase.from("site_materiels").select("site_id").ilike("type_equipement", "%roof%");
-    const rooftopIds = new Set((data ?? []).map((r) => r.site_id));
-    const { data: allSites } = await supabase.from("sites").select("id");
-    const ids = (allSites ?? []).map((s) => s.id).filter((id) => !rooftopIds.has(id));
-    restrictToIds = mergeRestrict(restrictToIds, ids);
+      .gte("date_controle_etancheite", `${annee}-01-01`)
+      .lte("date_controle_etancheite", `${annee}-12-31`);
+    restrictToIds = mergeRestrict(restrictToIds, (data ?? []).map((r) => r.site_id).filter((v): v is number => v != null));
   }
   if (sp.reference_intervention) {
     const { data } = await supabase.from("interventions").select("site_id").ilike("reference_client", `%${sp.reference_intervention}%`);
@@ -68,20 +67,25 @@ export default async function SitesPage({
     const { data } = await supabase.from("interventions").select("site_id").eq("numero_bon", Number(sp.numero_bon));
     restrictToIds = mergeRestrict(restrictToIds, (data ?? []).map((r) => r.site_id));
   }
+  if (sp.inter_ne_plus_intervenir === "1") {
+    const { data } = await supabase.from("interventions").select("site_id").eq("statut_code", STATUT_NE_PLUS_INTERVENIR);
+    restrictToIds = mergeRestrict(restrictToIds, Array.from(new Set((data ?? []).map((r) => r.site_id))));
+  }
 
   let query = supabase.from("v_sites_liste").select("*", { count: "exact" });
 
-  if (sp.client) query = query.ilike("client_nom", `%${sp.client}%`);
+  if (sp.client) query = query.eq("client_id", Number(sp.client));
   if (sp.q) {
     const n = Number(sp.q);
     query = Number.isFinite(n) && sp.q.trim() !== "" ? query.or(`numero_magasin.eq.${n},nom.ilike.%${sp.q}%`) : query.ilike("nom", `%${sp.q}%`);
   }
   if (sp.code) query = query.ilike("code_client", `%${sp.code}%`);
-  if (sp.sans_geoloc === "1") query = query.is("longitude", null);
+  if (sp.sans_geoloc === "1") query = query.or("longitude.is.null,latitude.is.null");
+  if (sp.non_rooftop === "1") query = query.or("precision_geo.is.null,precision_geo.neq.ROOFTOP");
   if (sp.retard_paiement === "1") query = query.eq("retard_paiement", true);
   if (sp.ne_plus_intervenir === "1") query = query.eq("ne_plus_intervenir", true);
-  if (sp.particulier === "1") query = query.eq("particulier", true);
   if (sp.investissement === "1") query = query.eq("investissement", true);
+  if (sp.particulier === "1") query = query.eq("particulier", true);
   if (restrictToIds) query = query.in("id", restrictToIds.length ? restrictToIds : [-1]);
 
   query = query.order(sort, { ascending: dir === "asc" }).range(from, to);
@@ -89,47 +93,53 @@ export default async function SitesPage({
   const rows = (data ?? []) as SiteRow[];
 
   const filterFields: FilterField[] = [
-    { type: "text", name: "client", label: "Client" },
-    { type: "text", name: "q", label: "Nom ou numéro" },
+    { type: "select", name: "client", label: "Client", options: (clients ?? []).map((c) => ({ value: String(c.id), label: c.nom ?? "" })) },
+    { type: "text", name: "q", label: "N° Site ou Nom du site" },
     { type: "text", name: "code", label: "Code" },
-    { type: "text", name: "reference_materiel", label: "Référence matériel" },
-    { type: "text", name: "reference_intervention", label: "N° DI client (intervention)" },
-    { type: "text", name: "numero_bon", label: "N° de bon" },
-    { type: "checkbox", name: "ce_a_editer", label: "CE à éditer cette année" },
-    { type: "checkbox", name: "sans_geoloc", label: "Sans géolocalisation" },
-    { type: "checkbox", name: "non_rooftop", label: "Non ROOFTOP" },
-    { type: "checkbox", name: "retard_paiement", label: "Retard paiement" },
-    { type: "checkbox", name: "ne_plus_intervenir", label: "Ne plus intervenir" },
-    { type: "checkbox", name: "particulier", label: "Particulier" },
+    { type: "text", name: "numero_bon", label: "N° de Bon" },
+    { type: "text", name: "reference_intervention", label: "N° DI" },
+    { type: "checkbox", name: "sans_geoloc", label: "Site sans géoloc" },
+    { type: "checkbox", name: "non_rooftop", label: "Site non rooftop" },
+    { type: "checkbox", name: "retard_paiement", label: "Retard Paiement" },
+    { type: "checkbox", name: "ne_plus_intervenir", label: "Sites « Ne pas intervenir »" },
+    { type: "text", name: "reference_materiel", label: "Référence Matériel" },
     { type: "checkbox", name: "investissement", label: "Investissement" },
+    { type: "checkbox", name: "particulier", label: "Particulier" },
+    { type: "checkbox", name: "ce_a_editer", label: "CE à éditer" },
+    { type: "checkbox", name: "inter_ne_plus_intervenir", label: "Inter en cours en « Ne pas intervenir »" },
   ];
 
   const columns: Column<SiteRow>[] = [
-    { key: "numero_magasin", label: "N° magasin", sortable: true, render: (r) => r.numero_magasin ?? "—" },
-    { key: "nom", label: "Nom", sortable: true, render: (r) => <Link className="hover:underline" href={`/sites/${r.id}`}>{r.nom}</Link> },
-    { key: "client_nom", label: "Client", render: (r) => <Link className="hover:underline" href={`/clients/${r.client_id}`}>{r.client_nom}</Link> },
-    { key: "ville", label: "Ville", render: (r) => r.ville ?? "—" },
-    { key: "zone_libelle", label: "Zone", render: (r) => r.zone_libelle ?? "—" },
-    { key: "intervenant_nom", label: "Intervenant", render: (r) => r.intervenant_nom ?? "—" },
-    { key: "contrat_clim_visites_par_an", label: "Visites/an", align: "right", render: (r) => formatNombre(r.contrat_clim_visites_par_an) },
-    { key: "contrat_clim_redevance", label: "Redevance", align: "right", render: (r) => formatMontant(r.contrat_clim_redevance) },
-    { key: "date_derniere_visite_entretien", label: "Dernière visite", sortable: true, render: (r) => formatDate(r.date_derniere_visite_entretien) },
+    { key: "rdv_a_prendre", label: "RDV à Prendre", align: "center", render: (r) => <input type="checkbox" readOnly checked={!!r.rdv_a_prendre} aria-label="RDV à prendre" /> },
+    { key: "donneur_ordre_nom", label: "Donneur", render: (r) => r.donneur_ordre_nom ?? "" },
+    { key: "intervenant_nom", label: "Intervenant", render: (r) => r.intervenant_nom ?? "" },
+    { key: "zone_libelle", label: "Zone", render: (r) => r.zone_libelle ?? "" },
+    { key: "numero_magasin", label: "N°", sortable: true, align: "right", render: (r) => r.numero_magasin ?? "" },
+    { key: "client_nom", label: "Client", sortable: true, render: (r) => <Link className="hover:underline" href={`/clients/${r.client_id}`}>{r.client_nom}</Link> },
+    { key: "contrat_clim_numero", label: "Contrat client", render: (r) => r.contrat_clim_numero ?? "" },
+    { key: "contrat_clim_redevance", label: "Tarif 1 Cl", align: "right", render: (r) => (r.contrat_clim_redevance != null ? formatMontant(r.contrat_clim_redevance) : "") },
+    { key: "contrat_clim_redevance_secondaire", label: "Tarif 2 Cl", align: "right", render: (r) => (r.contrat_clim_redevance_secondaire != null ? formatMontant(r.contrat_clim_redevance_secondaire) : "") },
+    { key: "contrat_clim_visites_par_an", label: "Nb Entretien", align: "right", render: (r) => (r.contrat_clim_visites_par_an != null ? formatNombre(r.contrat_clim_visites_par_an) : "") },
     {
-      key: "alertes",
-      label: "Alertes",
+      key: "nom",
+      label: "Nom",
+      sortable: true,
       render: (r) => (
-        <div className="flex gap-1">
-          {r.retard_paiement && <Badge tone="red">Retard paiement</Badge>}
-          {r.ne_plus_intervenir && <Badge tone="red">Ne plus intervenir</Badge>}
-        </div>
+        <Link className={`hover:underline ${r.retard_paiement || r.ne_plus_intervenir ? "font-semibold text-red-700" : ""}`} href={`/sites/${r.id}`}>
+          {r.nom}
+        </Link>
       ),
     },
+    { key: "adresse", label: "Adresse", render: (r) => r.adresse ?? "" },
+    { key: "code_postal", label: "CP", sortable: true, render: (r) => r.code_postal ?? "" },
+    { key: "ville", label: "Ville", sortable: true, render: (r) => r.ville ?? "" },
+    { key: "commentaire_general", label: "Commentaire", render: (r) => <span className="block max-w-md truncate" title={r.commentaire_general ?? ""}>{r.commentaire_general ?? ""}</span> },
   ];
 
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-4 p-8">
+    <div className="flex flex-col gap-3 p-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Sites</h1>
+        <h1 className="text-xl font-bold">Sites</h1>
         <Link href="/sites/nouveau" className="rounded-md bg-black px-3 py-2 text-sm text-white">
           Nouveau site
         </Link>

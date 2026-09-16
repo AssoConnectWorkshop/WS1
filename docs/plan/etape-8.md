@@ -88,7 +88,7 @@ intervention, liste des sites, fiche site, fiche client, planification, puis le 
 | Écran Access (formulaire) | Route application | Capture reçue | État |
 |---|---|---|---|
 | Menu d'accueil (`Form_MenuClimAccess`) | `/` | oui (CDC p.1) | fait (PR menu d'accueil) |
-| Liste des sites (`Form_ListeSiteGenerale`) | `/sites` | oui (CDC p.2) | à faire |
+| Liste des sites (`Form_ListeSiteGenerale`) | `/sites` | oui (CDC p.2) | fait (PR liste des sites) |
 | Fiche site | `/sites/[id]` | oui (CDC p.2) | à faire |
 | Carte | `/carte` | oui (CDC p.3, module PHP) | à faire |
 | Liste des interventions | `/interventions` | non | attendre la capture |
@@ -106,6 +106,11 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   Tables » ne sont pas reproduits (remplacés par le rôle administrateur et Paramétrage › Utilisateurs).
   Les illustrations 3D d'Access sont remplacées par des pictogrammes ; le bouton « MAJ » recharge la
   page. Le rafraîchissement automatique toutes les 60 s n'est pas reproduit.
+- **Liste des sites** : case « Modification » (bascule Access vers la requête `ListeSite2`, sans
+  effet visible) non reproduite ; les cases Access sont tri-état (coché / décoché / indifférent),
+  ici deux états (coché = filtre actif). La ligne sélectionnée surlignée en bleu n'a pas
+  d'équivalent (pas de sélection de ligne) ; la colonne « Cl » (bouton d'ouverture) est remplacée
+  par le lien sur le nom.
 - **Captures hors périmètre du CDC** (non traitées) : fiche intervention web du technicien (p.3),
   planning Outlook et planning prévisionnel Excel (p.4), trois écrans Esabora (p.5-6).
 
@@ -129,4 +134,11 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   attente offre de prix rose), à valider rouge, à facturer ventilé maintenances bleu / devis SAV
   rouge / dépannage vert / travaux orange / autres violet + stand-by, Boss rouge, véhicules (5),
   logos FMC Climatisation / FMC Maintenance en pied.
-- [ ] Liste des sites, fiche site, carte : à suivre dans les PR suivantes.
+- [x] Liste des sites `/sites` : barre de filtres dans l'ordre Access (Client en liste, N° Site ou
+  Nom du site, Code, N° de Bon, N° DI, Site sans géoloc, Site non rooftop, Retard Paiement, Sites
+  « Ne pas intervenir », Référence Matériel, Investissement, Particulier, CE à éditer, Inter en
+  cours en « Ne pas intervenir ») ; colonnes RDV à Prendre, Donneur, Intervenant, Zone, N°, Client,
+  Contrat client, Tarif 1 Cl, Tarif 2 Cl, Nb Entretien, Nom, Adresse, CP, Ville, Commentaire.
+  Filtre « non rooftop » aligné sur Access (précision du géocodage ≠ ROOFTOP). Vue `v_sites_liste`
+  complétée (migration `20260916170000_etape8_v_sites_liste.sql`).
+- [ ] Fiche site, carte : à suivre dans les PR suivantes.
