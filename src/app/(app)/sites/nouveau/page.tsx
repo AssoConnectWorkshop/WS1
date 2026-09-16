@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { Messages } from "@/components/ui/Messages";
 import { toStringParams } from "@/lib/list-params";
 import { Champ, CHAMP } from "@/components/ui/Champ";
 import { creerSite } from "../actions";
@@ -21,7 +22,7 @@ export default async function NouveauSitePage({ searchParams }: { searchParams: 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-4 p-8">
       <h1 className="text-2xl font-bold">Nouveau site</h1>
-      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
+      <Messages sp={sp} />
 
       <form action={creerSite} className="flex flex-col gap-4 rounded-xl border p-6">
         <Champ label="Client *">

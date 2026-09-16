@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError, aujourdhui } from "@/lib/action-utils";
 import { calculerMontantHt, chargerSiteEtTarifs, numeroDepuisFichier, TYPE_INTERVENTION_PAR_FAMILLE, FAMILLES_DEVIS, type FamilleDevis } from "@/lib/devis";
-import { nombre, texte } from "@/lib/zod-form";
+import { nombre, texte, premiereErreur } from "@/lib/zod-form";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
 
@@ -88,7 +88,7 @@ export async function creerDevis(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const retour = `/devis/nouveau?famille=${formData.get("famille") ?? "sav"}${formData.get("site_id") ? `&site=${formData.get("site_id")}` : ""}`;
   const parsed = CreationSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(retour, parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError(retour, premiereErreur(parsed));
   const { famille, site_id, ...champs } = parsed.data;
 
   const supabase = await createClient();
@@ -117,7 +117,7 @@ export async function mettreAJourDevis(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const devisId = Number(formData.get("devis_id"));
   const parsed = MiseAJourSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(`/devis/${devisId}`, parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+  if (!parsed.success) redirectWithError(`/devis/${devisId}`, premiereErreur(parsed));
   const { devis_id, statut_code, ...champs } = parsed.data;
 
   const supabase = await createClient();

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Messages } from "@/components/ui/Messages";
 import { createClient } from "@/lib/supabase/server";
 import { parseListParams, toStringParams } from "@/lib/list-params";
 import { DataTable, type Column } from "@/components/ui/DataTable";
@@ -127,7 +128,7 @@ export default async function DevisPage({
           Nouveau devis
         </Link>
       </div>
-      {sp.info && <p className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">{sp.info}</p>}
+      <Messages sp={sp} />
       <Tabs tabs={FAMILLES} active={famille} searchParams={sp} />
       <FilterBar fields={filterFields} values={sp} />
       <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun devis." />

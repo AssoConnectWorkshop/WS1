@@ -1,4 +1,5 @@
 import { toStringParams } from "@/lib/list-params";
+import { Messages } from "@/components/ui/Messages";
 import { ChampsDonneur } from "@/components/tiers/FormulaireClient";
 import { creerDonneur } from "../../tiers/actions";
 
@@ -9,7 +10,7 @@ export default async function NouveauDonneurPage({ searchParams }: { searchParam
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-4 p-8">
       <h1 className="text-2xl font-bold">Nouveau donneur d&apos;ordre</h1>
-      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
+      <Messages sp={sp} />
       <form action={creerDonneur} className="flex flex-col gap-4 rounded-xl border p-6">
         <ChampsDonneur />
         <button type="submit" className="rounded-md bg-black py-2 font-medium text-white">

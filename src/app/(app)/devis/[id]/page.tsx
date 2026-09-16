@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui/Badge";
@@ -62,8 +63,7 @@ export default async function DevisPage({
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
-      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
-      {sp.avertissement && <p className="rounded-md bg-yellow-50 p-3 text-sm text-yellow-800">{sp.avertissement}</p>}
+      <Messages sp={sp} />
 
       <div className="flex flex-wrap items-center gap-2">
         <Badge tone="gray">{LIBELLES_FAMILLE[famille]}</Badge>

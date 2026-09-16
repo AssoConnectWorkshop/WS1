@@ -12,3 +12,7 @@ export const identifiant = z.coerce.number().int().positive();
 export function obligatoire(message: string) {
   return z.string().trim().min(1, message);
 }
+
+export function premiereErreur(parsed: { error: z.ZodError }, defaut = "Formulaire invalide.") {
+  return parsed.error.issues[0]?.message ?? defaut;
+}

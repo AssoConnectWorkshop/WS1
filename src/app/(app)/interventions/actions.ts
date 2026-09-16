@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError } from "@/lib/action-utils";
+import { premiereErreur } from "@/lib/zod-form";
 
 /** Recalcule et persiste `interventions.noms_techniciens` (dénormalisé, utilisé par les listes). */
 async function recalculerNomsTechniciens(supabase: Awaited<ReturnType<typeof createClient>>, interventionId: number) {
@@ -35,7 +36,7 @@ export async function creerIntervention(formData: FormData) {
   const raw = Object.fromEntries(formData);
   const parsed = CreationSchema.safeParse(raw);
   if (!parsed.success) {
-    redirectWithError("/interventions/nouvelle", parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+    redirectWithError("/interventions/nouvelle", premiereErreur(parsed));
   }
   const { site_id, type_code, objet, date_limite, reference_client, contact_id, directives } = parsed.data;
 
@@ -88,7 +89,7 @@ export async function mettreAJourDemande(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const parsed = DemandeSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
-    redirectWithError(`/interventions/${formData.get("intervention_id")}`, parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+    redirectWithError(`/interventions/${formData.get("intervention_id")}`, premiereErreur(parsed));
   }
   const { intervention_id, date_prevue, date_limite, ...rest } = parsed.data;
 
@@ -131,7 +132,7 @@ export async function mettreAJourRealisation(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const parsed = RealisationSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) {
-    redirectWithError(`/interventions/${formData.get("intervention_id")}?onglet=realisation`, parsed.error.issues[0]?.message ?? "Formulaire invalide.");
+    redirectWithError(`/interventions/${formData.get("intervention_id")}?onglet=realisation`, premiereErreur(parsed));
   }
   const { intervention_id, heure_arrivee, heure_depart, panne_code, registre_securite_mis_a_jour, ...rest } = parsed.data;
 

@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Messages } from "@/components/ui/Messages";
+import { RechercheSite } from "@/components/sites/RechercheSite";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
 import { toStringParams } from "@/lib/list-params";
@@ -26,16 +27,6 @@ export default async function NouveauDevisPage({
     supabase.from("utilisateurs").select("id, nom, prenom").in("profil", [1, 3]).order("nom"),
   ]);
 
-  let sitesTrouves: { id: number; nom: string; ville: string | null }[] = [];
-  if (!site && sp.recherche?.trim()) {
-    const recherche = sp.recherche.trim();
-    const numero = Number(recherche);
-    let q = supabase.from("sites").select("id, nom, ville").limit(20);
-    q = Number.isFinite(numero) ? q.or(`numero_magasin.eq.${numero},nom.ilike.%${recherche}%`) : q.ilike("nom", `%${recherche}%`);
-    const { data } = await q;
-    sitesTrouves = data ?? [];
-  }
-
   const [{ data: client }, { data: interventionsSite }] = await Promise.all([
     site ? supabase.from("clients").select("nom").eq("id", site.client_id).maybeSingle() : Promise.resolve({ data: null }),
     site
@@ -47,32 +38,9 @@ export default async function NouveauDevisPage({
     <div className="mx-auto flex max-w-2xl flex-col gap-4 p-8">
       <h1 className="text-2xl font-bold">Nouveau devis</h1>
 
-      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
+      <Messages sp={sp} />
 
-      {!site && (
-        <form method="GET" className="flex items-end gap-2 rounded-lg border p-3 text-sm">
-          <input type="hidden" name="famille" value={famille} />
-          <label className="flex flex-col gap-1">
-            <span className="text-xs opacity-60">Rechercher un site (nom ou numéro)</span>
-            <input name="recherche" defaultValue={sp.recherche} className={CHAMP} />
-          </label>
-          <button type="submit" className="rounded-md bg-black px-3 py-2 text-white">
-            Rechercher
-          </button>
-        </form>
-      )}
-
-      {!site && sitesTrouves.length > 0 && (
-        <ul className="flex flex-col gap-1 text-sm">
-          {sitesTrouves.map((s) => (
-            <li key={s.id}>
-              <Link href={`/devis/nouveau?famille=${famille}&site=${s.id}`} className="underline">
-                {s.nom} ({s.ville})
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+      {!site && <RechercheSite recherche={sp.recherche} hidden={{ famille }} hrefSite={(id) => `/devis/nouveau?famille=${famille}&site=${id}`} />}
 
       <form action={creerDevis} className="flex flex-col gap-4 rounded-xl border p-6">
         <Champ label="Famille *">

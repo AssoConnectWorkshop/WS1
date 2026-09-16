@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Champ, Case, CHAMP } from "@/components/ui/Champ";
+import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
@@ -8,7 +10,7 @@ import { KeyValue } from "@/components/ui/KeyValue";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Chemin } from "@/components/ui/Chemin";
 import { typeInterventionTone, statutInterventionTone } from "@/lib/badges";
-import { formatDate, formatDateTime, formatMontant, formatTime, oui } from "@/lib/format";
+import { formatDate, formatDateTime, formatMontant, formatTime, oui, formatNom } from "@/lib/format";
 import { toStringParams } from "@/lib/list-params";
 import {
   mettreAJourDemande,
@@ -94,7 +96,7 @@ export default async function InterventionPage({
   const utilisateurNom = (utilisateurId: number | null) => {
     if (utilisateurId == null) return "—";
     const u = (utilisateursData ?? []).find((u) => u.id === utilisateurId);
-    return u ? [u.prenom, u.nom].filter(Boolean).join(" ") : "—";
+    return u ? formatNom(u.prenom, u.nom) : "—";
   };
 
   const { data: devisLies } = await supabase
@@ -163,9 +165,7 @@ export default async function InterventionPage({
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
-      {sp.erreur && <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{sp.erreur}</p>}
-      {sp.avertissement && <p className="rounded-md bg-yellow-50 p-3 text-sm text-yellow-800">{sp.avertissement}</p>}
-      {sp.info && <p className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">{sp.info}</p>}
+      <Messages sp={sp} />
       {sp.proposer_replanification === "1" && (
         <form action={confirmerReplanification} className="flex items-center justify-between gap-3 rounded-md bg-orange-50 p-3 text-sm text-orange-800">
           <input type="hidden" name="intervention_id" value={id} />
@@ -262,7 +262,7 @@ export default async function InterventionPage({
               { label: "Site", value: site ? <Link className="underline" href={`/sites/${site.id}`}>{site.nom}</Link> : "—" },
               { label: "N° devis accepté", value: intervention.numero_devis_accepte },
               { label: "Date de demande", value: formatDateTime(intervention.date_demande) },
-              { label: "Contact", value: contact ? [contact.prenom, contact.nom].filter(Boolean).join(" ") : "—" },
+              { label: "Contact", value: contact ? formatNom(contact.prenom, contact.nom) : "—" },
               { label: "Intervenant", value: intervenant?.nom ?? "—" },
               { label: "N° demande sous-traitant", value: intervention.numero_demande_sous_traitant },
               { label: "Type", value: typeInterv?.libelle ?? intervention.type_brut },
@@ -281,32 +281,26 @@ export default async function InterventionPage({
           <form action={mettreAJourDemande} className="flex flex-col gap-3 rounded-xl border p-4">
             <h2 className="text-sm font-semibold opacity-70">Modifier</h2>
             <input type="hidden" name="intervention_id" value={id} />
-            <label className="flex flex-col gap-1 text-sm">
-              Objet *
-              <input name="objet" defaultValue={intervention.objet ?? ""} required className="rounded-md border px-3 py-2" />
-            </label>
-            <label className="flex flex-col gap-1 text-sm">
-              N° de DI client
-              <input name="reference_client" defaultValue={intervention.reference_client ?? ""} className="rounded-md border px-3 py-2" />
-            </label>
+            <Champ label="Objet *">
+              <input name="objet" defaultValue={intervention.objet ?? ""} required className={CHAMP} />
+            </Champ>
+            <Champ label="N° de DI client">
+              <input name="reference_client" defaultValue={intervention.reference_client ?? ""} className={CHAMP} />
+            </Champ>
             <div className="grid grid-cols-2 gap-3">
-              <label className="flex flex-col gap-1 text-sm">
-                Date limite
-                <input name="date_limite" type="date" defaultValue={intervention.date_limite?.slice(0, 10) ?? ""} className="rounded-md border px-3 py-2" />
-              </label>
-              <label className="flex flex-col gap-1 text-sm">
-                Date prévue
-                <input name="date_prevue" type="date" defaultValue={intervention.date_prevue?.slice(0, 10) ?? ""} className="rounded-md border px-3 py-2" />
-              </label>
+              <Champ label="Date limite">
+                <input name="date_limite" type="date" defaultValue={intervention.date_limite?.slice(0, 10) ?? ""} className={CHAMP} />
+              </Champ>
+              <Champ label="Date prévue">
+                <input name="date_prevue" type="date" defaultValue={intervention.date_prevue?.slice(0, 10) ?? ""} className={CHAMP} />
+              </Champ>
             </div>
-            <label className="flex flex-col gap-1 text-sm">
-              Directives
-              <textarea name="directives" defaultValue={intervention.directives ?? ""} rows={2} className="rounded-md border px-3 py-2" />
-            </label>
-            <label className="flex flex-col gap-1 text-sm">
-              Commentaire interne
-              <textarea name="commentaire_interne" defaultValue={intervention.commentaire_interne ?? ""} rows={2} className="rounded-md border px-3 py-2" />
-            </label>
+            <Champ label="Directives">
+              <textarea name="directives" defaultValue={intervention.directives ?? ""} rows={2} className={CHAMP} />
+            </Champ>
+            <Champ label="Commentaire interne">
+              <textarea name="commentaire_interne" defaultValue={intervention.commentaire_interne ?? ""} rows={2} className={CHAMP} />
+            </Champ>
             <button type="submit" className="w-fit rounded-md bg-black px-4 py-1.5 text-sm text-white">
               Enregistrer
             </button>
@@ -339,7 +333,7 @@ export default async function InterventionPage({
             <ul className="mb-2 flex flex-col gap-1">
               {(techniciensLignes ?? []).map((t) => (
                 <li key={t.id} className="flex items-center justify-between rounded-md border px-3 py-1.5 text-sm">
-                  <span>{[t.utilisateurs?.prenom, t.utilisateurs?.nom].filter(Boolean).join(" ")}</span>
+                  <span>{formatNom(t.utilisateurs?.prenom, t.utilisateurs?.nom)}</span>
                   <form action={retirerTechnicien}>
                     <input type="hidden" name="intervention_id" value={id} />
                     <input type="hidden" name="ligne_id" value={t.id} />
@@ -357,7 +351,7 @@ export default async function InterventionPage({
                 <option value="">— Choisir un technicien —</option>
                 {techniciensEligibles.map((t) => (
                   <option key={t.id} value={t.id}>
-                    {[t.prenom, t.nom].filter(Boolean).join(" ")}
+                    {formatNom(t.prenom, t.nom)}
                   </option>
                 ))}
               </select>
@@ -371,22 +365,18 @@ export default async function InterventionPage({
             <h2 className="text-sm font-semibold opacity-70">Modifier</h2>
             <input type="hidden" name="intervention_id" value={id} />
             <div className="grid grid-cols-3 gap-3">
-              <label className="flex flex-col gap-1 text-sm">
-                Date réalisée
-                <input name="date_realisee" type="date" defaultValue={intervention.date_realisee?.slice(0, 10) ?? ""} className="rounded-md border px-3 py-2" />
-              </label>
-              <label className="flex flex-col gap-1 text-sm">
-                Heure d&apos;arrivée
-                <input name="heure_arrivee" type="time" defaultValue={intervention.heure_arrivee?.slice(0, 5) ?? ""} className="rounded-md border px-3 py-2" />
-              </label>
-              <label className="flex flex-col gap-1 text-sm">
-                Heure de départ
-                <input name="heure_depart" type="time" defaultValue={intervention.heure_depart?.slice(0, 5) ?? ""} className="rounded-md border px-3 py-2" />
-              </label>
+              <Champ label="Date réalisée">
+                <input name="date_realisee" type="date" defaultValue={intervention.date_realisee?.slice(0, 10) ?? ""} className={CHAMP} />
+              </Champ>
+              <Champ label="Heure d&apos;arrivée">
+                <input name="heure_arrivee" type="time" defaultValue={intervention.heure_arrivee?.slice(0, 5) ?? ""} className={CHAMP} />
+              </Champ>
+              <Champ label="Heure de départ">
+                <input name="heure_depart" type="time" defaultValue={intervention.heure_depart?.slice(0, 5) ?? ""} className={CHAMP} />
+              </Champ>
             </div>
-            <label className="flex flex-col gap-1 text-sm">
-              Panne
-              <select name="panne_code" defaultValue={intervention.panne_code ?? ""} className="rounded-md border px-3 py-2">
+            <Champ label="Panne">
+              <select name="panne_code" defaultValue={intervention.panne_code ?? ""} className={CHAMP}>
                 <option value="">—</option>
                 {(pannes ?? []).map((p) => (
                   <option key={p.code} value={p.code}>
@@ -394,28 +384,17 @@ export default async function InterventionPage({
                   </option>
                 ))}
               </select>
-            </label>
-            <label className="flex flex-col gap-1 text-sm">
-              Prestations réalisées
-              <textarea name="prestations_realisees" defaultValue={intervention.prestations_realisees ?? ""} rows={2} className="rounded-md border px-3 py-2" />
-            </label>
-            <label className="flex flex-col gap-1 text-sm">
-              Commentaire technicien
-              <textarea name="commentaire_technicien" defaultValue={intervention.commentaire_technicien ?? ""} rows={2} className="rounded-md border px-3 py-2" />
-            </label>
+            </Champ>
+            <Champ label="Prestations réalisées">
+              <textarea name="prestations_realisees" defaultValue={intervention.prestations_realisees ?? ""} rows={2} className={CHAMP} />
+            </Champ>
+            <Champ label="Commentaire technicien">
+              <textarea name="commentaire_technicien" defaultValue={intervention.commentaire_technicien ?? ""} rows={2} className={CHAMP} />
+            </Champ>
             <div className="flex flex-wrap gap-4 text-sm">
-              <label className="flex items-center gap-1.5">
-                <input type="checkbox" name="devis_a_faire" value="1" defaultChecked={!!intervention.devis_a_faire} />
-                Devis à faire
-              </label>
-              <label className="flex items-center gap-1.5">
-                <input type="checkbox" name="devis_fait" value="1" defaultChecked={!!intervention.devis_fait} />
-                Devis fait
-              </label>
-              <label className="flex items-center gap-1.5">
-                <input type="checkbox" name="registre_securite_mis_a_jour" value="1" defaultChecked={!!intervention.registre_securite_mis_a_jour} />
-                Registre mis à jour
-              </label>
+              <Case name="devis_a_faire" label="Devis à faire" checked={!!intervention.devis_a_faire} />
+              <Case name="devis_fait" label="Devis fait" checked={!!intervention.devis_fait} />
+              <Case name="registre_securite_mis_a_jour" label="Registre mis à jour" checked={!!intervention.registre_securite_mis_a_jour} />
             </div>
             <button type="submit" className="w-fit rounded-md bg-black px-4 py-1.5 text-sm text-white">
               Enregistrer
@@ -475,18 +454,15 @@ export default async function InterventionPage({
             <h2 className="text-sm font-semibold opacity-70">Modifier</h2>
             <input type="hidden" name="intervention_id" value={id} />
             <div className="grid grid-cols-2 gap-3">
-              <label className="flex flex-col gap-1 text-sm">
-                Montant FMC
-                <input name="montant_fmc" type="number" step="0.01" defaultValue={intervention.montant_fmc ?? ""} className="rounded-md border px-3 py-2" />
-              </label>
-              <label className="flex flex-col gap-1 text-sm">
-                Montant sous-traitant
-                <input name="montant_sous_traitant" type="number" step="0.01" defaultValue={intervention.montant_sous_traitant ?? ""} className="rounded-md border px-3 py-2" />
-              </label>
+              <Champ label="Montant FMC">
+                <input name="montant_fmc" type="number" step="0.01" defaultValue={intervention.montant_fmc ?? ""} className={CHAMP} />
+              </Champ>
+              <Champ label="Montant sous-traitant">
+                <input name="montant_sous_traitant" type="number" step="0.01" defaultValue={intervention.montant_sous_traitant ?? ""} className={CHAMP} />
+              </Champ>
             </div>
-            <label className="flex flex-col gap-1 text-sm">
-              Statut facturation
-              <select name="statut_facturation_code" defaultValue={intervention.statut_facturation_code ?? ""} className="rounded-md border px-3 py-2">
+            <Champ label="Statut facturation">
+              <select name="statut_facturation_code" defaultValue={intervention.statut_facturation_code ?? ""} className={CHAMP}>
                 <option value="">—</option>
                 {(statutsFacturation ?? [])
                   .filter((s) => !s.reserve_admin || estAdministrateur)
@@ -497,7 +473,7 @@ export default async function InterventionPage({
                     </option>
                   ))}
               </select>
-            </label>
+            </Champ>
             <button type="submit" className="w-fit rounded-md bg-black px-4 py-1.5 text-sm text-white">
               Enregistrer
             </button>
