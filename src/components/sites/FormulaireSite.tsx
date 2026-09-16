@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Chemin } from "@/components/ui/Chemin";
+import { Euro } from "@/components/ui/Euro";
 import { ETOILES, INDICES_QUALITE, SITUATIONS, TYPES_SITE } from "@/lib/sites";
 import { formatDate } from "@/lib/format";
 import { geocoderSite, mettreAJourSite } from "@/app/(app)/sites/actions";
@@ -36,8 +37,9 @@ function Cadre({ titre, children, className = "" }: { titre?: string; children: 
   );
 }
 
-function Texte({ name, valeur, type = "text", disabled, step, className = "" }: { name: string; valeur: unknown; type?: string; disabled?: boolean; step?: string; className?: string }) {
-  return <input form={FORM_SITE} name={name} type={type} step={step} disabled={disabled} defaultValue={valeur == null ? "" : String(valeur)} className={`${CHAMP} ${disabled ? "opacity-60" : ""} ${className}`} />;
+function Texte({ name, valeur, type = "text", disabled, step, className = "", euro }: { name: string; valeur: unknown; type?: string; disabled?: boolean; step?: string; className?: string; euro?: boolean }) {
+  const champ = <input form={FORM_SITE} name={name} type={type} step={step} disabled={disabled} defaultValue={valeur == null ? "" : String(valeur)} className={`${CHAMP} ${disabled ? "opacity-60" : ""} ${euro ? "pr-6" : ""} ${className}`} />;
+  return euro ? <Euro>{champ}</Euro> : champ;
 }
 
 function Selection({ name, valeur, options, vide = "", disabled }: { name: string; valeur: unknown; options: Option[]; vide?: string; disabled?: boolean }) {
@@ -202,9 +204,9 @@ export function FormulaireSite({ site, deverrouille, clients, donneurs, interven
             <Case name="tarifs_specifiques" checked={bool("tarifs_specifiques")} label="Tarifs propres au site (sinon tarifs du client)" />
             <div className={LIGNE}>
               <span>Tarif heure Main d&apos;œuvre</span>
-              <Texte name="tarif_heure_mo" type="number" step="0.01" valeur={s.tarif_heure_mo} />
+              <Texte name="tarif_heure_mo" type="number" step="0.01" valeur={s.tarif_heure_mo} euro />
               <span>Tarif d&apos;un déplacement</span>
-              <Texte name="tarif_deplacement" type="number" step="0.01" valeur={s.tarif_deplacement} />
+              <Texte name="tarif_deplacement" type="number" step="0.01" valeur={s.tarif_deplacement} euro />
             </div>
           </Cadre>
         </div>

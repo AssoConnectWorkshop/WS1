@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Euro } from "@/components/ui/Euro";
 import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -187,7 +188,7 @@ export default async function DevisPage({
 
         <div className="grid grid-cols-3 gap-3">
           <Champ label="Montant fournitures">
-            <input name="montant_fournitures" type="number" step="0.01" defaultValue={devis.montant_fournitures ?? ""} className={CHAMP} />
+            <Euro><input name="montant_fournitures" type="number" step="0.01" defaultValue={devis.montant_fournitures ?? ""} className={`${CHAMP} pr-6`} /></Euro>
           </Champ>
           <Champ label="Heures main d'œuvre">
             <input name="heures_mo" type="number" step="0.25" defaultValue={devis.heures_mo ?? ""} className={CHAMP} />
@@ -196,13 +197,13 @@ export default async function DevisPage({
             <input name="nombre_deplacements" type="number" min={0} defaultValue={devis.nombre_deplacements ?? ""} className={CHAMP} />
           </Champ>
           <Champ label="Tarif heure MO">
-            <input name="tarif_heure_mo" type="number" step="0.01" defaultValue={devis.tarif_heure_mo ?? ""} className={CHAMP} />
+            <Euro><input name="tarif_heure_mo" type="number" step="0.01" defaultValue={devis.tarif_heure_mo ?? ""} className={`${CHAMP} pr-6`} /></Euro>
           </Champ>
           <Champ label="Tarif déplacement">
-            <input name="tarif_deplacement" type="number" step="0.01" defaultValue={devis.tarif_deplacement ?? ""} className={CHAMP} />
+            <Euro><input name="tarif_deplacement" type="number" step="0.01" defaultValue={devis.tarif_deplacement ?? ""} className={`${CHAMP} pr-6`} /></Euro>
           </Champ>
           <Champ label="Montant HT">
-            <input name="montant_ht" type="number" step="0.01" defaultValue={devis.montant_ht ?? ""} className={CHAMP} />
+            <Euro><input name="montant_ht" type="number" step="0.01" defaultValue={devis.montant_ht ?? ""} className={`${CHAMP} pr-6`} /></Euro>
           </Champ>
         </div>
         <p className="text-xs opacity-60">
@@ -244,7 +245,7 @@ export default async function DevisPage({
             <input name="numero_devis_partenaire" defaultValue={devis.numero_devis_partenaire ?? ""} className={CHAMP} />
           </Champ>
           <Champ label="Montant HT partenaire">
-            <input name="montant_ht_partenaire" type="number" step="0.01" defaultValue={devis.montant_ht_partenaire ?? ""} className={CHAMP} />
+            <Euro><input name="montant_ht_partenaire" type="number" step="0.01" defaultValue={devis.montant_ht_partenaire ?? ""} className={`${CHAMP} pr-6`} /></Euro>
           </Champ>
         </div>
 

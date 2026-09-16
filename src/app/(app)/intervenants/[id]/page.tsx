@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Euro } from "@/components/ui/Euro";
 import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -160,10 +161,10 @@ export default async function IntervenantPage({
                     </select>
                   </td>
                   <td>
-                    <input name={`tarif_mo_${i + 1}`} type="number" step="0.01" defaultValue={a?.tarif_mo ?? ""} className="w-28 rounded-md border px-2 py-1" />
+                    <Euro><input name={`tarif_mo_${i + 1}`} type="number" step="0.01" defaultValue={a?.tarif_mo ?? ""} className="w-28 rounded-md border px-2 py-1" /></Euro>
                   </td>
                   <td>
-                    <input name={`tarif_deplacement_${i + 1}`} type="number" step="0.01" defaultValue={a?.tarif_deplacement ?? ""} className="w-28 rounded-md border px-2 py-1" />
+                    <Euro><input name={`tarif_deplacement_${i + 1}`} type="number" step="0.01" defaultValue={a?.tarif_deplacement ?? ""} className="w-28 rounded-md border px-2 py-1" /></Euro>
                   </td>
                   <td>
                     <input name={`date_tarif_${i + 1}`} type="date" defaultValue={a?.date_tarif ?? ""} className="rounded-md border px-2 py-1" />

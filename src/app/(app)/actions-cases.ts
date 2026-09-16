@@ -8,9 +8,10 @@ import { requireUtilisateur } from "@/lib/action-utils";
 const CASES_EDITABLES: Record<string, readonly string[]> = {
   sites: ["rdv_a_prendre"],
   interventions: ["non_facturable", "devis_a_faire", "devis_fait", "duplicata_traite"],
+  clients: ["actif"],
 };
 
-export type CaseEditable = { table: "sites" | "interventions"; id: number; champ: string };
+export type CaseEditable = { table: "sites" | "interventions" | "clients"; id: number; champ: string };
 
 export async function basculerCase({ table, id, champ }: CaseEditable, valeur: boolean) {
   const { utilisateur } = await requireUtilisateur();

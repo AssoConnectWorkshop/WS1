@@ -1,4 +1,5 @@
 import { Case, Champ, CHAMP } from "@/components/ui/Champ";
+import { Euro } from "@/components/ui/Euro";
 
 type Client = {
   nom: string | null;
@@ -54,10 +55,10 @@ export function ChampsClient({ client }: { client?: Client }) {
       </Champ>
       <div className="grid grid-cols-2 gap-3">
         <Champ label="Tarif heure main d'œuvre">
-          <input name="tarif_heure_mo" type="number" step="0.01" defaultValue={client?.tarif_heure_mo ?? ""} className={CHAMP} />
+          <Euro><input name="tarif_heure_mo" type="number" step="0.01" defaultValue={client?.tarif_heure_mo ?? ""} className={`${CHAMP} pr-6`} /></Euro>
         </Champ>
         <Champ label="Tarif d'un déplacement">
-          <input name="tarif_deplacement" type="number" step="0.01" defaultValue={client?.tarif_deplacement ?? ""} className={CHAMP} />
+          <Euro><input name="tarif_deplacement" type="number" step="0.01" defaultValue={client?.tarif_deplacement ?? ""} className={`${CHAMP} pr-6`} /></Euro>
         </Champ>
         <Champ label="N° Esabora clim">
           <input name="numero_esabora_clim" defaultValue={client?.numero_esabora_clim ?? ""} className={CHAMP} />

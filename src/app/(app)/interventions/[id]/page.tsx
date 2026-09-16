@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Euro } from "@/components/ui/Euro";
 import { Champ, CHAMP } from "@/components/ui/Champ";
 import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
@@ -314,10 +315,10 @@ export default async function InterventionPage({
             <input type="hidden" name="intervention_id" value={id} />
             <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
               <Champ label="Montant FMC">
-                <input name="montant_fmc" type="number" step="0.01" defaultValue={intervention.montant_fmc ?? ""} className={CHAMP} />
+                <Euro><input name="montant_fmc" type="number" step="0.01" defaultValue={intervention.montant_fmc ?? ""} className={`${CHAMP} pr-6`} /></Euro>
               </Champ>
               <Champ label="Montant sous-traitant">
-                <input name="montant_sous_traitant" type="number" step="0.01" defaultValue={intervention.montant_sous_traitant ?? ""} className={CHAMP} />
+                <Euro><input name="montant_sous_traitant" type="number" step="0.01" defaultValue={intervention.montant_sous_traitant ?? ""} className={`${CHAMP} pr-6`} /></Euro>
               </Champ>
               <Champ label="Différence">
                 <input disabled value={formatMontant((intervention.montant_fmc ?? 0) - (intervention.montant_sous_traitant ?? 0))} className={`${CHAMP} opacity-60`} />

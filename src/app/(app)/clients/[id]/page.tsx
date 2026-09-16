@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Euro } from "@/components/ui/Euro";
 import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -97,13 +98,13 @@ export default async function ClientPage({
           <input name="email" type="email" defaultValue={client.email ?? ""} className={PETIT} />
           <span className="text-right">Tarif heure Main oeuvre</span>
           <div className="grid grid-cols-[6rem_auto_1fr] items-center gap-2">
-            <input name="tarif_heure_mo" type="number" step="0.01" defaultValue={client.tarif_heure_mo ?? ""} className={PETIT} />
+            <Euro><input name="tarif_heure_mo" type="number" step="0.01" defaultValue={client.tarif_heure_mo ?? ""} className={`${PETIT} pr-6`} /></Euro>
             <span>Numéro Esa Clim</span>
             <input name="numero_esabora_clim" defaultValue={client.numero_esabora_clim ?? ""} className={`${PETIT} max-w-40`} />
           </div>
           <span className="text-right">Tarif d&apos;un déplacement</span>
           <div className="grid grid-cols-[6rem_auto_1fr] items-center gap-2">
-            <input name="tarif_deplacement" type="number" step="0.01" defaultValue={client.tarif_deplacement ?? ""} className={PETIT} />
+            <Euro><input name="tarif_deplacement" type="number" step="0.01" defaultValue={client.tarif_deplacement ?? ""} className={`${PETIT} pr-6`} /></Euro>
             <span>Numéro Esa Maint</span>
             <input name="numero_esabora_maint" defaultValue={client.numero_esabora_maint ?? ""} className={`${PETIT} max-w-40`} />
           </div>

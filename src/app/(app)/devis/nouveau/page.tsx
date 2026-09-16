@@ -1,4 +1,5 @@
 import { Messages } from "@/components/ui/Messages";
+import { Euro } from "@/components/ui/Euro";
 import { RechercheSite } from "@/components/sites/RechercheSite";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
@@ -105,7 +106,7 @@ export default async function NouveauDevisPage({
 
         <div className="grid grid-cols-3 gap-3">
           <Champ label="Montant fournitures">
-            <input name="montant_fournitures" type="number" step="0.01" className={CHAMP} />
+            <Euro><input name="montant_fournitures" type="number" step="0.01" className={`${CHAMP} pr-6`} /></Euro>
           </Champ>
           <Champ label="Heures main d'œuvre">
             <input name="heures_mo" type="number" step="0.25" className={CHAMP} />
@@ -114,13 +115,13 @@ export default async function NouveauDevisPage({
             <input name="nombre_deplacements" type="number" min={0} className={CHAMP} />
           </Champ>
           <Champ label="Tarif heure MO">
-            <input name="tarif_heure_mo" type="number" step="0.01" defaultValue={site?.tarifs.tarif_heure_mo ?? ""} className={CHAMP} />
+            <Euro><input name="tarif_heure_mo" type="number" step="0.01" defaultValue={site?.tarifs.tarif_heure_mo ?? ""} className={`${CHAMP} pr-6`} /></Euro>
           </Champ>
           <Champ label="Tarif déplacement">
-            <input name="tarif_deplacement" type="number" step="0.01" defaultValue={site?.tarifs.tarif_deplacement ?? ""} className={CHAMP} />
+            <Euro><input name="tarif_deplacement" type="number" step="0.01" defaultValue={site?.tarifs.tarif_deplacement ?? ""} className={`${CHAMP} pr-6`} /></Euro>
           </Champ>
           <Champ label="Montant HT (calculé si vide)">
-            <input name="montant_ht" type="number" step="0.01" className={CHAMP} />
+            <Euro><input name="montant_ht" type="number" step="0.01" className={`${CHAMP} pr-6`} /></Euro>
           </Champ>
         </div>
         <p className="text-xs opacity-60">
