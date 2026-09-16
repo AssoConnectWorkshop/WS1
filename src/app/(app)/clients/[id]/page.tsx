@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Badge } from "@/components/ui/Badge";
 import { FilterBar, type FilterField } from "@/components/ui/FilterBar";
 import { Contacts } from "@/components/tiers/Contacts";
+import { Case, Champ, CHAMP } from "@/components/ui/Champ";
 import { ChampsClient } from "@/components/tiers/FormulaireClient";
 import { statutDevisTone } from "@/lib/badges";
 import { formatDate, formatMontant, oui } from "@/lib/format";
@@ -22,6 +23,7 @@ const ONGLETS = [
   { key: "contacts", label: "Contacts" },
   { key: "devis", label: "Devis" },
   { key: "planifications", label: "Planifications" },
+  { key: "exports", label: "Exports Excel" },
 ];
 
 export default async function ClientPage({
@@ -84,6 +86,105 @@ export default async function ClientPage({
       {onglet === "devis" && <ClientDevis clientId={id} />}
 
       {onglet === "planifications" && <ClientPlanifications clientId={id} />}
+
+      {onglet === "exports" && <ClientExports clientId={id} />}
+    </div>
+  );
+}
+
+async function ClientExports({ clientId }: { clientId: string }) {
+  const supabase = await createClient();
+  const [{ data: types }, { data: statuts }] = await Promise.all([
+    supabase.from("types_intervention").select("code, libelle").order("ordre_affichage"),
+    supabase.from("statuts_intervention").select("code, libelle").eq("actif", true).order("ordre_affichage"),
+  ]);
+  const annee = new Date().getFullYear();
+
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      <form method="GET" action={`/clients/${clientId}/bilan.xlsx`} className="flex flex-col gap-3 rounded-xl border p-4">
+        <h2 className="text-sm font-semibold opacity-70">Bilan client (28 colonnes)</h2>
+        <p className="text-xs opacity-60">Interventions sur la date réalisée, devis sur la date d&apos;envoi ; statuts annulé et résolu par téléphone exclus des comptages.</p>
+        <div className="grid grid-cols-2 gap-3">
+          <Champ label="Du">
+            <input name="debut" type="date" className={CHAMP} />
+          </Champ>
+          <Champ label="Au">
+            <input name="fin" type="date" className={CHAMP} />
+          </Champ>
+        </div>
+        <button type="submit" className="w-fit rounded-md bg-black px-4 py-1.5 text-sm text-white">
+          Télécharger le bilan
+        </button>
+      </form>
+
+      <form method="GET" action={`/clients/${clientId}/comptage.xlsx`} className="flex flex-col gap-3 rounded-xl border p-4">
+        <h2 className="text-sm font-semibold opacity-70">Comptage et montants par site</h2>
+        <p className="text-xs opacity-60">Période sur la date limite. L&apos;année est prioritaire sur la période ; « par mois » produit une feuille par mois.</p>
+        <div className="grid grid-cols-3 gap-3">
+          <Champ label="Année">
+            <input name="annee" type="number" min={2000} max={2100} placeholder={String(annee)} className={CHAMP} />
+          </Champ>
+          <Champ label="Mois">
+            <select name="mois" className={CHAMP}>
+              <option value="0">Tous</option>
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+          </Champ>
+          <div className="flex items-end pb-2">
+            <Case name="par_mois" label="Une feuille par mois" />
+          </div>
+          <Champ label="Du">
+            <input name="debut" type="date" className={CHAMP} />
+          </Champ>
+          <Champ label="Au">
+            <input name="fin" type="date" className={CHAMP} />
+          </Champ>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <Champ label="Types (plusieurs possibles)">
+            <select name="types" multiple size={5} className={CHAMP}>
+              {(types ?? []).map((t) => (
+                <option key={t.code} value={t.code}>
+                  {t.libelle}
+                </option>
+              ))}
+            </select>
+          </Champ>
+          <Champ label="Statuts (plusieurs possibles)">
+            <select name="statuts" multiple size={5} className={CHAMP}>
+              {(statuts ?? []).map((s) => (
+                <option key={s.code} value={s.code}>
+                  {s.libelle}
+                </option>
+              ))}
+            </select>
+          </Champ>
+        </div>
+        <div className="grid grid-cols-4 gap-3">
+          {[1, 2, 3, 4].map((n) => (
+            <Champ key={n} label={`Motif de nom ${n}`}>
+              <input name={`nom${n}`} placeholder={["CREMATORIUM", "POINT DE VENTE", "CHAMBRE FUNÉRAIRE", "DÉPÔT"][n - 1]} className={CHAMP} />
+            </Champ>
+          ))}
+        </div>
+        <p className="text-xs opacity-60">Avec des motifs de nom, une ligne par motif somme tous les sites dont le nom le contient.</p>
+        <button type="submit" className="w-fit rounded-md bg-black px-4 py-1.5 text-sm text-white">
+          Télécharger le comptage
+        </button>
+      </form>
+
+      <div className="flex flex-col gap-3 rounded-xl border p-4">
+        <h2 className="text-sm font-semibold opacity-70">Parc matériel</h2>
+        <p className="text-xs opacity-60">Une ligne par équipement, sites sans matériel inclus.</p>
+        <a href={`/clients/${clientId}/materiel.xlsx`} className="w-fit rounded-md border px-4 py-1.5 text-sm">
+          Télécharger le parc matériel
+        </a>
+      </div>
     </div>
   );
 }

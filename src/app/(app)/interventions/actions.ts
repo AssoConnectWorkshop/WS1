@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { genererBonPdf } from "@/lib/bon-pdf";
+import { envoyerCourriel } from "@/lib/email";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError } from "@/lib/action-utils";
 import { premiereErreur } from "@/lib/zod-form";
@@ -556,4 +557,35 @@ export async function genererEtEnregistrerBon(formData: FormData) {
   await enregistrerJournal(supabase, "interventions", interventionId, utilisateur.id, { action: "generation_bon_pdf", chemin: `bons/${chemin}` });
   revalidatePath(`/interventions/${interventionId}`);
   redirect(`${retour}&info=${encodeURIComponent(`PDF archivé (bons/${chemin}).`)}`);
+}
+
+const EmailSchema = z.object({
+  intervention_id: z.coerce.number().int().positive(),
+  type: z.enum(["partenaire", "contact", "fin_intervention"]),
+  destinataire: z.string().trim().email("Adresse e-mail du destinataire invalide."),
+  objet: z.string().trim().min(1, "L'objet est obligatoire."),
+  texte: z.string().trim().min(1, "Le message est obligatoire."),
+});
+
+/** E-mails manuels depuis la fiche (analysis 02 §5) : partenaire, contact client, fin d'intervention. */
+export async function envoyerEmailIntervention(formData: FormData) {
+  const { utilisateur } = await requireUtilisateur();
+  const interventionId = Number(formData.get("intervention_id"));
+  const retour = `/interventions/${interventionId}/email?type=${formData.get("type") ?? "partenaire"}`;
+  const parsed = EmailSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) redirectWithError(retour, premiereErreur(parsed));
+
+  let admin: ReturnType<typeof createAdminClient>;
+  try {
+    admin = createAdminClient();
+  } catch {
+    redirectWithError(retour, "Journal des e-mails indisponible (SUPABASE_SERVICE_ROLE_KEY).");
+  }
+
+  const { ok, statut, detail } = await envoyerCourriel(admin, { ...parsed.data, interventionId: parsed.data.intervention_id });
+  if (!ok) redirectWithError(retour, `L'envoi a échoué : ${detail ?? "erreur inconnue"}.`);
+
+  const supabase = await createClient();
+  await enregistrerJournal(supabase, "interventions", parsed.data.intervention_id, utilisateur.id, { action: "email", type: parsed.data.type, destinataire: parsed.data.destinataire, statut });
+  redirect(`/interventions/${interventionId}?info=${encodeURIComponent(statut === "simule" ? "E-mail simulé (Resend non configuré) et journalisé." : `E-mail envoyé à ${parsed.data.destinataire}.`)}`);
 }

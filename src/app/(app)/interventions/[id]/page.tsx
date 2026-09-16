@@ -254,6 +254,15 @@ export default async function InterventionPage({
         <a href={`/interventions/${id}/bon.pdf`} target="_blank" rel="noreferrer" className="rounded-md border px-3 py-1.5 text-sm">
           Voir le rapport (PDF)
         </a>
+        <Link href={`/interventions/${id}/email?type=partenaire`} className="rounded-md border px-3 py-1.5 text-sm">
+          Mail au partenaire
+        </Link>
+        <Link href={`/interventions/${id}/email?type=contact`} className="rounded-md border px-3 py-1.5 text-sm">
+          Mail au contact
+        </Link>
+        <Link href={`/interventions/${id}/email?type=fin_intervention`} className="rounded-md border px-3 py-1.5 text-sm">
+          Mail de fin d&apos;intervention
+        </Link>
         <form action={genererEtEnregistrerBon}>
           <input type="hidden" name="intervention_id" value={id} />
           <button type="submit" className="rounded-md border px-3 py-1.5 text-sm">
