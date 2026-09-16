@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { emailAutorise } from "@/lib/garde-emails";
 
 async function requestReset(formData: FormData) {
   "use server";
@@ -12,6 +13,9 @@ async function requestReset(formData: FormData) {
   // Ne jamais révéler si l'e-mail existe ou non (évite l'énumération de comptes) :
   // le message affiché est identique quel que soit le résultat, y compris en cas
   // d'erreur réseau/service (le SDK peut lever plutôt que renvoyer { error }).
+  // Liste blanche EMAILS_AUTORISES : hors liste, même message affiché mais rien n'est envoyé.
+  if (!emailAutorise(email)) redirect("/reset-password?sent=1");
+
   try {
     const supabase = await createClient();
     await supabase.auth.resetPasswordForEmail(email, {
