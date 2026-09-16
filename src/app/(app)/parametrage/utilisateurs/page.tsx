@@ -33,6 +33,7 @@ export default async function UtilisateursPage({ searchParams }: { searchParams:
   const { data } = await supabase
     .from("utilisateurs")
     .select("id, nom, prenom, email, profil, immatriculation, code_intervenant, login_legacy, role, auth_user_id, societes(libelle)")
+    .eq("compte_application", false)
     .order("nom")
     .order("prenom");
 
@@ -52,8 +53,15 @@ export default async function UtilisateursPage({ searchParams }: { searchParams:
       <p className="text-xs opacity-70">
         L&apos;accès à l&apos;application remplace le mot de passe Access. Le rôle « comptable » remplace le mot de passe Kadi : seul rôle, avec l&apos;administrateur, à poser les statuts de facturation réservés.
         {!estAdmin && " Consultation seule : les rôles sont réservés à l'administrateur."}
-        {estAdmin &&
-          " Les comptes se créent dans le tableau de bord Supabase (Authentication › Users › Create new user, Auto Confirm) : aucun e-mail n'est envoyé. À la première connexion, le compte est rattaché à la ligne dont le « Mail » est identique."}
+        {estAdmin && (
+          <>
+            {" "}Les accès se gèrent dans{" "}
+            <Link href="/parametrage/acces" className="underline">
+              Accès application
+            </Link>
+            , indépendamment de ces fiches.
+          </>
+        )}
       </p>
       {erreur && <p className="rounded border border-red-300 bg-red-50 px-3 py-2 text-xs text-red-700 dark:bg-red-950/30">{erreur}</p>}
       {info && <p className="rounded border border-green-300 bg-green-50 px-3 py-2 text-xs text-green-700 dark:bg-green-950/30">{info}</p>}
