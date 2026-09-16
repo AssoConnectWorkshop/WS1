@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { emailAutorise } from "@/lib/garde-emails";
+import { BOUTON_PRIMAIRE, BOUTON_SECONDAIRE } from "@/components/ui/boutons";
 
 async function requestReset(formData: FormData) {
   "use server";
@@ -10,9 +11,6 @@ async function requestReset(formData: FormData) {
   }
 
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "https://assoconnect-ws1.vercel.app";
-  // Ne jamais révéler si l'e-mail existe ou non (évite l'énumération de comptes) :
-  // le message affiché est identique quel que soit le résultat, y compris en cas
-  // d'erreur réseau/service (le SDK peut lever plutôt que renvoyer { error }).
   // Liste blanche EMAILS_AUTORISES : hors liste, rien n'est envoyé et on le dit (public restreint,
   // l'anti-énumération compte moins que la clarté).
   if (!emailAutorise(email)) redirect("/reset-password?error=non_autorise");
@@ -115,7 +113,7 @@ export default async function ResetPasswordPage({
               className="rounded-md border px-3 py-2"
             />
           </label>
-          <button type="submit" className="rounded-md bg-black py-2 font-medium text-white">
+          <button type="submit" className={BOUTON_PRIMAIRE}>
             Valider
           </button>
         </form>
@@ -147,10 +145,10 @@ export default async function ResetPasswordPage({
             className="rounded-md border px-3 py-2"
           />
         </label>
-        <button type="submit" className="rounded-md bg-black py-2 font-medium text-white">
+        <button type="submit" className={BOUTON_PRIMAIRE}>
           Envoyer le lien
         </button>
-        <a href="/login" className="text-center text-sm underline opacity-70">
+        <a href="/login" className={BOUTON_SECONDAIRE}>
           Retour à la connexion
         </a>
       </form>

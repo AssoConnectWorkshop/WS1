@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { requireUtilisateur } from "@/lib/action-utils";
 import { createClient } from "@/lib/supabase/server";
+import { BOUTON_PRIMAIRE } from "@/components/ui/boutons";
 
 const CHEMIN = "/mot-de-passe";
 
@@ -54,7 +55,7 @@ export default async function MotDePassePage({ searchParams }: { searchParams: P
           Confirmation
           <input name="confirmation" type="password" required minLength={10} autoComplete="new-password" className={CHAMP} />
         </label>
-        <button type="submit" className="rounded-md bg-black py-2 text-sm font-medium text-white">
+        <button type="submit" className={`${BOUTON_PRIMAIRE} text-sm`}>
           Enregistrer
         </button>
       </form>

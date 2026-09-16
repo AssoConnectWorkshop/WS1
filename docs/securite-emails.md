@@ -40,8 +40,11 @@ de connexion est l'e-mail ; l'application n'envoie jamais d'e-mail automatique.
   FMC porte déjà l'adresse, l'accès lui est rattaché ; sinon un compte indépendant est créé.
 - **Rôles et révocation** : sur la même page. Révoquer supprime le compte Auth (adresse à retaper
   pour confirmer) ; la fiche FMC, s'il y en a une, est conservée.
-- À la première connexion d'un compte créé directement dans Supabase, rattachement automatique à
-  la fiche FMC non rattachée portant exactement le même e-mail (rôle gestionnaire).
+- **Tout compte Supabase Auth a accès** : à la première connexion, rattachement à la fiche FMC
+  non rattachée portant le même e-mail s'il y en a une, sinon création d'une ligne
+  `compte_application` (rôle gestionnaire, administrateur pour un master admin). C'est pourquoi
+  l'inscription libre doit rester désactivée dans Supabase : la création d'un compte Auth vaut
+  autorisation d'accès.
 
 Réglage recommandé : Supabase › Authentication › Sign In / Providers › **désactiver « Allow new
 users to sign up »**, pour que seuls les comptes créés par vous existent.
