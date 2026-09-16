@@ -4,7 +4,7 @@
 
 Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · AssoConnect API · Deployed on Vercel.
 
-**Live:** https://assoconnect-ws1.vercel.app
+**Live:** https://fmc-climatisation.vercel.app
 
 ## Getting started
 

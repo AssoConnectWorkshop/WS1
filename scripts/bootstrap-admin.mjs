@@ -26,7 +26,8 @@ async function main() {
   const { email, nom, prenom } = parseArgs(process.argv.slice(2));
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://assoconnect-ws1.vercel.app';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (!siteUrl) throw new Error('NEXT_PUBLIC_SITE_URL non défini');
 
   if (!email) {
     console.error('Usage: node scripts/bootstrap-admin.mjs --email=... [--nom=... --prenom=...]');
