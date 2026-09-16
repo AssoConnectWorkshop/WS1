@@ -112,13 +112,19 @@ async function compteursVehicules(): Promise<Record<keyof Alertes, number>> {
 /** Menu d'accueil Access (Form_MenuClimAccess) : grille d'icônes et pastilles de compteurs (analysis 01 §2.1). */
 export default async function MenuPage() {
   const supabase = await createClient();
-  const [{ data }, vehicules, current] = await Promise.all([supabase.from("v_tableau_de_bord").select("*").maybeSingle(), compteursVehicules(), getCurrentUser()]);
+  const [{ data, error }, vehicules, current] = await Promise.all([supabase.from("v_tableau_de_bord").select("*").maybeSingle(), compteursVehicules(), getCurrentUser()]);
   const c = (data ?? {}) as Partial<Compteurs>;
+  if (error) console.error("v_tableau_de_bord:", error.message);
   const u = current?.utilisateur;
   const nomUtilisateur = [u?.prenom, u?.nom].filter(Boolean).join(" ") || u?.email || "";
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-10 p-8">
+      {error && (
+        <p className="rounded border border-red-300 bg-red-50 px-3 py-2 text-xs text-red-700 dark:bg-red-950/30">
+          Compteurs indisponibles : {error.message}
+        </p>
+      )}
       <section className="grid grid-cols-3 items-start gap-6 md:grid-cols-[repeat(3,8rem)_1fr_repeat(2,8rem)]">
         <Icone href="/clients" label="Clients" icone="🤝" />
         <Icone href="/sites" label="Sites" icone="🛒" />
