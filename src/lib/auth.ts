@@ -22,66 +22,57 @@ export type CurrentUser = {
   authUser: { id: string; email: string | null };
   utilisateur: Utilisateur | null;
   role: Role | null;
+  /** Raisons pour lesquelles le rattachement automatique a échoué (vide si tout va bien). */
+  diagnostic: string[];
 };
 
+const COLONNES = "id, nom, prenom, email, profil, role";
+
 /**
- * Compte Supabase Auth créé à la main dans le tableau de bord (aucun e-mail) : à la première
- * connexion, rattachement à la ligne `utilisateurs` non rattachée dont l'e-mail est identique.
- * Rôle gestionnaire si la ligne n'en a pas. Écriture via le client service role (RLS).
+ * Rattachement d'un compte Supabase Auth à une ligne `utilisateurs`, dans l'ordre : ligne déjà
+ * rattachée, fiche FMC non rattachée de même e-mail, sinon création d'une ligne compte_application.
+ * Master admin (MASTER_ADMINS) : toujours administrateur. Écritures via le client service role.
+ * Retourne aussi le diagnostic des échecs, affiché sur l'écran « Compte non rattaché ».
  */
-async function rattacherParEmail(authUserId: string, email: string): Promise<Utilisateur | null> {
+async function rattacher(authUserId: string, email: string | undefined, existant: Utilisateur | null): Promise<{ utilisateur: Utilisateur | null; diagnostic: string[] }> {
+  const diagnostic: string[] = [];
+  const master = estMasterAdmin(email);
+  if (existant && (!master || existant.role === "administrateur")) return { utilisateur: existant, diagnostic };
+  if (!email) return { utilisateur: existant, diagnostic: ["Le jeton de connexion ne contient pas d'e-mail."] };
+
+  let admin: ReturnType<typeof createAdminClient>;
   try {
-    const admin = createAdminClient();
-    const { data: candidats } = await admin
-      .from("utilisateurs")
-      .select("id, nom, prenom, email, profil, role")
-      .is("auth_user_id", null)
-      .ilike("email", email.trim())
-      .limit(2);
-    if (!candidats || candidats.length !== 1) return null;
+    admin = createAdminClient();
+  } catch (e) {
+    return { utilisateur: existant, diagnostic: [e instanceof Error ? e.message : "Client service role indisponible."] };
+  }
+
+  if (existant) {
+    const { error } = await admin.from("utilisateurs").update({ role: "administrateur" }).eq("id", existant.id);
+    if (error) diagnostic.push(`Passage administrateur refusé : ${error.message}`);
+    return { utilisateur: error ? existant : { ...existant, role: "administrateur" }, diagnostic };
+  }
+
+  const role: Role = master ? "administrateur" : "gestionnaire";
+  const { data: candidats, error: erreurLecture } = await admin.from("utilisateurs").select(COLONNES).is("auth_user_id", null).ilike("email", email.trim()).limit(2);
+  if (erreurLecture) diagnostic.push(`Lecture des fiches : ${erreurLecture.message}`);
+  if (candidats?.length === 1) {
     const ligne = candidats[0] as Utilisateur;
-    const role: Role = ligne.role ?? "gestionnaire";
-    const { error } = await admin.from("utilisateurs").update({ auth_user_id: authUserId, role }).eq("id", ligne.id).is("auth_user_id", null);
-    return error ? null : { ...ligne, role };
-  } catch {
-    return null;
+    const roleLigne: Role = master ? "administrateur" : (ligne.role ?? "gestionnaire");
+    const { error } = await admin.from("utilisateurs").update({ auth_user_id: authUserId, role: roleLigne }).eq("id", ligne.id).is("auth_user_id", null);
+    if (!error) return { utilisateur: { ...ligne, role: roleLigne }, diagnostic };
+    diagnostic.push(`Rattachement à la fiche ${ligne.id} refusé : ${error.message}`);
+  } else if (candidats && candidats.length > 1) {
+    diagnostic.push(`${candidats.length} fiches non rattachées portent cet e-mail : création d'un compte indépendant.`);
   }
-}
 
-/**
- * Master admin (variable Vercel MASTER_ADMINS) : toujours administrateur. Sans ligne `utilisateurs`,
- * une ligne compte_application est créée pour porter l'accès, indépendamment du personnel FMC.
- */
-async function garantirMasterAdmin(authUserId: string, email: string, existant: Utilisateur | null): Promise<Utilisateur | null> {
-  if (existant?.role === "administrateur") return existant;
-  try {
-    const admin = createAdminClient();
-    if (existant) {
-      const { error } = await admin.from("utilisateurs").update({ role: "administrateur" }).eq("id", existant.id);
-      return error ? existant : { ...existant, role: "administrateur" };
-    }
-    return await creerCompteApplication(authUserId, email, "administrateur");
-  } catch {
-    return existant;
-  }
-}
-
-/**
- * Tout compte Supabase Auth a accès : seul un administrateur peut en créer (inscription libre
- * désactivée). Sans fiche FMC portant l'e-mail, une ligne compte_application porte l'accès.
- */
-async function creerCompteApplication(authUserId: string, email: string, role: Role): Promise<Utilisateur | null> {
-  try {
-    const admin = createAdminClient();
-    const { data, error } = await admin
-      .from("utilisateurs")
-      .insert({ nom: email, email, role, auth_user_id: authUserId, compte_application: true })
-      .select("id, nom, prenom, email, profil, role")
-      .single();
-    return error ? null : (data as Utilisateur);
-  } catch {
-    return null;
-  }
+  const { data, error } = await admin
+    .from("utilisateurs")
+    .insert({ nom: email, email, role, auth_user_id: authUserId, compte_application: true })
+    .select(COLONNES)
+    .single();
+  if (error) diagnostic.push(`Création du compte application refusée : ${error.message}`);
+  return { utilisateur: error ? null : (data as Utilisateur), diagnostic };
 }
 
 /**
@@ -104,19 +95,14 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 
   if (!user) return null;
 
-  let { data: utilisateur } = await supabase
-    .from("utilisateurs")
-    .select("id, nom, prenom, email, profil, role")
-    .eq("auth_user_id", user.id)
-    .maybeSingle();
+  const { data: existant } = await supabase.from("utilisateurs").select(COLONNES).eq("auth_user_id", user.id).maybeSingle();
 
-  if (!utilisateur && user.email) utilisateur = await rattacherParEmail(user.id, user.email);
-  if (user.email && estMasterAdmin(user.email)) utilisateur = await garantirMasterAdmin(user.id, user.email, utilisateur);
-  if (!utilisateur && user.email) utilisateur = await creerCompteApplication(user.id, user.email, "gestionnaire");
+  const { utilisateur, diagnostic } = await rattacher(user.id, user.email, (existant as Utilisateur | null) ?? null);
 
   return {
     authUser: { id: user.id, email: user.email ?? null },
-    utilisateur: (utilisateur as Utilisateur | null) ?? null,
-    role: (utilisateur?.role as Role | null | undefined) ?? null,
+    utilisateur,
+    role: utilisateur?.role ?? null,
+    diagnostic,
   };
 });

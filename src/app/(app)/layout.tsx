@@ -44,6 +44,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             Impossible de rattacher votre compte ({current.authUser.email ?? "sans e-mail"}) à
             l&apos;application. Réessayez ; si le problème persiste, contactez un administrateur.
           </p>
+          {current.diagnostic.length > 0 && (
+            <ul className="rounded border border-red-300 bg-red-50 p-3 text-left text-xs text-red-700 dark:bg-red-950/30">
+              {current.diagnostic.map((d) => (
+                <li key={d}>{d}</li>
+              ))}
+            </ul>
+          )}
           <form action={signOut}>
             <button type="submit" className="text-sm underline">
               Se déconnecter
