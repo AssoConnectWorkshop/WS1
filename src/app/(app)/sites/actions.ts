@@ -79,6 +79,9 @@ const SiteSchema = z.object({
   commentaire_divers: texte,
   dossier_chemin: texte,
   numero_esabora: texte,
+  latitude: nombre,
+  longitude: nombre,
+  coordonnees: texte,
 });
 
 /** Champs protégés contre la modification accidentelle : envoyés seulement après « Déverrouiller ». */
@@ -96,10 +99,21 @@ export async function mettreAJourSite(formData: FormData) {
   if (!parsed.success) redirectWithError(versSite(siteId), premiereErreur(parsed));
 
   const supabase = await createClient();
-  const { data: site } = await supabase.from("sites").select("client_id").eq("id", siteId).maybeSingle();
+  const { data: site } = await supabase.from("sites").select("client_id, latitude, longitude").eq("id", siteId).maybeSingle();
   if (!site) redirectWithError(versSite(siteId), "Site introuvable.");
 
-  const payload: Record<string, unknown> = { ...parsed.data };
+  const { coordonnees, ...donnees } = parsed.data;
+  const payload: Record<string, unknown> = { ...donnees };
+  // Collage brut depuis Google Maps (« 43.673, 7.189 ») : remplace latitude / longitude (analysis 03 §2.5 : le
+  // géocodage Access est hors service, FMC saisit les coordonnées à la main).
+  const collage = coordonnees ? /(-?\d+(?:[.,]\d+))\s*[,;\s]\s*(-?\d+(?:[.,]\d+))/.exec(coordonnees) : null;
+  if (collage) {
+    payload.latitude = Number(collage[1].replace(",", "."));
+    payload.longitude = Number(collage[2].replace(",", "."));
+  } else if (coordonnees) {
+    redirectWithError(versSite(siteId), "Coordonnées illisibles : coller « latitude, longitude » (ex. 43.673, 7.189).");
+  }
+  if ((payload.latitude !== site.latitude || payload.longitude !== site.longitude) && payload.latitude != null) payload.precision_geo = "SAISIE MANUELLE";
   let nouveauClient: number | null = null;
   if (raw.deverrouille === "1") {
     const verrou = VerrouSchema.safeParse(raw);

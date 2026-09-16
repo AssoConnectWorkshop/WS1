@@ -91,7 +91,8 @@ export default async function SitesPage({
   if (restrictToIds) query = query.in("id", restrictToIds.length ? restrictToIds : [-1]);
 
   query = query.order(sort, { ascending: dir === "asc" }).range(from, to);
-  const { data, count } = await query;
+  const { data, count, error } = await query;
+  if (error) console.error("v_sites_liste", error);
   const rows = (data ?? []) as SiteRow[];
 
   const filterFields: FilterField[] = [
@@ -168,6 +169,7 @@ export default async function SitesPage({
         page={page}
         pageSize={pageSize}
         emptyMessage="Aucun site pour ces filtres."
+        erreur={error?.message}
       />
     </div>
   );

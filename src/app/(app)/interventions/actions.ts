@@ -9,6 +9,7 @@ import { genererBonPdf } from "@/lib/bon-pdf";
 import { envoyerCourriel } from "@/lib/email";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError } from "@/lib/action-utils";
+import { peutStatutsReserves } from "@/lib/auth";
 import { booleen, entier, nombre, premiereErreur, texte } from "@/lib/zod-form";
 
 /** Recalcule et persiste `interventions.noms_techniciens` (dénormalisé, utilisé par les listes). */
@@ -140,6 +141,7 @@ const RealisationSchema = z.object({
   heure_depart: texte,
   masquer_heures_sur_bon: booleen,
   nombre_techniciens: entier,
+  heures_vendues: nombre,
   saisi_par_id: entier,
   commentaire_post_intervention: texte,
   prestations_realisees: texte,
@@ -182,7 +184,7 @@ export async function mettreAJourRealisation(formData: FormData) {
   if (statut_facturation_code !== intervention.statut_facturation_code) {
     const codes = [intervention.statut_facturation_code, statut_facturation_code].filter((c): c is number => c != null);
     const { data: statuts } = codes.length ? await supabase.from("statuts_facturation").select("code, reserve_admin").in("code", codes) : { data: [] };
-    if ((statuts ?? []).some((s) => s.reserve_admin) && role !== "administrateur") redirectWithError(retour, "Ce statut de facturation est réservé à l'administrateur.");
+    if ((statuts ?? []).some((s) => s.reserve_admin) && !peutStatutsReserves(role)) redirectWithError(retour, "Ce statut de facturation est réservé à la comptabilité.");
   }
 
   const { error } = await supabase
@@ -394,8 +396,8 @@ export async function mettreAJourFacturation(formData: FormData) {
       .select("code, reserve_admin")
       .in("code", [intervention.statut_facturation_code, nouveauStatut].filter((c): c is number => c != null));
     const reserve = (statuts ?? []).some((s) => s.reserve_admin);
-    if (reserve && role !== "administrateur") {
-      redirectWithError(`/interventions/${intervention_id}?onglet=demande`, "Ce statut de facturation est réservé à l'administrateur.");
+    if (reserve && !peutStatutsReserves(role)) {
+      redirectWithError(`/interventions/${intervention_id}?onglet=demande`, "Ce statut de facturation est réservé à la comptabilité.");
     }
   }
 

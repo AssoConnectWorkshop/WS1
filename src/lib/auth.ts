@@ -1,7 +1,10 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 
-export type Role = "gestionnaire" | "administrateur";
+export type Role = "gestionnaire" | "administrateur" | "comptable";
+
+/** Statuts de facturation réservés (mot de passe « Kadi » d'Access) : comptable ou administrateur. */
+export const peutStatutsReserves = (role: Role | null | undefined) => role === "administrateur" || role === "comptable";
 
 export type Utilisateur = {
   id: number;

@@ -13,6 +13,7 @@ const NAV_ITEMS: { href: string; label: string; adminOnly?: boolean }[] = [
   { href: "/carte", label: "Carte" },
   { href: "/vehicules", label: "Véhicules" },
   { href: "/parametrage", label: "Paramétrage" },
+  { href: "/taches", label: "À faire" },
 ];
 
 async function signOut() {
@@ -65,7 +66,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <span>
             {[utilisateur.prenom, utilisateur.nom].filter(Boolean).join(" ") || utilisateur.email}
             {" · "}
-            {role === "administrateur" ? "administrateur" : "gestionnaire"}
+            {role ?? "gestionnaire"}
           </span>
           <form action={signOut}>
             <button type="submit" className="rounded-md border px-3 py-1">

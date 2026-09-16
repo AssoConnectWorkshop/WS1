@@ -3,7 +3,7 @@ import { Champ, CHAMP } from "@/components/ui/Champ";
 import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, peutStatutsReserves } from "@/lib/auth";
 import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { KeyValue } from "@/components/ui/KeyValue";
@@ -148,6 +148,18 @@ export default async function InterventionPage({
     supabase.from("statuts_facturation").select("code, libelle, reserve_admin").order("ordre_affichage"),
   ]);
 
+  // Heures pointées par les techniciens (HeuresTech, clé = numéro de bon) : « on a vendu 4 h, il a passé 6 h ».
+  const { data: heuresLignes } = intervention.numero_bon
+    ? await supabase.from("heures_techniciens").select("heure_debut, heure_fin, ne_pas_comptabiliser").eq("intervention_numero_bon", intervention.numero_bon)
+    : { data: [] };
+  const minutes = (h: string | null) => (h ? Number(h.slice(0, 2)) * 60 + Number(h.slice(3, 5)) : null);
+  const heuresPassees = (heuresLignes ?? []).reduce((total, l) => {
+    if (l.ne_pas_comptabiliser) return total;
+    const d = minutes(l.heure_debut);
+    const f = minutes(l.heure_fin);
+    return d != null && f != null && f > d ? total + (f - d) / 60 : total;
+  }, 0);
+
   const { data: techniciensLignesData } = await supabase.from("intervention_techniciens").select("id, utilisateur_id, utilisateurs(nom, prenom)").eq("intervention_id", id);
   const techniciensLignes = (techniciensLignesData ?? []) as unknown as { id: number; utilisateur_id: number | null; utilisateurs: { nom: string | null; prenom: string | null } | null }[];
 
@@ -156,7 +168,7 @@ export default async function InterventionPage({
   const { data: techniciensEligiblesData } = await supabase.from("utilisateurs").select("id, nom, prenom").eq("profil", 2).in("code_intervenant", codesEligibles).order("nom");
   const techniciensEligibles = techniciensEligiblesData ?? [];
 
-  const estAdministrateur = current?.role === "administrateur";
+  const estAdministrateur = peutStatutsReserves(current?.role);
   const fond = FOND_TYPE[typeInterventionTone(intervention.type_code)] ?? FOND_TYPE.gray;
   const optionsStatutFacturation = (statutsFacturation ?? []).filter((s) => !s.reserve_admin || estAdministrateur || s.code === intervention.statut_facturation_code);
   const LIGNE = "grid grid-cols-[8.5rem_1fr] items-center gap-x-2 gap-y-1 text-xs";
@@ -320,7 +332,7 @@ export default async function InterventionPage({
                 {optionsStatutFacturation.map((s) => (
                   <option key={s.code} value={s.code}>
                     {s.libelle}
-                    {s.reserve_admin ? " (réservé admin)" : ""}
+                    {s.reserve_admin ? " (réservé comptabilité)" : ""}
                   </option>
                 ))}
               </select>
@@ -416,9 +428,15 @@ export default async function InterventionPage({
                     Ajouter
                   </button>
                 </form>
-                <div className="grid grid-cols-[8.5rem_4rem] items-center gap-1 text-xs">
+                <div className="grid grid-cols-[8.5rem_4rem_auto_4rem] items-center gap-1 text-xs">
                   <span className="text-right">Nombre de techniciens</span>
                   <input form={FORM_CLOTURE} name="nombre_techniciens" type="number" min={0} defaultValue={intervention.nombre_techniciens ?? ""} className={PETIT} />
+                  <span className="text-right">Heures vendues</span>
+                  <input form={FORM_CLOTURE} name="heures_vendues" type="number" step="0.25" min={0} defaultValue={intervention.heures_vendues ?? ""} className={PETIT} />
+                  <span className="col-span-2 text-right">Heures passées (fiches d&apos;heures)</span>
+                  <span className={`col-span-2 ${intervention.heures_vendues != null && heuresPassees > Number(intervention.heures_vendues) ? "font-bold text-red-700" : ""}`}>
+                    {heuresPassees ? heuresPassees.toFixed(2).replace(".", ",") : "0"} h{intervention.heures_vendues != null && heuresPassees > Number(intervention.heures_vendues) ? " (dépassement)" : ""}
+                  </span>
                 </div>
               </Cadre>
 

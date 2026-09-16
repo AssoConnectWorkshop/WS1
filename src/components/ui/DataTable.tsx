@@ -26,6 +26,7 @@ export function DataTable<T>({
   page,
   pageSize,
   emptyMessage,
+  erreur,
 }: {
   columns: Column<T>[];
   rows: T[];
@@ -34,11 +35,15 @@ export function DataTable<T>({
   page: number;
   pageSize: number;
   emptyMessage?: string;
+  erreur?: string | null;
 }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const sort = searchParams.sort;
   const dir = searchParams.dir === "desc" ? "desc" : "asc";
 
+  if (erreur) {
+    return <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800 dark:bg-red-950/30 dark:text-red-200">Erreur de requête : {erreur}</div>;
+  }
   if (rows.length === 0) {
     return <EmptyState message={emptyMessage ?? "Aucun résultat."} />;
   }

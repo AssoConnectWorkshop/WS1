@@ -56,7 +56,7 @@ du transfert réel du 16/09/2026.
 
 ## 4. Application (à vérifier après transfert)
 
-- Pages listes et tableau de bord sur 71 694 interventions : temps de réponse à mesurer, index à ajouter si besoin.
+- Pages listes et tableau de bord sur 71 694 interventions : temps de réponse à mesurer, index à ajouter si besoin. 16/09 : la liste générale des interventions renvoie « Aucune intervention » en production alors que le filtre « À planifier » devrait donner ~2 600 lignes ; hypothèse = dépassement du délai de requête sur le comptage exact via la vue (12 jointures). Comptage passé en « estimé » et message d'erreur PostgREST désormais affiché sous le tableau pour confirmer.
 - Vues `v_interventions_liste`, `v_sites_liste` : vérifier les libellés pour les codes « Inconnu (code n) ».
 - Cartes : sites sans latitude/longitude non affichés ; compter les sites non géocodés et lancer le géocodage depuis la fiche.
 - Réglages restants : voir `docs/plan/etape-7.md` (Resend, cron, logos, paramètres, documents).
