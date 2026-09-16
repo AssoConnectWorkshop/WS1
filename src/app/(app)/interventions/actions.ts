@@ -3,19 +3,9 @@
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { enregistrerJournal } from "@/lib/journal";
-
-async function requireUtilisateur() {
-  const current = await getCurrentUser();
-  if (!current?.utilisateur) redirect("/login");
-  return { ...current, utilisateur: current.utilisateur };
-}
-
-function redirectWithError(path: string, message: string): never {
-  redirect(`${path}?erreur=${encodeURIComponent(message)}`);
-}
+import { requireUtilisateur, redirectWithError } from "@/lib/action-utils";
 
 /** Recalcule et persiste `interventions.noms_techniciens` (dénormalisé, utilisé par les listes). */
 async function recalculerNomsTechniciens(supabase: Awaited<ReturnType<typeof createClient>>, interventionId: number) {

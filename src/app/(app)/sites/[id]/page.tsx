@@ -46,7 +46,7 @@ export default async function SitePage({
     site.donneur_ordre_id ? supabase.from("donneurs_ordre").select("id, nom").eq("id", site.donneur_ordre_id).maybeSingle() : Promise.resolve({ data: null }),
   ]);
 
-  const { data: devisLies } = await supabase.from("devis").select("id, famille, numero, statut_code, montant_ht").eq("site_id", id);
+  const { data: devisLies } = await supabase.from("devis").select("id, famille, numero, statut_code, montant_ht").eq("site_id", id).is("supprime_le", null);
   const devisEnCours = (devisLies ?? []).filter((d) => [1, 2, 4].includes(d.statut_code ?? -1));
 
   const { count: ceAEditer } = await supabase
@@ -171,21 +171,27 @@ export default async function SitePage({
       {onglet === "materiel" && <SiteMateriel siteId={id} />}
       {onglet === "registre" && <SiteRegistre siteId={id} />}
 
-      {onglet === "devis" &&
-        (devisLies && devisLies.length > 0 ? (
-          <ul className="flex flex-col gap-2">
-            {devisLies.map((d) => (
-              <li key={d.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-                <span className="capitalize">
-                  {d.famille} · {d.numero}
-                </span>
-                <span>{formatMontant(d.montant_ht)}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState message="Aucun devis pour ce site." />
-        ))}
+      {onglet === "devis" && (
+        <div className="flex flex-col gap-3">
+          <Link href={`/devis/nouveau?site=${id}`} className="w-fit rounded-md border px-3 py-1.5 text-sm">
+            Nouveau devis
+          </Link>
+          {devisLies && devisLies.length > 0 ? (
+            <ul className="flex flex-col gap-2">
+              {devisLies.map((d) => (
+                <li key={d.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
+                  <Link href={`/devis/${d.id}`} className="capitalize underline">
+                    {d.famille} · {d.numero ?? `#${d.id}`}
+                  </Link>
+                  <span>{formatMontant(d.montant_ht)}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState message="Aucun devis pour ce site." />
+          )}
+        </div>
+      )}
 
       {onglet === "documents" && (
         <KeyValue

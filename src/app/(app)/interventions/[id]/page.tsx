@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Tabs } from "@/components/ui/Tabs";
 import { KeyValue } from "@/components/ui/KeyValue";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Chemin } from "@/components/ui/Chemin";
 import { typeInterventionTone, statutInterventionTone } from "@/lib/badges";
 import { formatDate, formatDateTime, formatMontant, formatTime, oui } from "@/lib/format";
 import { toStringParams } from "@/lib/list-params";
@@ -34,18 +35,6 @@ const ONGLETS = [
   { key: "facturation", label: "Facturation" },
   { key: "historique", label: "Historique" },
 ];
-
-function chemin(value: string | null) {
-  if (!value) return "—";
-  if (/^https?:\/\//i.test(value)) {
-    return (
-      <a href={value} target="_blank" rel="noreferrer" className="underline">
-        {value}
-      </a>
-    );
-  }
-  return <span className="font-mono text-xs">{value}</span>;
-}
 
 export default async function InterventionPage({
   params,
@@ -111,6 +100,7 @@ export default async function InterventionPage({
   const { data: devisLies } = await supabase
     .from("devis")
     .select("id, famille, numero, statut_code, montant_ht")
+    .is("supprime_le", null)
     .or(`intervention_origine_id.eq.${id},numero.eq.${intervention.numero_devis_accepte ?? "__none__"}`);
 
   const { data: historique } = await supabase
@@ -204,7 +194,7 @@ export default async function InterventionPage({
       </div>
 
       <h1 className="text-xl font-semibold">
-        Intervention n°{intervention.legacy_id} {intervention.numero_bon ? `· Bon n°${intervention.numero_bon}` : ""}
+        Intervention n°{intervention.legacy_id ?? intervention.id} {intervention.numero_bon ? `· Bon n°${intervention.numero_bon}` : ""}
       </h1>
 
       <div className="flex flex-wrap gap-2">
@@ -339,8 +329,8 @@ export default async function InterventionPage({
               { label: "Quantité de gaz (kg)", value: intervention.quantite_gaz_kg },
               { label: "Photo faite", value: oui(intervention.photo_faite) },
               { label: "Audit fait", value: oui(intervention.audit_fait) },
-              { label: "Chemin bon PDF", value: chemin(intervention.chemin_bon_pdf) },
-              { label: "Dossier étanchéité", value: chemin(intervention.chemin_dossier_etancheite) },
+              { label: "Chemin bon PDF", value: <Chemin value={intervention.chemin_bon_pdf} /> },
+              { label: "Dossier étanchéité", value: <Chemin value={intervention.chemin_dossier_etancheite} /> },
             ]}
           />
 
@@ -434,28 +424,34 @@ export default async function InterventionPage({
         </div>
       )}
 
-      {onglet === "devis" &&
-        (devisLies && devisLies.length > 0 ? (
-          <ul className="flex flex-col gap-2">
-            {devisLies.map((d) => (
-              <li key={d.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-                <span>
-                  {d.famille} · {d.numero} · statut {d.statut_code}
-                </span>
-                <span>{formatMontant(d.montant_ht)}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyState message="Aucun devis lié à cette intervention." />
-        ))}
+      {onglet === "devis" && (
+        <div className="flex flex-col gap-3">
+          <Link href={`/devis/nouveau?site=${intervention.site_id}&intervention=${id}`} className="w-fit rounded-md border px-3 py-1.5 text-sm">
+            Nouveau devis depuis cette intervention
+          </Link>
+          {devisLies && devisLies.length > 0 ? (
+            <ul className="flex flex-col gap-2">
+              {devisLies.map((d) => (
+                <li key={d.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
+                  <Link href={`/devis/${d.id}`} className="underline">
+                    {d.famille} · {d.numero ?? `#${d.id}`} · statut {d.statut_code}
+                  </Link>
+                  <span>{formatMontant(d.montant_ht)}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState message="Aucun devis lié à cette intervention." />
+          )}
+        </div>
+      )}
 
       {onglet === "signatures" && (
         <KeyValue
           items={[
-            { label: "Signature site", value: intervention.signature_site_nom ?? chemin(intervention.signature_site_image) },
-            { label: "Signature client", value: intervention.signature_client_nom ?? chemin(intervention.signature_client_image) },
-            { label: "Signature technicien", value: intervention.signature_technicien_nom ?? chemin(intervention.signature_technicien_image) },
+            { label: "Signature site", value: intervention.signature_site_nom ?? <Chemin value={intervention.signature_site_image} /> },
+            { label: "Signature client", value: intervention.signature_client_nom ?? <Chemin value={intervention.signature_client_image} /> },
+            { label: "Signature technicien", value: intervention.signature_technicien_nom ?? <Chemin value={intervention.signature_technicien_image} /> },
           ]}
         />
       )}
@@ -470,8 +466,8 @@ export default async function InterventionPage({
               },
               { label: "Date de facturation", value: formatDate(intervention.date_facturation) },
               { label: "Non facturable", value: oui(intervention.non_facturable) },
-              { label: "Chemin facture FMC", value: chemin(intervention.chemin_facture_fmc) },
-              { label: "Chemin facture sous-traitant", value: chemin(intervention.chemin_facture_sous_traitant) },
+              { label: "Chemin facture FMC", value: <Chemin value={intervention.chemin_facture_fmc} /> },
+              { label: "Chemin facture sous-traitant", value: <Chemin value={intervention.chemin_facture_sous_traitant} /> },
             ]}
           />
 
