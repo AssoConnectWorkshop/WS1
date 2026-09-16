@@ -32,6 +32,7 @@ const AUTRES: { label: string; href: string }[] = [
   { label: "États véhicule", href: "/parametrage/etats-vehicule" },
   { label: "Statuts de devis", href: "/parametrage/statuts-devis" },
   { label: "Paramètres de l'application", href: "/parametrage/parametres" },
+  { label: "Accès application", href: "/parametrage/acces" },
 ];
 
 const BOUTON = "block rounded border bg-white px-2 py-1 text-center text-xs shadow-sm hover:bg-black/[0.03] dark:bg-white/5 dark:hover:bg-white/10";

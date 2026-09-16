@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
@@ -65,6 +66,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             {" · "}
             {role ?? "gestionnaire"}
           </span>
+          <Link href="/mot-de-passe" className="rounded-md border px-3 py-1" title="Changer mon mot de passe">
+            Mot de passe
+          </Link>
           <form action={signOut}>
             <button type="submit" className="rounded-md border px-3 py-1">
               Déconnexion

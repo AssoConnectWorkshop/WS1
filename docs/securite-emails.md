@@ -22,21 +22,26 @@ partir par erreur pendant la phase de démonstration.
 3. **Resend désactivé** : sans `RESEND_API_KEY` sur Vercel, les e-mails Resend sont simulés et
    seulement journalisés.
 
-## Donner un accès à FMC sans aucun e-mail
+## Accès à l'application (Paramétrage › Accès application)
 
-Tout se passe dans le tableau de bord Supabase :
+Les accès sont découplés des fiches « Utilisateurs & Techniciens » (données FMC). L'identifiant
+de connexion est l'e-mail ; l'application n'envoie jamais d'e-mail automatique.
 
-1. Vérifier que la personne a une ligne dans Paramétrage › Utilisateurs & Techniciens avec la
-   bonne adresse dans « Mail » (sinon l'ajouter dans Table Editor › `utilisateurs`).
-2. Supabase › Authentication › Users › **Add user › Create new user** : la même adresse, un mot
-   de passe choisi par vous, **Auto Confirm User** coché. Aucun e-mail n'est envoyé.
-3. À sa première connexion, l'application rattache le compte à la ligne dont le « Mail » est
-   identique (rôle gestionnaire par défaut). La colonne « Accès application » passe à « compte
-   actif » ; le rôle se change ensuite depuis cette page.
-4. Transmettre le mot de passe par un canal séparé (gestionnaire de mots de passe, message vocal,
-   SMS), jamais dans le même message que l'identifiant.
-
-Pour révoquer : supprimer le compte dans Authentication › Users, ou vider `auth_user_id`.
+- **Master admins** : variable Vercel `MASTER_ADMINS` (adresses séparées par des virgules).
+  Toujours administrateur, non révocables depuis l'application. Créer leur compte Auth une
+  première fois (page Accès application depuis un autre master admin, ou Supabase ›
+  Authentication › Users › Create new user avec Auto Confirm) ; à la connexion, une ligne
+  `utilisateurs` marquée `compte_application` est créée automatiquement si aucune ne porte leur
+  adresse.
+- **Créer un accès** : e-mail, nom facultatif, rôle. Le compte Auth est créé confirmé, le mot de
+  passe initial s'affiche une seule fois à l'écran. L'administrateur l'envoie lui-même à la
+  personne (idéalement séparément de l'identifiant) et lui demande de le remplacer via le bouton
+  « Mot de passe » en haut à droite (`/mot-de-passe`, mot de passe actuel exigé). Si une fiche
+  FMC porte déjà l'adresse, l'accès lui est rattaché ; sinon un compte indépendant est créé.
+- **Rôles et révocation** : sur la même page. Révoquer supprime le compte Auth (adresse à retaper
+  pour confirmer) ; la fiche FMC, s'il y en a une, est conservée.
+- À la première connexion d'un compte créé directement dans Supabase, rattachement automatique à
+  la fiche FMC non rattachée portant exactement le même e-mail (rôle gestionnaire).
 
 Réglage recommandé : Supabase › Authentication › Sign In / Providers › **désactiver « Allow new
 users to sign up »**, pour que seuls les comptes créés par vous existent.

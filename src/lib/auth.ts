@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { estMasterAdmin } from "@/lib/acces";
 
 export type Role = "gestionnaire" | "administrateur" | "comptable";
 
@@ -48,6 +49,29 @@ async function rattacherParEmail(authUserId: string, email: string): Promise<Uti
 }
 
 /**
+ * Master admin (variable Vercel MASTER_ADMINS) : toujours administrateur. Sans ligne `utilisateurs`,
+ * une ligne compte_application est créée pour porter l'accès, indépendamment du personnel FMC.
+ */
+async function garantirMasterAdmin(authUserId: string, email: string, existant: Utilisateur | null): Promise<Utilisateur | null> {
+  if (existant?.role === "administrateur") return existant;
+  try {
+    const admin = createAdminClient();
+    if (existant) {
+      const { error } = await admin.from("utilisateurs").update({ role: "administrateur" }).eq("id", existant.id);
+      return error ? existant : { ...existant, role: "administrateur" };
+    }
+    const { data, error } = await admin
+      .from("utilisateurs")
+      .insert({ nom: email, email, role: "administrateur", auth_user_id: authUserId, compte_application: true })
+      .select("id, nom, prenom, email, profil, role")
+      .single();
+    return error ? null : (data as Utilisateur);
+  } catch {
+    return existant;
+  }
+}
+
+/**
  * Utilisateur courant côté serveur, en joignant `utilisateurs.auth_user_id`.
  * Retourne `null` si personne n'est authentifié. `utilisateur` est `null` si le compte
  * Supabase Auth n'est rattaché à aucune ligne `utilisateurs` (cf. étape 3, layout applicatif).
@@ -74,6 +98,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
     .maybeSingle();
 
   if (!utilisateur && user.email) utilisateur = await rattacherParEmail(user.id, user.email);
+  if (user.email && estMasterAdmin(user.email)) utilisateur = await garantirMasterAdmin(user.id, user.email, utilisateur);
 
   return {
     authUser: { id: user.id, email: user.email ?? null },
