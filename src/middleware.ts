@@ -27,13 +27,12 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  // Rafraîchit la session (obligatoire avec @supabase/ssr : ne jamais retirer cet appel).
-  // En cas d'erreur réseau/service, on traite comme non authentifié plutôt que de faire
-  // planter le middleware sur toutes les routes.
-  let user = null;
+  // Rafraîchit la session si besoin et vérifie le jeton LOCALEMENT (getClaims : JWKS mis en cache) au lieu
+  // d'un aller-retour réseau vers le service Auth à chaque requête (getUser). Ne jamais retirer cet appel.
+  let user: { id: string } | null = null;
   try {
-    const { data } = await supabase.auth.getUser();
-    user = data.user;
+    const { data } = await supabase.auth.getClaims();
+    user = data?.claims?.sub ? { id: data.claims.sub } : null;
   } catch {
     user = null;
   }
