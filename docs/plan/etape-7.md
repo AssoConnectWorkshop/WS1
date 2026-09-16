@@ -8,6 +8,8 @@ avec lui, sur son PC), car elles demandent des accès que la session Claude Code
 serveur de fichiers `\\serveur\...`, compte Resend, réglages Vercel et Supabase.
 
 Chaque point est indépendant : les faire dans l'ordre indiqué, mais l'application reste utilisable entre deux.
+Tout problème rencontré (donnée incohérente, erreur de transfert, poste utilisateur) est consigné dans
+`docs/problemes-donnees.md`, à compléter au fil de l'eau.
 
 ## 7.1 Transfert des données réelles (étape 2, jamais exécutée)
 

@@ -98,26 +98,22 @@ export function parseLooseDateText(text) {
   const trimmed = trim(text);
   if (trimmed == null) return { date: null, brut: null };
 
-  let m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(trimmed);
-  if (m) {
-    const [, y, mo, d] = m;
-    return { date: `${y}-${mo}-${d}`, brut: null };
+  let y, mo, d;
+  let m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(trimmed);
+  if (m) [, y, mo, d] = m;
+  else if ((m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(trimmed))) [, d, mo, y] = m;
+  else if ((m = /^(\d{1,2})\/(\d{1,2})\/(\d{2})$/.exec(trimmed))) {
+    [, d, mo] = m;
+    y = Number(m[3]) >= 70 ? `19${m[3]}` : `20${m[3]}`;
   }
+  // Date impossible (ex. "2012-16-05", "31/02/2019") : conservée brute, comme un texte non reconnu.
+  if (!m || !dateValide(Number(y), Number(mo), Number(d))) return { date: null, brut: trimmed };
+  return { date: `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`, brut: null };
+}
 
-  m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(trimmed);
-  if (m) {
-    const [, d, mo, y] = m;
-    return { date: `${y}-${mo.padStart(2, '0')}-${d.padStart(2, '0')}`, brut: null };
-  }
-
-  m = /^(\d{1,2})\/(\d{1,2})\/(\d{2})$/.exec(trimmed);
-  if (m) {
-    const [, d, mo, yy] = m;
-    const y = Number(yy) >= 70 ? `19${yy}` : `20${yy}`;
-    return { date: `${y}-${mo.padStart(2, '0')}-${d.padStart(2, '0')}`, brut: null };
-  }
-
-  return { date: null, brut: trimmed };
+function dateValide(y, mo, d) {
+  if (mo < 1 || mo > 12 || d < 1 || y < 1900 || y > 2100) return false;
+  return d <= new Date(Date.UTC(y, mo, 0)).getUTCDate();
 }
 
 /**

@@ -21,6 +21,7 @@ n'est ailleurs. La page Notion « FMC → Application existante » est une copie
 | `docs/plan/etape-1..6.md` | Briefs de mission par étape | pour l'étape en cours |
 | `docs/plan/dictionnaire.md` | Correspondance colonne source → colonne cible (produit par l'étape 1) | étapes 2 à 6 |
 | `docs/hors-perimetre-tablette-portail.md` | Ce qu'on sait des deux autres applications | si la question se pose |
+| `docs/problemes-donnees.md` | Journal des incohérences de données, problèmes de transfert et d'environnement rencontrés, avec leur contournement | étape 7 et toute amélioration ultérieure |
 | `legacy/SCHEMA_ANALYSIS.md` | Analyse du schéma SQL Server, relations implicites, problèmes de qualité | étapes 1 et 2 |
 | `legacy/ANALYSIS.md` | Analyse du fichier Access (objets, requêtes) | rarement |
 | `legacy/schema.sql` | DDL exact des 78 tables SQL Server | étapes 1 et 2 |
