@@ -5,6 +5,7 @@ import { parseListParams, toStringParams } from "@/lib/list-params";
 import { DataTable, type Column } from "@/components/ui/DataTable";
 import { FilterBar, type FilterField } from "@/components/ui/FilterBar";
 import { Badge } from "@/components/ui/Badge";
+import { Chemin } from "@/components/ui/Chemin";
 import { Tabs } from "@/components/ui/Tabs";
 import { statutDevisTone } from "@/lib/badges";
 import { formatDate, formatMontant } from "@/lib/format";
@@ -98,7 +99,7 @@ export default async function DevisPage({
     { key: "client", label: "Client", render: (r) => (r.client_id ? <Link className="hover:underline" href={`/clients/${r.client_id}`}>{r.clients?.nom}</Link> : "—") },
     { key: "montant_ht", label: "Montant HT", align: "right", render: (r) => formatMontant(r.montant_ht) },
     { key: "date_envoi", label: "Date d'envoi", sortable: true, render: (r) => formatDate(r.date_envoi) },
-    { key: "fichier_chemin", label: "Fichier", render: (r) => (r.fichier_chemin ? <span className="font-mono text-xs">{r.fichier_chemin}</span> : "—") },
+    { key: "fichier_chemin", label: "Fichier", render: (r) => <Chemin value={r.fichier_chemin} /> },
     {
       key: "intervention_origine_id",
       label: "Intervention d'origine",

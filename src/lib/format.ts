@@ -42,3 +42,11 @@ export function oui(value: boolean | null | undefined): string {
 export function formatNom(prenom: string | null | undefined, nom: string | null | undefined): string {
   return [prenom, nom].filter(Boolean).join(" ") || "—";
 }
+
+/** Hyperlien Access `texte#adresse[#sous-adresse]` : sépare le libellé affiché du chemin réel. */
+export function hyperlienAccess(value: string | null | undefined): { libelle: string; chemin: string | null } {
+  if (!value) return { libelle: "", chemin: null };
+  const [texte, adresse] = value.split("#");
+  if (adresse) return { libelle: texte, chemin: adresse };
+  return { libelle: value.split(/[\\/]/).pop() ?? value, chemin: value };
+}

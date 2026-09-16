@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Chemin } from "@/components/ui/Chemin";
+import { BoutonVersFichier } from "@/components/ui/BoutonVersFichier";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { formatMontant, formatNom } from "@/lib/format";
+import { formatMontant, formatNom, hyperlienAccess } from "@/lib/format";
 import type { FamilleDevis } from "@/lib/devis";
 import { genererIntervention } from "@/app/(app)/devis/actions";
 
@@ -131,14 +131,15 @@ export async function ListeDevisAccess({
         <div className="flex flex-col divide-y rounded border">
           {liste.map((d) => {
             const accepte = d.statut_code === STATUT_ACCEPTE;
+            const fichier = hyperlienAccess(d.fichier_chemin);
             return (
-              <div key={d.id} className={`grid gap-2 p-2 text-xs lg:grid-cols-[1.3fr_1fr_1fr_8rem] ${accepte ? "bg-red-600 text-white" : ""}`}>
+              <div key={d.id} className={`grid items-start gap-2 p-2 text-xs lg:grid-cols-[1.3fr_1fr_1fr_8rem] ${accepte ? "bg-red-600 text-white" : ""}`}>
                 <div className="grid grid-cols-[7.5rem_1fr] items-center gap-x-2 gap-y-1">
                   <span className="text-right">Client</span>
                   <span className={`${LECTURE} truncate text-black`}>{clientNom}</span>
                   <span className="text-right">Nom Fichier Devis</span>
-                  <span className={`${LECTURE} truncate text-black`} title={d.fichier_chemin ?? ""}>
-                    {d.fichier_chemin ? d.fichier_chemin.split(/[\\/]/).pop() : ""}
+                  <span className={`${LECTURE} truncate text-black`} title={fichier.chemin ?? ""}>
+                    {fichier.libelle}
                   </span>
                   <span className="text-right">N° Devis</span>
                   <Link href={`/devis/${d.id}`} className={`${LECTURE} text-black underline`}>
@@ -184,21 +185,13 @@ export async function ListeDevisAccess({
                   <span className={`${LECTURE} col-span-2 text-right font-semibold text-black`}>{formatMontant(d.montant_ht).replace("—", "")}</span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  {!accepte && (
-                    <form action={genererIntervention}>
-                      <input type="hidden" name="devis_id" value={d.id} />
-                      <button type="submit" className="w-full rounded border bg-white px-1 py-1 text-center text-[11px] text-black">
-                        Générer intervention suite à accord devis
-                      </button>
-                    </form>
-                  )}
-                  {d.fichier_chemin ? (
-                    <span className="rounded border bg-white px-1 py-1 text-center text-[11px] text-black">
-                      <Chemin value={d.fichier_chemin} />
-                    </span>
-                  ) : (
-                    <span className="rounded border bg-white px-1 py-1 text-center text-[11px] text-black opacity-50">Vers Fichier</span>
-                  )}
+                  <form action={genererIntervention}>
+                    <input type="hidden" name="devis_id" value={d.id} />
+                    <button type="submit" className="w-full rounded border bg-white px-1 py-1 text-center text-[11px] text-black">
+                      Générer intervention suite à accord devis
+                    </button>
+                  </form>
+                  <BoutonVersFichier chemin={fichier.chemin} className="block w-full rounded border bg-white px-1 py-1 text-center text-[11px] text-black" />
                 </div>
               </div>
             );
