@@ -16,7 +16,7 @@ import {
   basculerResoluTelephone,
   cloturerIntervention,
   confirmerReplanification,
-  declôturerIntervention,
+  decloturerIntervention,
   validerIntervention,
   ajouterTechnicien,
   retirerTechnicien,
@@ -218,7 +218,7 @@ export default async function InterventionPage({
         )}
         {intervention.statut_code === 9 && (
           <>
-            <form action={declôturerIntervention}>
+            <form action={decloturerIntervention}>
               <input type="hidden" name="intervention_id" value={id} />
               <button type="submit" className="rounded-md border px-3 py-1.5 text-sm">
                 Déclôturer

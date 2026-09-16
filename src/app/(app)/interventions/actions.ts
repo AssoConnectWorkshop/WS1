@@ -293,7 +293,7 @@ export async function confirmerReplanification(formData: FormData) {
   redirect(`/interventions/${interventionId}?info=${encodeURIComponent("Entretiens non réalisés annulés. Pensez à régénérer la planification (étape 5.4).")}`);
 }
 
-export async function declôturerIntervention(formData: FormData) {
+export async function decloturerIntervention(formData: FormData) {
   const { utilisateur } = await requireUtilisateur();
   const interventionId = Number(formData.get("intervention_id"));
 
