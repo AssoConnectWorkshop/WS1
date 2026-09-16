@@ -60,21 +60,34 @@ async function garantirMasterAdmin(authUserId: string, email: string, existant: 
       const { error } = await admin.from("utilisateurs").update({ role: "administrateur" }).eq("id", existant.id);
       return error ? existant : { ...existant, role: "administrateur" };
     }
-    const { data, error } = await admin
-      .from("utilisateurs")
-      .insert({ nom: email, email, role: "administrateur", auth_user_id: authUserId, compte_application: true })
-      .select("id, nom, prenom, email, profil, role")
-      .single();
-    return error ? null : (data as Utilisateur);
+    return await creerCompteApplication(authUserId, email, "administrateur");
   } catch {
     return existant;
   }
 }
 
 /**
+ * Tout compte Supabase Auth a accès : seul un administrateur peut en créer (inscription libre
+ * désactivée). Sans fiche FMC portant l'e-mail, une ligne compte_application porte l'accès.
+ */
+async function creerCompteApplication(authUserId: string, email: string, role: Role): Promise<Utilisateur | null> {
+  try {
+    const admin = createAdminClient();
+    const { data, error } = await admin
+      .from("utilisateurs")
+      .insert({ nom: email, email, role, auth_user_id: authUserId, compte_application: true })
+      .select("id, nom, prenom, email, profil, role")
+      .single();
+    return error ? null : (data as Utilisateur);
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Utilisateur courant côté serveur, en joignant `utilisateurs.auth_user_id`.
- * Retourne `null` si personne n'est authentifié. `utilisateur` est `null` si le compte
- * Supabase Auth n'est rattaché à aucune ligne `utilisateurs` (cf. étape 3, layout applicatif).
+ * Retourne `null` si personne n'est authentifié. `utilisateur` n'est `null` que si la création
+ * automatique de la ligne a échoué (service role absent, e-mail vide).
  */
 export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const supabase = await createClient();
@@ -99,6 +112,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 
   if (!utilisateur && user.email) utilisateur = await rattacherParEmail(user.id, user.email);
   if (user.email && estMasterAdmin(user.email)) utilisateur = await garantirMasterAdmin(user.id, user.email, utilisateur);
+  if (!utilisateur && user.email) utilisateur = await creerCompteApplication(user.id, user.email, "gestionnaire");
 
   return {
     authUser: { id: user.id, email: user.email ?? null },

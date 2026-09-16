@@ -41,9 +41,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="flex max-w-md flex-col gap-3 text-center">
           <h1 className="text-xl font-semibold">Compte non rattaché</h1>
           <p className="text-sm opacity-70">
-            Votre compte ({current.authUser.email}) n&apos;est rattaché à aucun utilisateur
-            ClimAccess : aucune ligne « Utilisateurs &amp; Techniciens » ne porte exactement cet e-mail.
-            Contactez un administrateur.
+            Impossible de rattacher votre compte ({current.authUser.email ?? "sans e-mail"}) à
+            l&apos;application. Réessayez ; si le problème persiste, contactez un administrateur.
           </p>
           <form action={signOut}>
             <button type="submit" className="text-sm underline">
