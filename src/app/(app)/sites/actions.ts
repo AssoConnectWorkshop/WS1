@@ -4,6 +4,8 @@ import { z } from "zod";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { genererCerfaPdf } from "@/lib/cerfa-pdf";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError, aujourdhui } from "@/lib/action-utils";
 import { booleen, entier, nombre, obligatoire, texte, premiereErreur } from "@/lib/zod-form";
@@ -494,4 +496,57 @@ export async function supprimerMateriel(formData: FormData) {
   await enregistrerJournal(supabase, "sites", siteId, utilisateur.id, { action: "suppression_materiel", materiel_id: materielId });
   revalidatePath(versSite(siteId));
   redirect(retour);
+}
+
+/* --------------------------------------------------- Certificats d'étanchéité */
+
+/** Un Cerfa par équipement éligible (non édité, contrôle daté de l'année en cours), archivé dans Storage
+ * `certificats/<année>/<intervention>-<materiel>.pdf` puis `certificat_etancheite_edite = true` (brief §6.2). */
+export async function genererCertificats(formData: FormData) {
+  const { utilisateur } = await requireUtilisateur();
+  const siteId = Number(formData.get("site_id"));
+  const retour = versSite(siteId, { onglet: "materiel" });
+
+  let admin: ReturnType<typeof createAdminClient>;
+  try {
+    admin = createAdminClient();
+  } catch {
+    redirectWithError(retour, "Stockage non configuré (SUPABASE_SERVICE_ROLE_KEY).");
+  }
+
+  const supabase = await createClient();
+  const annee = new Date().getUTCFullYear();
+  const { data: eligibles } = await supabase
+    .from("site_materiels")
+    .select("id")
+    .eq("site_id", siteId)
+    .eq("certificat_etancheite_edite", false)
+    .gte("date_controle_etancheite", `${annee}-01-01`)
+    .lte("date_controle_etancheite", `${annee}-12-31`)
+    .order("id");
+  if (!eligibles || eligibles.length === 0) redirectWithError(retour, "Les CE ont déjà été édités.");
+
+  const edites: string[] = [];
+  const echecs: string[] = [];
+  for (const { id } of eligibles) {
+    const { cerfa, erreurs } = await genererCerfaPdf(supabase, id);
+    if (!cerfa) {
+      echecs.push(`équipement #${id} : ${erreurs.join(" ")}`);
+      continue;
+    }
+    const chemin = `${cerfa.annee}/${cerfa.nomFichier}`;
+    const { error } = await admin.storage.from("certificats").upload(chemin, Buffer.from(cerfa.octets), { contentType: "application/pdf", upsert: true });
+    if (error) {
+      echecs.push(`équipement #${id} : export PDF annulé (${error.message})`);
+      continue;
+    }
+    await supabase.from("site_materiels").update({ certificat_etancheite_edite: true }).eq("id", id);
+    edites.push(`certificats/${chemin}`);
+  }
+
+  await enregistrerJournal(supabase, "sites", siteId, utilisateur.id, { action: "generation_certificats", edites, echecs: echecs.length });
+  revalidatePath(versSite(siteId));
+  const params: Record<string, string> = { onglet: "materiel", info: `${edites.length} certificat(s) archivé(s).` };
+  if (echecs.length) params.erreur = `La génération du CE n'a pas pu se faire correctement pour ${echecs.length} équipement(s) : ${echecs.join(" ; ")}`;
+  redirect(versSite(siteId, params));
 }
