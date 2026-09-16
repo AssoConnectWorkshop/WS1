@@ -6,6 +6,7 @@ import { Tabs } from "@/components/ui/Tabs";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Badge } from "@/components/ui/Badge";
 import { Contacts } from "@/components/tiers/Contacts";
+import { LigneOuvrable } from "@/components/ui/LigneOuvrable";
 import { Case, Champ, CHAMP } from "@/components/ui/Champ";
 import { statutDevisTone } from "@/lib/badges";
 import { formatDate, formatMontant } from "@/lib/format";
@@ -248,7 +249,7 @@ async function ClientSites({ clientId, numero }: { clientId: string; numero?: st
           <table className="w-full border-collapse text-xs">
             <thead>
               <tr className="border-b bg-black/[0.03] text-left dark:bg-white/[0.05]">
-                {["N° de magasin", "Site", "Situation", "Adresse", "CP", "Ville"].map((h) => (
+                {["", "N° de magasin", "Site", "Situation", "Adresse", "CP", "Ville"].map((h) => (
                   <th key={h} className="whitespace-nowrap px-2 py-1 font-medium">
                     {h}
                   </th>
@@ -257,7 +258,12 @@ async function ClientSites({ clientId, numero }: { clientId: string; numero?: st
             </thead>
             <tbody>
               {data.map((s) => (
-                <tr key={s.id} className="border-b last:border-0 hover:bg-blue-100 dark:hover:bg-blue-950/40">
+                <LigneOuvrable key={s.id} href={`/sites/${s.id}`} className="border-b last:border-0 hover:bg-blue-100 dark:hover:bg-blue-950/40">
+                  <td className="px-2 py-1">
+                    <Link href={`/sites/${s.id}`} className="rounded border bg-white px-1.5 py-0.5 text-[11px] dark:bg-white/5">
+                      Ouvrir
+                    </Link>
+                  </td>
                   <td className="px-2 py-1 text-right">{s.numero_magasin ?? ""}</td>
                   <td className="px-2 py-1">
                     <Link href={`/sites/${s.id}`} className="hover:underline">
@@ -275,7 +281,7 @@ async function ClientSites({ clientId, numero }: { clientId: string; numero?: st
                   <td className="px-2 py-1">{s.adresse ?? ""}</td>
                   <td className="px-2 py-1">{s.code_postal ?? ""}</td>
                   <td className="px-2 py-1">{s.ville ?? ""}</td>
-                </tr>
+                </LigneOuvrable>
               ))}
             </tbody>
           </table>

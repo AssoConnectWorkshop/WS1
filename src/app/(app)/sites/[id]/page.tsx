@@ -12,6 +12,8 @@ import { HorairesSite } from "@/components/sites/ContratsEtHoraires";
 import { MaterielSite } from "@/components/sites/MaterielSite";
 import { statutInterventionTone, typeInterventionTone } from "@/lib/badges";
 import { ListeDevisAccess, type DevisAccess } from "@/components/devis/ListeDevisAccess";
+import { LigneOuvrable } from "@/components/ui/LigneOuvrable";
+import { CaseInstantanee } from "@/components/ui/CaseInstantanee";
 import { formatDate, oui } from "@/lib/format";
 import { toStringParams } from "@/lib/list-params";
 import { type FamilleDevis } from "@/lib/devis";
@@ -234,6 +236,7 @@ export default async function SitePage({
 
 type LigneIntervention = {
   id: number;
+  intervenant_id: number | null;
   intervenant_nom: string | null;
   date_limite: string | null;
   date_realisee: string | null;
@@ -254,7 +257,7 @@ type LigneIntervention = {
 };
 
 const COLONNES_INTERVENTIONS =
-  "id, intervenant_nom, date_limite, date_realisee, date_demande, devis_a_faire, devis_fait, numero_bon, numero_devis_accepte, reference_client, type_code, type_libelle, statut_code, statut_libelle, statut_facturation_libelle, commentaire_interne, urgence_devis, commentaire_devis";
+  "id, intervenant_id, intervenant_nom, date_limite, date_realisee, date_demande, devis_a_faire, devis_fait, numero_bon, numero_devis_accepte, reference_client, type_code, type_libelle, statut_code, statut_libelle, statut_facturation_libelle, commentaire_interne, urgence_devis, commentaire_devis";
 const URGENCES: Record<number, string> = { 1: "Faible", 2: "Moyenne", 3: "Forte" };
 
 /** Onglet « Interventions » Access : deux feuilles de données, en cours puis clôturées (analysis 03 §2.2). */
@@ -273,7 +276,7 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
           <table className="w-full border-collapse text-xs">
             <thead>
               <tr className="border-b bg-black/[0.03] text-left dark:bg-white/[0.05]">
-                {["Intervenant", "date demande", "Date limite", "effectuée le", "Type Interv", "Comm.Inter.", "N° Devis Accepté", "Statut Interv", "Statut Factu", "Devis fait", "Devis à faire", "Urgence Devis", "Comm.Devis", "N° DI", "N° Bon"].map((h) => (
+                {["", "Intervenant", "date demande", "Date limite", "effectuée le", "Type Interv", "Comm.Inter.", "N° Devis Accepté", "Statut Interv", "Statut Factu", "Devis fait", "Devis à faire", "Urgence Devis", "Comm.Devis", "N° DI", "N° Bon"].map((h) => (
                   <th key={h} className="whitespace-nowrap px-2 py-1 font-medium">
                     {h}
                   </th>
@@ -282,11 +285,20 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
             </thead>
             <tbody>
               {rows.map((i) => (
-                <tr key={i.id} className="border-b last:border-0 hover:bg-blue-50 dark:hover:bg-blue-950/30">
-                  <td className="whitespace-nowrap px-2 py-1">
-                    <Link href={`/interventions/${i.id}`} className="underline">
-                      {i.intervenant_nom ?? "—"}
+                <LigneOuvrable key={i.id} href={`/interventions/${i.id}`} className="border-b last:border-0 hover:bg-blue-50 dark:hover:bg-blue-950/30">
+                  <td className="px-2 py-1">
+                    <Link href={`/interventions/${i.id}`} className="rounded border bg-white px-1.5 py-0.5 text-[11px] dark:bg-white/5">
+                      Ouvrir
                     </Link>
+                  </td>
+                  <td className="whitespace-nowrap px-2 py-1">
+                    {i.intervenant_id ? (
+                      <Link href={`/intervenants/${i.intervenant_id}`} className="hover:underline">
+                        {i.intervenant_nom}
+                      </Link>
+                    ) : (
+                      i.intervenant_nom ?? ""
+                    )}
                   </td>
                   <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_demande).replace("—", "")}</td>
                   <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_limite).replace("—", "")}</td>
@@ -303,10 +315,10 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
                   </td>
                   <td className="whitespace-nowrap px-2 py-1">{i.statut_facturation_libelle ?? ""}</td>
                   <td className="px-2 py-1 text-center">
-                    <input type="checkbox" readOnly checked={!!i.devis_fait} aria-label="Devis fait" />
+                    <CaseInstantanee table="interventions" id={i.id} champ="devis_fait" valeur={i.devis_fait} label="Devis fait" />
                   </td>
                   <td className="px-2 py-1 text-center">
-                    <input type="checkbox" readOnly checked={!!i.devis_a_faire} aria-label="Devis à faire" />
+                    <CaseInstantanee table="interventions" id={i.id} champ="devis_a_faire" valeur={i.devis_a_faire} label="Devis à faire" />
                   </td>
                   <td className="whitespace-nowrap px-2 py-1">{i.urgence_devis ? URGENCES[i.urgence_devis] ?? i.urgence_devis : ""}</td>
                   <td className="max-w-[10rem] truncate px-2 py-1" title={i.commentaire_devis ?? ""}>
@@ -314,7 +326,7 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
                   </td>
                   <td className="px-2 py-1">{i.reference_client ?? ""}</td>
                   <td className="px-2 py-1 text-right">{i.numero_bon ?? ""}</td>
-                </tr>
+                </LigneOuvrable>
               ))}
             </tbody>
           </table>

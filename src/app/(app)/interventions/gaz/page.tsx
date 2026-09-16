@@ -20,6 +20,7 @@ type Ligne = {
   statut_libelle: string | null;
   charge_affaire_nom: string | null;
   date_realisee: string | null;
+  intervenant_id: number | null;
   intervenant_nom: string | null;
   sous_type_libelle: string | null;
   fluide_libelle: string | null;
@@ -76,7 +77,7 @@ export default async function GazPage({ searchParams }: { searchParams: Promise<
     { key: "type_libelle", label: "Type", render: (r) => <Badge tone={typeInterventionTone(r.type_code)}>{r.type_libelle ?? "—"}</Badge> },
     { key: "charge_affaire_nom", label: "Traitée par", render: (r) => r.charge_affaire_nom ?? "" },
     { key: "date_realisee", label: "Effectuée le", sortable: true, render: (r) => formatDate(r.date_realisee).replace("—", "") },
-    { key: "intervenant_nom", label: "Intervenant", render: (r) => r.intervenant_nom ?? "" },
+    { key: "intervenant_nom", label: "Intervenant", render: (r) => (r.intervenant_id ? <Link className="hover:underline" href={`/intervenants/${r.intervenant_id}`}>{r.intervenant_nom}</Link> : "") },
     { key: "sous_type_libelle", label: "Sous Type", render: (r) => r.sous_type_libelle ?? "" },
     { key: "fluide_libelle", label: "Type Gaz", render: (r) => r.fluide_libelle ?? "" },
     { key: "quantite_gaz_kg", label: "Qté Gaz (kg)", sortable: true, align: "right", render: (r) => formatNombre(r.quantite_gaz_kg) },
@@ -147,7 +148,7 @@ export default async function GazPage({ searchParams }: { searchParams: Promise<
           <span className="rounded border bg-white px-2 py-1 font-semibold dark:bg-white/5">Somme = {formatNombre(Math.round(somme * 100) / 100)} kg</span>
         </div>
       </form>
-      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Rien trouvé." erreur={error?.message} />
+      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Rien trouvé." erreur={error?.message} hrefLigne={(r) => `/interventions/${r.id}`} />
     </div>
   );
 }
