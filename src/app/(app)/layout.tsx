@@ -4,6 +4,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { NavPrincipale } from "@/components/ui/NavPrincipale";
 
+const BOUTON_ENTETE = "cursor-pointer rounded-md border px-3 py-1 shadow-sm transition hover:bg-black/[0.05] hover:shadow active:translate-y-px dark:hover:bg-white/10";
+
 const NAV_ITEMS: { href: string; label: string; adminOnly?: boolean }[] = [
   { href: "/", label: "Tableau de bord" },
   { href: "/interventions", label: "Interventions" },
@@ -66,11 +68,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             {" · "}
             {role ?? "gestionnaire"}
           </span>
-          <Link href="/mot-de-passe" className="rounded-md border px-3 py-1" title="Changer mon mot de passe">
+          <Link href="/mot-de-passe" className={BOUTON_ENTETE} title="Changer mon mot de passe">
             Mot de passe
           </Link>
           <form action={signOut}>
-            <button type="submit" className="rounded-md border px-3 py-1">
+            <button type="submit" className={BOUTON_ENTETE}>
               Déconnexion
             </button>
           </form>

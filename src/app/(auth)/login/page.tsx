@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { BOUTON_PRIMAIRE, BOUTON_SECONDAIRE } from "@/components/ui/boutons";
 
 const ERROR_MESSAGES: Record<string, string> = {
   missing_fields: "E-mail et mot de passe requis.",
@@ -80,11 +81,11 @@ export default async function LoginPage({
           />
         </label>
 
-        <button type="submit" className="rounded-md bg-black py-2 font-medium text-white">
+        <button type="submit" className={BOUTON_PRIMAIRE}>
           Se connecter
         </button>
 
-        <a href="/reset-password" className="text-center text-sm underline opacity-70">
+        <a href="/reset-password" className={BOUTON_SECONDAIRE}>
           Mot de passe oublié ?
         </a>
       </form>
