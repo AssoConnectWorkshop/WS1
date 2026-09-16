@@ -11,6 +11,7 @@ export function appliquerFiltresInterventions(query: any, sp: Record<string, str
   }
 
   if (sp.client) query = query.ilike("client_nom", `%${sp.client}%`);
+  if (sp.client_id) query = query.eq("client_id", Number(sp.client_id));
   if (sp.site) {
     const n = Number(sp.site);
     query = Number.isFinite(n) && sp.site.trim() !== "" ? query.or(`numero_magasin.eq.${n},site_nom.ilike.%${sp.site}%`) : query.ilike("site_nom", `%${sp.site}%`);

@@ -46,13 +46,13 @@ export function DataTable<T>({
   return (
     <div className="flex flex-col gap-3">
       <div className="overflow-x-auto rounded-lg border">
-        <table className="w-full border-collapse text-sm">
+        <table className="w-full border-collapse text-xs">
           <thead>
             <tr className="border-b bg-black/[0.02] text-left dark:bg-white/[0.03]">
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`whitespace-nowrap px-3 py-2 font-medium ${
+                  className={`whitespace-nowrap px-2 py-1 font-medium ${
                     col.align === "right" ? "text-right" : col.align === "center" ? "text-center" : "text-left"
                   }`}
                 >
@@ -77,11 +77,11 @@ export function DataTable<T>({
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr key={i} className="border-b last:border-0 hover:bg-black/[0.015] dark:hover:bg-white/[0.02]">
+              <tr key={i} className="border-b last:border-0 hover:bg-blue-100 dark:hover:bg-blue-950/40">
                 {columns.map((col) => (
                   <td
                     key={col.key}
-                    className={`px-3 py-2 ${
+                    className={`whitespace-nowrap px-2 py-1 ${
                       col.align === "right" ? "text-right" : col.align === "center" ? "text-center" : "text-left"
                     }`}
                   >
