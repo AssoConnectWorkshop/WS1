@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { genererBonPdf } from "@/lib/bon-pdf";
+import { exigerUtilisateur } from "@/lib/action-utils";
 
 export const dynamic = "force-dynamic";
 
@@ -8,10 +9,8 @@ export const dynamic = "force-dynamic";
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return new Response("Non autorisé", { status: 401 });
+  const refus = await exigerUtilisateur(supabase);
+  if (refus) return refus;
 
   let admin = null;
   try {

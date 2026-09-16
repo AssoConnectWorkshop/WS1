@@ -2,6 +2,7 @@ import ExcelJS from "exceljs";
 import { createClient } from "@/lib/supabase/server";
 import { toStringParams } from "@/lib/list-params";
 import { feuille, nomFichierPeriode, paginer, parLots, reponseClasseur, somme } from "@/lib/excel";
+import { exigerUtilisateur } from "@/lib/action-utils";
 
 export const dynamic = "force-dynamic";
 
@@ -38,10 +39,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const { id } = await params;
   const sp = toStringParams(Object.fromEntries(new URL(request.url).searchParams));
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return new Response("Non autorisé", { status: 401 });
+  const refus = await exigerUtilisateur(supabase);
+  if (refus) return refus;
 
   const { data: client } = await supabase.from("clients").select("nom, tarif_heure_mo, tarif_deplacement").eq("id", id).maybeSingle();
   if (!client) return new Response("Client introuvable", { status: 404 });
