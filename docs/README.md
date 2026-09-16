@@ -18,7 +18,7 @@ n'est ailleurs. La page Notion « FMC → Application existante » est une copie
 | `CLAUDE.md` | Conventions du repo et workflow | toujours |
 | `docs/CONTEXTE.md` | Rapport fonctionnel complet de l'application Access | au début de toute session |
 | `docs/plan/README.md` | Plan de migration : périmètre, règles, étapes | au début de toute session |
-| `docs/plan/etape-1..6.md` | Briefs de mission par étape | pour l'étape en cours |
+| `docs/plan/etape-1..8.md` | Briefs de mission par étape | pour l'étape en cours |
 | `docs/plan/dictionnaire.md` | Correspondance colonne source → colonne cible (produit par l'étape 1) | étapes 2 à 6 |
 | `docs/hors-perimetre-tablette-portail.md` | Ce qu'on sait des deux autres applications | si la question se pose |
 | `docs/problemes-donnees.md` | Journal des incohérences de données, problèmes de transfert et d'environnement rencontrés, avec leur contournement | étape 7 et toute amélioration ultérieure |
