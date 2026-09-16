@@ -222,14 +222,19 @@ export default async function InterventionsPage({
     <div className="mx-auto flex max-w-7xl flex-col gap-4 p-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Interventions</h1>
-        <button
-          type="button"
-          disabled
-          title="Disponible à l'étape 6"
-          className="cursor-not-allowed rounded-md border px-3 py-1.5 text-sm opacity-40"
-        >
-          Exporter Excel
-        </button>
+        <div className="flex gap-2">
+          <Link href="/interventions/nouvelle" className="rounded-md bg-black px-3 py-1.5 text-sm text-white">
+            Nouvelle intervention
+          </Link>
+          <button
+            type="button"
+            disabled
+            title="Disponible à l'étape 6"
+            className="cursor-not-allowed rounded-md border px-3 py-1.5 text-sm opacity-40"
+          >
+            Exporter Excel
+          </button>
+        </div>
       </div>
 
       <FilterBar fields={filterFields} values={sp} multiValues={{ zones: zonesSel }} />

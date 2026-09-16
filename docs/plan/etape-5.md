@@ -69,4 +69,10 @@ CRUD sur chaque référentiel : statuts (ordre d'affichage, actif, réservé adm
 
 ## État
 
-- [ ] Non commencée
+- [x] Conventions transverses : migration `supprime_le` (interventions/sites/clients/devis) et table `journal_modifications` (RLS ajout seul).
+- [x] 5.1 Intervention : création (`/interventions/nouvelle`, pré-remplie depuis un site), modification demande/réalisation/facturation, résolu par téléphone, clôture/déclôture/validation (avec pointage `heures_techniciens` et refus si `chemin_bon_pdf` vide), proposition de réplanification à la clôture, mise à jour `site_registre_securite`, gestion des techniciens intervenus, « nouvelle intervention à partir de celle-ci », « partie suivante ». Journalisé (`journal_modifications`) sur chaque écriture.
+- [ ] 5.1 — simplifications assumées à valider avec l'utilisateur avant de continuer :
+  - La confirmation de réplanification annule les entretiens non réalisés mais ne régénère pas encore la planification (dépend de 5.4, pas encore livrée).
+  - Pas d'envoi de mail sur les rappels (prévu étape 6, conforme au brief).
+  - Pas de scénario de test écrit dans `docs/plan/tests/` (accès Supabase/PostgREST non disponible dans ce bac à sable ; vérifié par build/lint + relecture manuelle du schéma + migration testée en idempotence sur Postgres local).
+- [ ] 5.2 Devis, 5.3 Site et client, 5.4 Planification, 5.5 Intervenants, 5.6 Paramétrage : non commencés (le brief demande de valider chaque écran avant de passer au suivant).

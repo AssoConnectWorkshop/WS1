@@ -219,6 +219,9 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
 
   return (
     <div className="flex flex-col gap-6">
+      <Link href={`/interventions/nouvelle?site=${siteId}`} className="w-fit rounded-md bg-black px-3 py-1.5 text-sm text-white">
+        Nouvelle intervention
+      </Link>
       <div>
         <h2 className="mb-2 text-sm font-semibold opacity-70">En cours</h2>
         {enCours && enCours.length > 0 ? (
