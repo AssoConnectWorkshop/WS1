@@ -159,6 +159,9 @@ Comportements Access visibles sur les captures mais absents de l'application, à
 - **Fiche véhicule** : les dates et km « dernier entretien / CT / CC / relevé » sont calculés depuis
   les événements et affichés en lecture seule (comme Access) ; la saisie des événements reste sous
   la fiche (Access : formulaire séparé « Saisie_EV_Vehicule »).
+- **Menu, icône « Entretien / Dépannage Devis acceptés »** : l'analyse VBA (`ImgEntretien` → OpenArgs
+  « AValider ») disait statut 9 ; la capture de la démo du 15/09 montre la liste ouverte sur « A
+  Planifier » (statut 1). L'écran fait foi : pré-filtre statut 1.
 - **Captures hors périmètre du CDC** (non traitées) : fiche intervention web du technicien (p.3),
   planning Outlook et planning prévisionnel Excel (p.4), trois écrans Esabora (p.5-6).
 

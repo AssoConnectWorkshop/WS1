@@ -122,7 +122,7 @@ export default async function MenuPage() {
       <section className="grid grid-cols-3 items-start gap-6 md:grid-cols-[repeat(3,8rem)_1fr_repeat(2,8rem)]">
         <Icone href="/clients" label="Clients" icone="🤝" />
         <Icone href="/sites" label="Sites" icone="🛒" />
-        <Icone href={lienVue("a-valider")} label="Entretien / Dépannage Devis acceptés" icone="🧰" />
+        <Icone href={lienVue("a-planifier")} label="Entretien / Dépannage Devis acceptés" icone="🧰" />
         <p className="col-span-3 self-center text-center text-lg md:col-span-1">Utilisateur choisi : {nomUtilisateur}</p>
         <Icone href="/interventions/gaz" label="Utilisation FF" icone="🧪" />
         <Icone href="/parametrage/utilisateurs" label="Utilisateurs" icone="🔑" />

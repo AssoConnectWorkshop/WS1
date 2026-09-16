@@ -4,6 +4,8 @@ export const VUE_FILTERS: Record<
   { statut_code?: number; statut_facturation_code?: number; devis_a_faire?: boolean }
 > = {
   "a-valider": { statut_code: 9 },
+  // Icône « ENTRETIEN / DEPANNAGE DEVIS ACCEPTES » : ouvre la liste sur « A planifier » (constaté sur la capture de démo, 16/09).
+  "a-planifier": { statut_code: 1 },
   "a-facturer": { statut_facturation_code: 1 },
   direction: { statut_facturation_code: 8 },
   standby: { statut_facturation_code: 9 },
