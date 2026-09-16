@@ -143,6 +143,7 @@ export function parseHHMM(text) {
   if (!m) return null;
   const [, hh, mm] = m;
   if (hh === '00' && mm === '00') return null;
+  if (Number(hh) > 23 || Number(mm) > 59) return null;
   return `${hh.padStart(2, '0')}:${mm}:00`;
 }
 
