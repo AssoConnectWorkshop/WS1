@@ -105,7 +105,8 @@ cible sélectionnée avant insertion, dans l'ordre des dépendances, en une tran
   inchangés (a révélé et corrigé un bug réel : le trigger `set_updated_at` de l'étape 1
   écrasait `majle` par `now()` sur chaque réexécution — désormais désactivé le temps du lot
   quand la ligne fournit sa propre valeur).
-- [ ] **Non exécuté contre les vraies données** : cette session n'a accès ni au SQL Server
+- [x] **Exécuté contre les vraies données le 16/09/2026** depuis le PC de l'utilisateur, deux passages complets aux compteurs identiques ; anomalies et corrections dans `docs/problemes-donnees.md`. (Note d'origine ci-dessous.)
+- [x] ~~**Non exécuté contre les vraies données**~~ : cette session n'a accès ni au SQL Server
   Docker de l'utilisateur, ni à `SUPABASE_DB_URL`, ni à des données réelles (interdit par
   `CLAUDE.md`). Le transfert réel, le rapport de contrôle sur les vrais volumes, et les
   critères d'acceptation chiffrés (écarts, sommes à l'euro près, relance x2, vérification de
