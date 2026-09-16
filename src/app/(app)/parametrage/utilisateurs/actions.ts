@@ -53,7 +53,7 @@ export async function changerRole(formData: FormData) {
 
   const utilisateurId = Number(formData.get("utilisateurId"));
   const role = formData.get("role");
-  if (!utilisateurId || (role !== "administrateur" && role !== "gestionnaire")) return;
+  if (!utilisateurId || (role !== "administrateur" && role !== "gestionnaire" && role !== "comptable")) return;
 
   const admin = createAdminClient();
   await admin.from("utilisateurs").update({ role: role as Role }).eq("id", utilisateurId);

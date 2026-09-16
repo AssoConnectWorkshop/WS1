@@ -85,11 +85,13 @@ export default async function InterventionsPage({
 
   const { page, sort, dir, from, to, pageSize } = parseListParams(sp, "date_limite", 50);
 
-  let query = supabase.from("v_interventions_liste").select("*", { count: "exact" });
+  // Comptage estimé (planificateur) : le comptage exact sur 71 000 lignes jointes dépasse le délai PostgREST.
+  let query = supabase.from("v_interventions_liste").select("*", { count: "estimated" });
   query = appliquerFiltresInterventions(query, sp, zonesSel);
   query = query.order(sort, { ascending: dir === "asc" }).range(from, to);
 
-  const { data, count } = await query;
+  const { data, count, error } = await query;
+  if (error) console.error("v_interventions_liste", error);
   const rows = (data ?? []) as InterventionRow[];
 
   let sommeMinutes: number | null = null;
@@ -295,7 +297,7 @@ export default async function InterventionsPage({
         </div>
       </form>
 
-      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucune intervention pour ces filtres." />
+      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucune intervention pour ces filtres." erreur={error?.message} />
 
       <div className="text-xs opacity-70">
         Enr : {count ?? 0} intervention{(count ?? 0) > 1 ? "s" : ""}

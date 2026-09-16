@@ -180,11 +180,15 @@ export function FormulaireSite({ site, deverrouille, clients, donneurs, interven
           <Cadre titre="Géolocalisation">
             <div className="grid grid-cols-[auto_1fr_auto_1fr_auto_1fr] items-center gap-1 text-xs">
               <span>Latitude</span>
-              <input disabled value={texte("latitude")} className={`${CHAMP} opacity-60`} />
+              <Texte name="latitude" type="number" step="0.000001" valeur={s.latitude} />
               <span>Longitude</span>
-              <input disabled value={texte("longitude")} className={`${CHAMP} opacity-60`} />
+              <Texte name="longitude" type="number" step="0.000001" valeur={s.longitude} />
               <span>Précision</span>
               <input disabled value={texte("precision_geo")} className={`${CHAMP} opacity-60`} />
+            </div>
+            <div className={LIGNE}>
+              <span title="Coller ici « latitude, longitude » copiées depuis Google Maps">Coller coordonnées</span>
+              <input form={FORM_SITE} name="coordonnees" placeholder="43.673, 7.189" className={CHAMP} />
             </div>
             <form action={geocoderSite}>
               <input type="hidden" name="site_id" value={site.id} />

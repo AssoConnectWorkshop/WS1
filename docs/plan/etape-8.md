@@ -242,5 +242,16 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   Raccourci vers le PC, boutons Quitter (SANS SAUVEGARDE) et enregistrer) ; liste des sites :
   colonnes « Ct » (dossier réseau) et « Co » (code). Migration
   `20260916200000_etape8_v_sites_liste_dossier.sql`.
+- [x] Suite du call de démo FMC du 15/09 (transcript analysé, rien de commité) : onglet « À faire »
+  `/taches` (kanban backlog / next / in progress / to validate / suspended / done, cartes avec
+  description, déplacement, édition, suppression ; table `taches`) alimenté avec la décision de
+  découpage de la bascule (next) et les évolutions à discuter (backlog) ; coordonnées d'un site
+  saisissables avec collage « latitude, longitude » depuis Google Maps (précision « SAISIE
+  MANUELLE ») ; module « Utilisation FF » `/interventions/gaz` (interventions avec gaz, filtres,
+  somme des kg) ; heures vendues saisissables et heures passées calculées depuis les fiches d'heures
+  dans l'onglet Clôture, dépassement en rouge ; rôle « comptable » (statuts de facturation réservés,
+  remplace le mot de passe Kadi) attribuable depuis Utilisateurs & Techniciens ; message d'erreur de
+  requête affiché sous les listes et comptage estimé sur la liste générale (liste vide constatée en
+  production). Migration `20260916210000_etape8_taches_gaz_comptable.sql`.
 - [ ] À faire quand les captures arriveront : onglet « Création d'intervention », planification,
   fiche intervenant, listes de devis générales, comparaison du rapport d'intervention PDF.

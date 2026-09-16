@@ -123,7 +123,7 @@ export default async function MenuPage() {
         <Icone href="/sites" label="Sites" icone="🛒" />
         <Icone href="/interventions?vue=a-valider" label="Entretien / Dépannage Devis acceptés" icone="🧰" />
         <p className="col-span-3 self-center text-center text-lg md:col-span-1">Utilisateur choisi : {nomUtilisateur}</p>
-        <Icone label="Utilisation FF" icone="🧪" indisponible={HORS_VERSION} />
+        <Icone href="/interventions/gaz" label="Utilisation FF" icone="🧪" />
         <Icone href="/parametrage/utilisateurs" label="Utilisateurs" icone="🔑" />
       </section>
 

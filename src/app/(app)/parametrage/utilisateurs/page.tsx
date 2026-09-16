@@ -15,7 +15,7 @@ type UtilisateurRow = {
   immatriculation: string | null;
   code_intervenant: string | null;
   login_legacy: string | null;
-  role: "gestionnaire" | "administrateur" | null;
+  role: "gestionnaire" | "administrateur" | "comptable" | null;
   auth_user_id: string | null;
   societes: { libelle: string | null } | null;
 };
@@ -49,7 +49,7 @@ export default async function UtilisateursPage() {
         </div>
       </div>
       <p className="text-xs opacity-70">
-        Les gestionnaires (type 1) peuvent être invités à se connecter ; l&apos;accès à l&apos;application remplace le mot de passe Access.
+        Les gestionnaires (type 1) peuvent être invités à se connecter ; l&apos;accès à l&apos;application remplace le mot de passe Access. Le rôle « comptable » remplace le mot de passe Kadi : seul rôle, avec l&apos;administrateur, à poser les statuts de facturation réservés.
         {!estAdmin && " Consultation seule : les invitations et rôles sont réservés à l'administrateur."}
       </p>
 
@@ -94,11 +94,15 @@ export default async function UtilisateursPage() {
                     </form>
                   )}
                   {estAdmin && u.auth_user_id && (
-                    <form action={changerRole}>
+                    <form action={changerRole} className="flex items-center gap-1">
                       <input type="hidden" name="utilisateurId" value={u.id} />
-                      <input type="hidden" name="role" value={u.role === "administrateur" ? "gestionnaire" : "administrateur"} />
+                      <select name="role" defaultValue={u.role ?? "gestionnaire"} className="rounded border px-1 py-0.5 text-[11px]">
+                        <option value="gestionnaire">gestionnaire</option>
+                        <option value="comptable">comptable</option>
+                        <option value="administrateur">administrateur</option>
+                      </select>
                       <button type="submit" className="rounded border px-2 py-0.5 text-[11px]">
-                        Passer {u.role === "administrateur" ? "gestionnaire" : "administrateur"}
+                        Changer le rôle
                       </button>
                     </form>
                   )}
