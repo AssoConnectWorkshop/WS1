@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { NavPrincipale } from "@/components/ui/NavPrincipale";
 
 const NAV_ITEMS: { href: string; label: string; adminOnly?: boolean }[] = [
   { href: "/", label: "Tableau de bord" },
@@ -56,13 +57,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-screen flex-col">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b px-6 py-3">
-        <nav className="flex flex-wrap gap-4 text-sm">
-          {visibleNav.map((item) => (
-            <a key={item.href} href={item.href} className="hover:underline">
-              {item.label}
-            </a>
-          ))}
-        </nav>
+        <NavPrincipale items={visibleNav.map(({ href, label }) => ({ href, label }))} />
         <div className="flex items-center gap-3 text-sm">
           <span>
             {[utilisateur.prenom, utilisateur.nom].filter(Boolean).join(" ") || utilisateur.email}
