@@ -25,7 +25,10 @@ async function requestReset(formData: FormData) {
   } catch (e) {
     echec = e instanceof Error ? e.message : "erreur inconnue";
   }
-  if (echec) redirect(`/reset-password?error=envoi&detail=${encodeURIComponent(echec)}`);
+  if (echec) {
+    console.error("reset-password:", echec);
+    redirect("/reset-password?error=envoi");
+  }
 
   redirect("/reset-password?sent=1");
 }
@@ -63,23 +66,22 @@ const ERROR_MESSAGES: Record<string, string> = {
   weak_password: "Le mot de passe doit contenir au moins 8 caractères.",
   mismatch: "Les deux mots de passe ne correspondent pas.",
   update_failed: "Impossible de mettre à jour le mot de passe. Redemandez un lien.",
-  non_autorise:
-    "Aucun e-mail envoyé : cette adresse n'est pas dans la liste des destinataires autorisés de l'application. Demandez à un administrateur, soit d'ajouter votre adresse à la liste blanche (variable EMAILS_AUTORISES sur Vercel), soit de vous transmettre un nouveau mot de passe depuis Paramétrage › Accès application.",
-  envoi: "Aucun e-mail envoyé : le service d'envoi a refusé la demande.",
+  non_autorise: "Aucun e-mail envoyé : cette adresse n'est pas dans la liste des destinataires autorisés de l'application. Contactez un administrateur.",
+  envoi: "Aucun e-mail envoyé : le service d'envoi a refusé la demande. Contactez un administrateur.",
 };
 
 export default async function ResetPasswordPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; sent?: string; detail?: string }>;
+  searchParams: Promise<{ error?: string; sent?: string }>;
 }) {
-  const { error, sent, detail } = await searchParams;
+  const { error, sent } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const errorMessage = error ? `${ERROR_MESSAGES[error] ?? "Une erreur est survenue. Réessayez."}${error === "envoi" && detail ? ` (${detail})` : ""}` : null;
+  const errorMessage = error ? (ERROR_MESSAGES[error] ?? "Une erreur est survenue. Réessayez.") : null;
 
   // Une session de récupération existe (l'utilisateur vient de cliquer le lien reçu par e-mail) :
   // on lui propose de choisir son nouveau mot de passe.

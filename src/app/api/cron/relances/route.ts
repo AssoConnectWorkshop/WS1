@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { envoyerCourriel } from "@/lib/email";
 import { chargerParametres } from "@/lib/pdf";
@@ -17,7 +18,9 @@ const DELAIS: { case: string; heures: number }[] = [
  * cochée dont le dernier rappel (ou la création) est plus ancien que le délai de la case → e-mail à l'adresse SAV. */
 export async function GET(request: Request) {
   const secret = process.env.CRON_SECRET;
-  if (!secret || request.headers.get("authorization") !== `Bearer ${secret}`) return new Response("Non autorisé", { status: 401 });
+  const attendu = Buffer.from(`Bearer ${secret ?? ""}`);
+  const recu = Buffer.from(request.headers.get("authorization") ?? "");
+  if (!secret || attendu.length !== recu.length || !timingSafeEqual(attendu, recu)) return new Response("Non autorisé", { status: 401 });
 
   const admin = createAdminClient();
   const parametres = await chargerParametres(admin);

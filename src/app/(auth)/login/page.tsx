@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { BOUTON_PRIMAIRE, BOUTON_SECONDAIRE } from "@/components/ui/boutons";
+import { cheminInterne } from "@/lib/redirections";
 
 const ERROR_MESSAGES: Record<string, string> = {
   missing_fields: "E-mail et mot de passe requis.",
@@ -35,7 +36,7 @@ async function login(formData: FormData) {
     redirect(`/login?error=${errorCode}`);
   }
 
-  redirect(typeof next === "string" && next.startsWith("/") ? next : "/");
+  redirect(cheminInterne(next));
 }
 
 export default async function LoginPage({
@@ -57,7 +58,7 @@ export default async function LoginPage({
           </p>
         )}
 
-        {next && <input type="hidden" name="next" value={next} />}
+        {next && <input type="hidden" name="next" value={cheminInterne(next)} />}
 
         <label className="flex flex-col gap-1 text-sm">
           E-mail
