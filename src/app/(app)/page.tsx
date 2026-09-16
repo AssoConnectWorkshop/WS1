@@ -1,47 +1,9 @@
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { ETATS_HORS_ALERTES, LIBELLES_ALERTES, calculerAlertes, type Alertes, type Evenement, type Vehicule } from "@/lib/vehicules";
+import { ETATS_HORS_ALERTES, calculerAlertes, type Alertes, type Evenement, type Vehicule } from "@/lib/vehicules";
 
 export const dynamic = "force-dynamic";
-
-/** Alerte_Voitures (analysis 04 §5.3) : compteurs par type de problème, véhicules vendus / état 5 exclus. */
-async function AlertesVehicules() {
-  const supabase = await createClient();
-  const [{ data: vehicules }, { data: evenements }] = await Promise.all([
-    supabase.from("vehicules").select("id, immatriculation, etat_code, date_mise_en_circulation, km_entre_revisions, mois_entre_revisions, garantie, garantie_mois, leasing, leasing_mois, leasing_date_fin"),
-    supabase.from("vehicule_evenements").select("vehicule_id, date_evenement, km, type_code"),
-  ]);
-  const compteurs: Record<keyof Alertes, string[]> = { ct: [], cc: [], revision: [], leasing: [], garantie: [] };
-  for (const v of (vehicules ?? []) as Vehicule[]) {
-    if (v.etat_code != null && ETATS_HORS_ALERTES.includes(v.etat_code)) continue;
-    const alertes = calculerAlertes(v, (evenements ?? []).filter((e): e is Evenement => e.vehicule_id === v.id));
-    for (const k of Object.keys(alertes) as (keyof Alertes)[]) if (alertes[k]) compteurs[k].push(v.immatriculation ?? `#${v.id}`);
-  }
-  const total = Object.values(compteurs).reduce((s, l) => s + l.length, 0);
-
-  return (
-    <section className="flex flex-col gap-2">
-      <h2 className="text-sm font-semibold opacity-70">Parc automobile{total === 0 ? " : tout est OK" : ""}</h2>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-        {(Object.keys(compteurs) as (keyof Alertes)[]).map((k) => (
-          <Tile key={k} href={`/vehicules?alerte=${k}`} value={compteurs[k].length} label={`Problème de ${LIBELLES_ALERTES[k].toLowerCase()}${compteurs[k].length ? ` : ${compteurs[k].slice(0, 3).join(", ")}${compteurs[k].length > 3 ? "…" : ""}` : ""}`} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-const NAV_TILES = [
-  { href: "/clients", label: "Clients" },
-  { href: "/sites", label: "Sites" },
-  { href: "/intervenants", label: "Intervenants" },
-  { href: "/interventions", label: "Interventions" },
-  { href: "/devis", label: "Devis" },
-  { href: "/planification", label: "Planification" },
-  { href: "/carte", label: "Carte" },
-  { href: "/vehicules", label: "Véhicules" },
-  { href: "/parametrage", label: "Paramétrage" },
-];
 
 type Compteurs = {
   a_valider: number | null;
@@ -60,87 +22,182 @@ type Compteurs = {
   autres: number | null;
 };
 
-function Tile({ href, value, label }: { href: string; value: number | null | undefined; label: string }) {
+/** Couleurs des pastilles du menu Access (MAJBubule) : rose, rouge, bleu, vert, orange, noir/violet. */
+type Couleur = "rose" | "rouge" | "bleu" | "vert" | "orange" | "violet" | "cyan";
+const COULEURS: Record<Couleur, string> = {
+  rose: "bg-pink-500",
+  rouge: "bg-red-600",
+  bleu: "bg-indigo-600",
+  vert: "bg-lime-500",
+  orange: "bg-orange-500",
+  violet: "bg-purple-700",
+  cyan: "bg-teal-500",
+};
+
+type Pastille = { valeur: number | null | undefined; couleur: Couleur; titre: string; petite?: boolean };
+
+function Pastilles({ pastilles }: { pastilles: Pastille[] }) {
   return (
-    <Link
-      href={href}
-      className="flex flex-col gap-1 rounded-xl border p-4 hover:bg-black/[0.02] dark:hover:bg-white/[0.03]"
-    >
-      <span className="text-2xl font-bold">{value ?? 0}</span>
-      <span className="text-xs opacity-70">{label}</span>
+    <div className="absolute -right-2 -top-2 flex max-w-[9rem] flex-wrap justify-end gap-0.5">
+      {pastilles.map((p) => (
+        <span
+          key={p.titre}
+          title={p.titre}
+          className={`flex items-center justify-center rounded-full font-semibold text-white shadow ${COULEURS[p.couleur]} ${
+            p.petite ? "h-6 min-w-6 px-1 text-[10px]" : "h-9 min-w-9 px-1.5 text-sm"
+          }`}
+        >
+          {p.valeur ?? 0}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function Icone({
+  href,
+  label,
+  icone,
+  pastilles = [],
+  indisponible,
+}: {
+  href?: string;
+  label: string;
+  icone: string;
+  pastilles?: Pastille[];
+  indisponible?: string;
+}) {
+  const contenu = (
+    <>
+      <span className="relative flex h-20 w-20 items-center justify-center rounded border bg-white text-5xl shadow-sm dark:bg-white/5">
+        <span aria-hidden>{icone}</span>
+        {pastilles.length > 0 && <Pastilles pastilles={pastilles} />}
+      </span>
+      <span className="max-w-32 text-center text-[11px] leading-tight uppercase">{label}</span>
+    </>
+  );
+  if (!href) {
+    return (
+      <span title={indisponible} className="flex w-32 flex-col items-center gap-1.5 opacity-40">
+        {contenu}
+      </span>
+    );
+  }
+  return (
+    <Link href={href} className="flex w-32 flex-col items-center gap-1.5 hover:opacity-80">
+      {contenu}
     </Link>
   );
 }
 
-export default async function DashboardPage() {
+const HORS_VERSION = "Non disponible dans cette version (voir docs/plan/etape-8.md, écarts non traités)";
+
+/** Alerte_Voitures (analysis 04 §5.3) : compteurs par type de problème, véhicules vendus / état 5 exclus. */
+async function compteursVehicules(): Promise<Record<keyof Alertes, number>> {
   const supabase = await createClient();
-  const { data } = await supabase.from("v_tableau_de_bord").select("*").maybeSingle();
+  const [{ data: vehicules }, { data: evenements }] = await Promise.all([
+    supabase.from("vehicules").select("id, immatriculation, etat_code, date_mise_en_circulation, km_entre_revisions, mois_entre_revisions, garantie, garantie_mois, leasing, leasing_mois, leasing_date_fin"),
+    supabase.from("vehicule_evenements").select("vehicule_id, date_evenement, km, type_code"),
+  ]);
+  const compteurs: Record<keyof Alertes, number> = { ct: 0, cc: 0, revision: 0, leasing: 0, garantie: 0 };
+  for (const v of (vehicules ?? []) as Vehicule[]) {
+    if (v.etat_code != null && ETATS_HORS_ALERTES.includes(v.etat_code)) continue;
+    const alertes = calculerAlertes(v, (evenements ?? []).filter((e): e is Evenement => e.vehicule_id === v.id));
+    for (const k of Object.keys(alertes) as (keyof Alertes)[]) if (alertes[k]) compteurs[k] += 1;
+  }
+  return compteurs;
+}
+
+/** Menu d'accueil Access (Form_MenuClimAccess) : grille d'icônes et pastilles de compteurs (analysis 01 §2.1). */
+export default async function MenuPage() {
+  const supabase = await createClient();
+  const [{ data }, vehicules, current] = await Promise.all([supabase.from("v_tableau_de_bord").select("*").maybeSingle(), compteursVehicules(), getCurrentUser()]);
   const c = (data ?? {}) as Partial<Compteurs>;
+  const u = current?.utilisateur;
+  const nomUtilisateur = [u?.prenom, u?.nom].filter(Boolean).join(" ") || u?.email || "";
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-8 p-8">
-      <h1 className="text-2xl font-bold">Tableau de bord</h1>
-
-      <section className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <Tile href="/interventions?vue=a-valider" value={c.a_valider} label="À valider" />
-        <Tile href="/interventions?vue=a-facturer" value={c.a_facturer} label="À facturer" />
-        <Tile href="/interventions?vue=direction" value={c.a_definir_direction} label="À définir par la direction" />
-        <Tile href="/interventions?vue=standby" value={c.stand_by} label="Stand-by" />
-        <Tile href="/interventions?vue=a-commander" value={c.materiel_a_commander} label="Matériel à commander" />
-        <Tile href="/interventions?vue=attente-materiel" value={c.attente_materiel} label="Attente matériel" />
+    <div className="mx-auto flex max-w-6xl flex-col gap-10 p-8">
+      <section className="grid grid-cols-3 items-start gap-6 md:grid-cols-[repeat(3,8rem)_1fr_repeat(2,8rem)]">
+        <Icone href="/clients" label="Clients" icone="🤝" />
+        <Icone href="/sites" label="Sites" icone="🛒" />
+        <Icone href="/interventions?vue=a-valider" label="Entretien / Dépannage Devis acceptés" icone="🧰" />
+        <p className="col-span-3 self-center text-center text-lg md:col-span-1">Utilisateur choisi : {nomUtilisateur}</p>
+        <Icone label="Utilisation FF" icone="🧪" indisponible={HORS_VERSION} />
+        <Icone href="/parametrage/utilisateurs" label="Utilisateurs" icone="🔑" />
       </section>
 
-      <section className="flex flex-col gap-2">
-        <h2 className="text-sm font-semibold opacity-70">Duplicata (clôturé, devis à faire)</h2>
-        <div className="grid grid-cols-3 gap-3 sm:max-w-md">
-          <Tile href="/interventions?vue=duplicata" value={c.duplicata_total} label="Total" />
-          <Tile href="/interventions?vue=duplicata" value={c.duplicata_a_traiter} label="À traiter" />
-          <Tile href="/interventions?vue=duplicata" value={c.duplicata_traitees} label="Traités" />
+      <section className="grid grid-cols-3 items-start gap-6 md:grid-cols-[repeat(4,8rem)_10rem_repeat(2,8rem)]">
+        <Icone
+          href="/interventions?vue=duplicata"
+          label="Duplicata"
+          icone="📋"
+          pastilles={[
+            { valeur: c.duplicata_total, couleur: "rose", titre: "Total" },
+            { valeur: c.duplicata_a_traiter, couleur: "violet", titre: "À traiter", petite: true },
+            { valeur: c.duplicata_traitees, couleur: "rose", titre: "Attente offre de prix", petite: true },
+          ]}
+        />
+        <Icone href="/interventions?vue=a-commander" label="Matériel à commander" icone="📦" pastilles={[{ valeur: c.materiel_a_commander, couleur: "rose", titre: "Matériel à commander" }]} />
+        <Icone href="/interventions?vue=attente-materiel" label="Attente matériel" icone="🚚" pastilles={[{ valeur: c.attente_materiel, couleur: "rose", titre: "Attente matériel" }]} />
+        <Icone href="/interventions?vue=a-valider" label="Fiches d'interventions à valider" icone="📝" pastilles={[{ valeur: c.a_valider, couleur: "rouge", titre: "À valider" }]} />
+        <div className="flex flex-col items-center gap-1.5">
+          <Icone
+            href="/interventions?vue=a-facturer"
+            label="Fiches d'interventions à facturer"
+            icone="💶"
+            pastilles={[
+              { valeur: c.maintenances, couleur: "bleu", titre: "Maintenances" },
+              { valeur: c.devis_sav_acceptes, couleur: "rouge", titre: "Devis SAV acceptés" },
+              { valeur: c.depannage, couleur: "vert", titre: "Dépannage" },
+              { valeur: c.en_travaux, couleur: "orange", titre: "En travaux" },
+              { valeur: c.autres, couleur: "violet", titre: "Autres types" },
+              { valeur: c.stand_by, couleur: "violet", titre: "Stand by", petite: true },
+            ]}
+          />
+          <Link href="/" className="rounded border px-2 py-0.5 text-[11px]">
+            MAJ
+          </Link>
         </div>
+        <Icone href="/interventions?vue=direction" label="À valider par le Boss" icone="🪑" pastilles={[{ valeur: c.a_definir_direction, couleur: "rouge", titre: "À valider par la direction" }]} />
+        <Icone label="Filtre extraction" icone="📊" indisponible={HORS_VERSION} />
       </section>
 
-      <section className="flex flex-col gap-2">
-        <h2 className="text-sm font-semibold opacity-70">En facturation 1 ou 2, par type</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-          <div className="rounded-xl border p-4">
-            <div className="text-2xl font-bold">{c.depannage ?? 0}</div>
-            <div className="text-xs opacity-70">Dépannage</div>
-          </div>
-          <div className="rounded-xl border p-4">
-            <div className="text-2xl font-bold">{c.maintenances ?? 0}</div>
-            <div className="text-xs opacity-70">Maintenances</div>
-          </div>
-          <div className="rounded-xl border p-4">
-            <div className="text-2xl font-bold">{c.devis_sav_acceptes ?? 0}</div>
-            <div className="text-xs opacity-70">Devis SAV acceptés</div>
-          </div>
-          <div className="rounded-xl border p-4">
-            <div className="text-2xl font-bold">{c.en_travaux ?? 0}</div>
-            <div className="text-xs opacity-70">En travaux</div>
-          </div>
-          <div className="rounded-xl border p-4">
-            <div className="text-2xl font-bold">{c.autres ?? 0}</div>
-            <div className="text-xs opacity-70">Autres</div>
-          </div>
-        </div>
+      <section className="grid grid-cols-3 items-start gap-6 md:grid-cols-[repeat(8,8rem)]">
+        <Icone href="/parametrage" label="Paramétrage" icone="🔧" />
+        <Icone href="/clients" label="Statistiques" icone="📈" />
+        <Icone href="/devis?onglet=contrat" label="Contrat de maintenance" icone="📄" />
+        <Icone href="/devis?onglet=sav" label="Devis SAV" icone="👷" />
+        <Icone href="/devis?onglet=travaux" label="Devis travaux" icone="👷‍♂️" />
+        <Icone label="Intervalle de dates à afficher sur tablette" icone="📅" indisponible={HORS_VERSION} />
+        <Icone href="/intervenants" label="Intervenants" icone="💼" />
+        <Icone
+          href="/vehicules"
+          label="Véhicules"
+          icone="🚛"
+          pastilles={[
+            { valeur: vehicules.ct, couleur: "violet", titre: "Problème de contrôle technique" },
+            { valeur: vehicules.cc, couleur: "orange", titre: "Problème de contrôle complémentaire" },
+            { valeur: vehicules.revision, couleur: "vert", titre: "Problème de révision" },
+            { valeur: vehicules.leasing, couleur: "cyan", titre: "Problème de leasing" },
+            { valeur: vehicules.garantie, couleur: "violet", titre: "Problème de garantie" },
+          ]}
+        />
       </section>
 
-      <AlertesVehicules />
-
-      <section className="flex flex-col gap-2">
-        <h2 className="text-sm font-semibold opacity-70">Navigation</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {NAV_TILES.map((tile) => (
-            <Link
-              key={tile.href}
-              href={tile.href}
-              className="rounded-xl border p-6 text-center font-medium hover:bg-black/[0.02] dark:hover:bg-white/[0.03]"
-            >
-              {tile.label}
-            </Link>
-          ))}
-        </div>
+      <section className="grid grid-cols-3 items-start gap-6 md:grid-cols-[repeat(8,8rem)]">
+        <Icone href="/carte" label="Carte" icone="🗺️" />
+        <Icone href="/planification" label="Planification" icone="🗓️" />
       </section>
+
+      <footer className="flex items-center justify-between pt-6 text-2xl font-bold tracking-tight">
+        <span>
+          <span className="text-indigo-700">FMC</span> <span className="text-sm font-semibold text-indigo-700">CLIMATISATION</span>
+        </span>
+        <span>
+          <span className="text-purple-700">FMC</span> <span className="text-sm font-semibold text-purple-700">MAINTENANCE</span>
+        </span>
+      </footer>
     </div>
   );
 }

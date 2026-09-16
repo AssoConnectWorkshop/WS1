@@ -87,7 +87,7 @@ intervention, liste des sites, fiche site, fiche client, planification, puis le 
 
 | Écran Access (formulaire) | Route application | Capture reçue | État |
 |---|---|---|---|
-| Menu d'accueil (`Form_MenuClimAccess`) | `/` | oui (CDC p.1) | à faire |
+| Menu d'accueil (`Form_MenuClimAccess`) | `/` | oui (CDC p.1) | fait (PR menu d'accueil) |
 | Liste des sites (`Form_ListeSiteGenerale`) | `/sites` | oui (CDC p.2) | à faire |
 | Fiche site | `/sites/[id]` | oui (CDC p.2) | à faire |
 | Carte | `/carte` | oui (CDC p.3, module PHP) | à faire |
@@ -100,6 +100,15 @@ intervention, liste des sites, fiche site, fiche client, planification, puis le 
 
 Comportements Access visibles sur les captures mais absents de l'application, à décider plus tard.
 
+- **Menu d'accueil** : icônes « Utilisation FF » (liste des interventions avec gaz, `ListeInterGaz`),
+  « Filtre Extraction » (export Excel du parc matériel) et « Intervalle de dates à afficher sur
+  tablette » affichées grisées : pas d'équivalent dans l'application. « Mot de Passe Kadi » et « Voir
+  Tables » ne sont pas reproduits (remplacés par le rôle administrateur et Paramétrage › Utilisateurs).
+  Les illustrations 3D d'Access sont remplacées par des pictogrammes ; le bouton « MAJ » recharge la
+  page. Le rafraîchissement automatique toutes les 60 s n'est pas reproduit.
+- **Captures hors périmètre du CDC** (non traitées) : fiche intervention web du technicien (p.3),
+  planning Outlook et planning prévisionnel Excel (p.4), trois écrans Esabora (p.5-6).
+
 ## Critères d'acceptation
 
 - Pour chaque écran traité, un utilisateur FMC devant la capture Access et la page web retrouve les
@@ -110,4 +119,14 @@ Comportements Access visibles sur les captures mais absents de l'application, à
 ## État
 
 - [x] Brief rédigé le 16/09/2026 à partir du cahier des charges FMC.
-- [ ] Écrans traités : aucun pour l'instant.
+- [x] 16/09/2026 : cahier des charges PDF lu (6 pages, 10 captures ; 4 dans le périmètre, 6 hors
+  périmètre). Lot 1 = les 4 captures du CDC.
+- [x] Menu d'accueil `/` : grille d'icônes en quatre rangées comme Access (Clients, Sites,
+  Entretien / Dépannage Devis acceptés, « Utilisateur choisi », Utilisateurs ; Duplicata, Matériel à
+  commander, Attente matériel, Fiches à valider, Fiches à facturer + MAJ, À valider par le Boss ;
+  Paramétrage, Statistiques, Contrat de maintenance, Devis SAV, Devis travaux, Intervenants,
+  Véhicules ; Carte, Planification), pastilles colorées : duplicata (total rose, à traiter violet,
+  attente offre de prix rose), à valider rouge, à facturer ventilé maintenances bleu / devis SAV
+  rouge / dépannage vert / travaux orange / autres violet + stand-by, Boss rouge, véhicules (5),
+  logos FMC Climatisation / FMC Maintenance en pied.
+- [ ] Liste des sites, fiche site, carte : à suivre dans les PR suivantes.
