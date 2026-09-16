@@ -38,3 +38,7 @@ export function formatNombre(value: number | string | null | undefined): string 
 export function oui(value: boolean | null | undefined): string {
   return value ? "Oui" : "Non";
 }
+
+export function formatNom(prenom: string | null | undefined, nom: string | null | undefined): string {
+  return [prenom, nom].filter(Boolean).join(" ") || "—";
+}

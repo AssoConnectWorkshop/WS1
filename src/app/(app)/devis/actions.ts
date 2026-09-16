@@ -7,12 +7,9 @@ import { createClient } from "@/lib/supabase/server";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError, aujourdhui } from "@/lib/action-utils";
 import { calculerMontantHt, chargerSiteEtTarifs, numeroDepuisFichier, TYPE_INTERVENTION_PAR_FAMILLE, FAMILLES_DEVIS, type FamilleDevis } from "@/lib/devis";
+import { nombre, texte } from "@/lib/zod-form";
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
-
-const vide = (v: unknown) => v == null || (typeof v === "string" && v.trim() === "");
-const nombre = z.preprocess((v) => (vide(v) ? null : Number(v)), z.number({ invalid_type_error: "Valeur numérique invalide." }).nullable());
-const texte = z.preprocess((v) => (vide(v) ? null : v), z.string().trim().nullable());
 
 const ChampsSchema = z.object({
   numero: texte,

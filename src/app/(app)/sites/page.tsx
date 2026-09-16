@@ -128,7 +128,12 @@ export default async function SitesPage({
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-4 p-8">
-      <h1 className="text-2xl font-bold">Sites</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Sites</h1>
+        <Link href="/sites/nouveau" className="rounded-md bg-black px-3 py-2 text-sm text-white">
+          Nouveau site
+        </Link>
+      </div>
       <FilterBar fields={filterFields} values={sp} />
       <DataTable
         columns={columns}

@@ -53,7 +53,12 @@ export default async function ClientsPage({
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-4 p-8">
-      <h1 className="text-2xl font-bold">Clients</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Clients</h1>
+        <Link href="/clients/nouveau" className="rounded-md bg-black px-3 py-2 text-sm text-white">
+          Nouveau client
+        </Link>
+      </div>
       <FilterBar fields={filterFields} values={sp} />
       <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun client." />
     </div>
