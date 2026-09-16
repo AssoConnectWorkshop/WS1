@@ -50,9 +50,17 @@ export async function buildContext(pgPool, lookups = [], extra = {}) {
  * Insère des lignes par lots avec `insert ... on conflict (...) do update`.
  * Toutes les lignes doivent avoir exactement les mêmes clés (colonnes cibles).
  */
+const MAX_PARAMETRES_REQUETE = 60000;
+
+/** Postgres limite une requête à 65 535 paramètres liés : le lot est réduit pour les tables larges (ex. sites, ~100 colonnes). */
+function tailleLot(batchSize, nbColonnes) {
+  return Math.max(1, Math.min(batchSize, Math.floor(MAX_PARAMETRES_REQUETE / nbColonnes)));
+}
+
 export async function upsertBatch(pgPool, table, rows, conflictColumns, batchSize = 1000) {
   if (rows.length === 0) return 0;
   const columns = Object.keys(rows[0]);
+  batchSize = tailleLot(batchSize, columns.length);
   const updateColumns = columns.filter((c) => !conflictColumns.includes(c));
   // `updated_at` est déjà fournie par la ligne pour les quelques tables où le brief demande
   // de reprendre la vraie date de modification source (ex. sites.majle, interventions.majle) ;
@@ -128,6 +136,7 @@ export async function updateBatch(pgPool, table, keyColumn, rows, updateColumns,
     [table, allColumns]
   );
   const castByColumn = new Map(colRows.map((r) => [r.column_name, r.udt_name]));
+  batchSize = tailleLot(batchSize, allColumns.length);
 
   let updated = 0;
   for (let start = 0; start < rows.length; start += batchSize) {
