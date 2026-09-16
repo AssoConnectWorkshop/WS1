@@ -35,7 +35,7 @@ export default async function ClientsPage({
   // Règle Form_Client.lstClient : un nombre saisi est un numéro de magasin, un texte un nom de client.
   if (sp.q && sp.q.trim() !== "" && Number.isFinite(Number(sp.q))) redirect(`/sites?q=${encodeURIComponent(sp.q.trim())}`);
   const supabase = await createClient();
-  const { page, sort, dir, from, to, pageSize } = parseListParams(sp, "nom", 50);
+  const { page, sort, dir, from, to, pageSize } = parseListParams(sp, "nom_tri", 50);
 
   let query = supabase.from("clients").select("*", { count: "exact" });
   if (sp.tous !== "1") query = query.eq("actif", true);
@@ -52,7 +52,7 @@ export default async function ClientsPage({
 
   // Colonnes de la liste Access « Listeclientaffiche », dans le même ordre.
   const columns: Column<ClientRow>[] = [
-    { key: "nom", label: "Nom du client", sortable: true, render: (r) => <Link className="hover:underline" href={`/clients/${r.id}`}>{r.nom}</Link> },
+    { key: "nom_tri", label: "Nom du client", sortable: true, render: (r) => <Link className="hover:underline" href={`/clients/${r.id}`}>{r.nom}</Link> },
     { key: "adresse", label: "Adresse", render: (r) => <span className="block max-w-[16rem] truncate" title={r.adresse ?? ""}>{r.adresse ?? ""}</span> },
     { key: "code_postal", label: "CP", sortable: true, render: (r) => r.code_postal ?? "" },
     { key: "ville", label: "Ville", sortable: true, render: (r) => r.ville ?? "" },

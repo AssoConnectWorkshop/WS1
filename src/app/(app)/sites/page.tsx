@@ -44,7 +44,7 @@ export default async function SitesPage({
 }) {
   const sp = toStringParams(await searchParams);
   const supabase = await createClient();
-  const { page, sort, dir, from, to, pageSize } = parseListParams(sp, "nom", 50);
+  const { page, sort, dir, from, to, pageSize } = parseListParams(sp, "nom_tri", 50);
 
   const { data: clients } = await supabase.from("clients").select("id, nom").eq("actif", true).is("supprime_le", null).order("nom");
 
@@ -135,13 +135,13 @@ export default async function SitesPage({
     { key: "zone_libelle", label: "Zone", render: (r) => (r.zone_id ? <Link className="hover:underline" href={`/parametrage/zones-geographiques?modifier=${r.zone_id}`}>{r.zone_libelle}</Link> : "") },
     { key: "numero_magasin", label: "N°", sortable: true, align: "right", render: (r) => r.numero_magasin ?? "" },
     { key: "code_client", label: "Co", render: (r) => r.code_client ?? "" },
-    { key: "client_nom", label: "Client", sortable: true, render: (r) => <Link className="hover:underline" href={`/clients/${r.client_id}`}>{r.client_nom}</Link> },
+    { key: "client_nom_tri", label: "Client", sortable: true, render: (r) => <Link className="hover:underline" href={`/clients/${r.client_id}`}>{r.client_nom}</Link> },
     { key: "contrat_clim_numero", label: "Contrat client", render: (r) => r.contrat_clim_numero ?? "" },
     { key: "contrat_clim_redevance", label: "Tarif 1 Cl", align: "right", render: (r) => (r.contrat_clim_redevance != null ? formatMontant(r.contrat_clim_redevance) : "") },
     { key: "contrat_clim_redevance_secondaire", label: "Tarif 2 Cl", align: "right", render: (r) => (r.contrat_clim_redevance_secondaire != null ? formatMontant(r.contrat_clim_redevance_secondaire) : "") },
     { key: "contrat_clim_visites_par_an", label: "Nb Entretien", align: "right", render: (r) => (r.contrat_clim_visites_par_an != null ? formatNombre(r.contrat_clim_visites_par_an) : "") },
     {
-      key: "nom",
+      key: "nom_tri",
       label: "Nom",
       sortable: true,
       render: (r) => (
