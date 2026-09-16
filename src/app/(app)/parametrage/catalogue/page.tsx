@@ -33,14 +33,9 @@ export default async function CataloguePage({ searchParams }: { searchParams: Pr
   const afficherFormulaire = estAdmin && (sp.ajouter === "1" || enEdition);
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-4 p-8">
-      <div>
-        <Link href="/parametrage" className="text-sm underline">
-          ← Paramétrage
-        </Link>
-      </div>
+    <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Catalogue de références matériel</h1>
+        <h1 className="text-xl font-bold">References (catalogue matériel)</h1>
         {estAdmin && (
           <Link href="/parametrage/catalogue?ajouter=1" className="rounded-md bg-black px-3 py-2 text-sm text-white">
             Nouvelle référence

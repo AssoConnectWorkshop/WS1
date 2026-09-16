@@ -5,9 +5,8 @@ import { toStringParams } from "@/lib/list-params";
 import { Badge } from "@/components/ui/Badge";
 import { Champ, CHAMP } from "@/components/ui/Champ";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { KeyValue } from "@/components/ui/KeyValue";
 import { Messages } from "@/components/ui/Messages";
-import { ChampsVehicule } from "@/components/vehicules/FormulaireVehicule";
+import { ChampsVehicule, type DerniersEvenements } from "@/components/vehicules/FormulaireVehicule";
 import { formatDate, formatNom, formatNombre } from "@/lib/format";
 import { ETATS_HORS_ALERTES, LIBELLES_ALERTES, TYPES_EVENEMENT, TYPES_RELEVE_KM, calculerAlertes, type Alertes, type Evenement } from "@/lib/vehicules";
 import { ajouterEvenement, mettreAJourVehicule, supprimerEvenement } from "../actions";
@@ -40,34 +39,46 @@ export default async function VehiculePage({ params, searchParams }: { params: P
   const options = (conducteurs ?? []).map((c) => ({ id: c.id, libelle: formatNom(c.prenom, c.nom) }));
   const typesOptions = typesEv && typesEv.length > 0 ? typesEv.map((t) => ({ code: t.code, libelle: t.libelle ?? TYPES_EVENEMENT[t.code] })) : Object.entries(TYPES_EVENEMENT).map(([code, libelle]) => ({ code: Number(code), libelle }));
 
+  const derniers: DerniersEvenements = {
+    dateDernierEntretien: revision ? formatDate(revision.date_evenement) : "",
+    kmDernierEntretien: revision ? formatNombre(revision.km) : "",
+    dateDernierCT: ct ? formatDate(ct.date_evenement) : "",
+    dateDernierCC: cc ? formatDate(cc.date_evenement) : "",
+    dateDernierReleve: releve ? formatDate(releve.date_evenement) : "",
+    releveKm: releve ? formatNombre(releve.km) : "",
+  };
+
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
-      <div>
-        <Link href="/vehicules" className="text-sm underline">
-          ← Parc automobile
-        </Link>
+    <div className="flex flex-col gap-4 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-2">
+        <h1 className="text-base font-bold">
+          Modification Véhicule <span className="ml-3 text-sm font-normal opacity-70">{vehicule.immatriculation}</span>
+        </h1>
+        <div className="flex flex-wrap items-center gap-2">
+          {alertes &&
+            (Object.keys(alertes) as (keyof Alertes)[])
+              .filter((k) => alertes[k])
+              .map((k) => (
+                <Badge key={k} tone="red">
+                  Problème de {LIBELLES_ALERTES[k].toLowerCase()}
+                </Badge>
+              ))}
+        </div>
       </div>
       <Messages sp={sp} />
-      <div className="flex flex-wrap items-center gap-2">
-        {alertes &&
-          (Object.keys(alertes) as (keyof Alertes)[]).filter((k) => alertes[k]).map((k) => (
-            <Badge key={k} tone="red">
-              Problème de {LIBELLES_ALERTES[k].toLowerCase()}
-            </Badge>
-          ))}
-      </div>
-      <h1 className="text-xl font-semibold">
-        {vehicule.immatriculation} <span className="text-sm font-normal opacity-60">{[vehicule.marque, vehicule.modele].filter(Boolean).join(" ")}</span>
-      </h1>
 
-      <KeyValue
-        items={[
-          { label: "Dernier relevé km", value: releve ? `${formatNombre(releve.km)} km le ${formatDate(releve.date_evenement)}` : "—" },
-          { label: "Dernière révision", value: revision ? `${formatNombre(revision.km)} km le ${formatDate(revision.date_evenement)}` : "—" },
-          { label: "Dernier contrôle technique", value: ct ? formatDate(ct.date_evenement) : "—" },
-          { label: "Dernier contrôle complémentaire", value: cc ? formatDate(cc.date_evenement) : "—" },
-        ]}
-      />
+      <form action={mettreAJourVehicule} className="flex flex-col gap-4">
+        <input type="hidden" name="vehicule_id" value={id} />
+        <ChampsVehicule vehicule={vehicule} conducteurs={options} etats={etats ?? []} derniers={derniers} />
+        <div className="flex items-center gap-3">
+          <Link href="/vehicules" className="rounded border bg-white px-3 py-1.5 text-xs dark:bg-white/5">
+            Quitter (SANS SAUVEGARDE)
+          </Link>
+          <button type="submit" className="rounded border bg-white px-3 py-1.5 text-xs dark:bg-white/5" title="Enregistrer">
+            💾
+          </button>
+        </div>
+      </form>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_20rem]">
         <div className="flex flex-col gap-3">
@@ -144,13 +155,6 @@ export default async function VehiculePage({ params, searchParams }: { params: P
         </form>
       </div>
 
-      <form action={mettreAJourVehicule} className="flex flex-col gap-4">
-        <input type="hidden" name="vehicule_id" value={id} />
-        <ChampsVehicule vehicule={vehicule} conducteurs={options} etats={etats ?? []} />
-        <button type="submit" className="w-fit rounded-md bg-black px-4 py-1.5 text-sm text-white">
-          Enregistrer le véhicule
-        </button>
-      </form>
     </div>
   );
 }

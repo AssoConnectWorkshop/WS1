@@ -81,14 +81,9 @@ export default async function ReferentielPage({
   const afficherFormulaire = estAdmin && (sp.ajouter === "1" || enEdition);
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-4 p-8">
-      <div>
-        <Link href="/parametrage" className="text-sm underline">
-          ← Paramétrage
-        </Link>
-      </div>
+    <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{config.label}</h1>
+        <h1 className="text-xl font-bold">{config.label}</h1>
         {estAdmin && (
           <Link href={`/parametrage/${config.slug}?ajouter=1`} className="rounded-md bg-black px-3 py-2 text-sm text-white">
             Ajouter
@@ -120,7 +115,7 @@ export default async function ReferentielPage({
 
       {lignes.length > 0 ? (
         <div className="overflow-x-auto rounded-lg border">
-          <table className="w-full border-collapse text-sm">
+          <table className="w-full border-collapse text-xs">
             <thead>
               <tr className="border-b bg-black/[0.02] text-left dark:bg-white/[0.03]">
                 {config.columns.map((c) => (

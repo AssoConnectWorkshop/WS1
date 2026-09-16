@@ -1,89 +1,114 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { inviteUtilisateur, changerRole } from "./actions";
+
+export const dynamic = "force-dynamic";
 
 type UtilisateurRow = {
   id: number;
   nom: string | null;
   prenom: string | null;
   email: string | null;
+  profil: number | null;
+  immatriculation: string | null;
+  code_intervenant: string | null;
+  login_legacy: string | null;
   role: "gestionnaire" | "administrateur" | null;
   auth_user_id: string | null;
+  societes: { libelle: string | null } | null;
 };
 
+const PROFILS: Record<number, string> = { 1: "Gestionnaire", 2: "Technicien", 3: "Gestionnaire(Tech)" };
+
+/** Sous-formulaire « Utilisateurs & Techniciens » de Form_Parametrage : feuille de données avec les colonnes Access. */
 export default async function UtilisateursPage() {
   const current = await getCurrentUser();
   if (!current?.utilisateur) redirect("/login");
-  if (current.role !== "administrateur") redirect("/");
+  const estAdmin = current.role === "administrateur";
 
   const supabase = await createClient();
   const { data } = await supabase
     .from("utilisateurs")
-    .select("id, nom, prenom, email, role, auth_user_id")
-    .eq("profil", 1)
-    .order("nom");
+    .select("id, nom, prenom, email, profil, immatriculation, code_intervenant, login_legacy, role, auth_user_id, societes(libelle)")
+    .order("nom")
+    .order("prenom");
 
-  const utilisateurs = (data ?? []) as UtilisateurRow[];
+  const utilisateurs = (data ?? []) as unknown as UtilisateurRow[];
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6 p-8">
-      <h1 className="text-2xl font-bold">Utilisateurs</h1>
-      <p className="text-sm opacity-70">
-        Gestionnaires FMC (profil = 1). Les techniciens ne sont pas invités à cette étape.
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-xl font-bold">Utilisateurs &amp; Techniciens</h1>
+        <div className="flex items-center gap-2">
+          <span className="rounded border bg-red-600 px-3 py-1 text-xs font-semibold text-white">Si Suppression Technicien : Penser à supprimer LE MAIL et LE MOT DE PASSE</span>
+          <Link href="/parametrage" className="rounded bg-red-600 px-3 py-1 text-xs text-white" title="Fermer">
+            ✕
+          </Link>
+        </div>
+      </div>
+      <p className="text-xs opacity-70">
+        Les gestionnaires (type 1) peuvent être invités à se connecter ; l&apos;accès à l&apos;application remplace le mot de passe Access.
+        {!estAdmin && " Consultation seule : les invitations et rôles sont réservés à l'administrateur."}
       </p>
 
-      <table className="w-full border-collapse text-sm">
-        <thead>
-          <tr className="border-b text-left">
-            <th className="py-2">Nom</th>
-            <th>E-mail</th>
-            <th>Rôle</th>
-            <th>Compte</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {utilisateurs.length === 0 && (
-            <tr>
-              <td colSpan={5} className="py-6 text-center opacity-60">
-                Aucun utilisateur (données transférées à l&apos;étape 2 ?).
-              </td>
+      <div className="overflow-x-auto rounded border">
+        <table className="w-full border-collapse text-xs">
+          <thead>
+            <tr className="border-b bg-black/[0.03] text-left dark:bg-white/[0.05]">
+              {["Nom utilisateur", "Prénom utilisateur", "Type utilisateur", "Immat", "Intervenant", "Société", "Code FMC", "Login FMC", "Mail", "Accès application", ""].map((h) => (
+                <th key={h} className="whitespace-nowrap px-2 py-1 font-medium">
+                  {h}
+                </th>
+              ))}
             </tr>
-          )}
-          {utilisateurs.map((u) => (
-            <tr key={u.id} className="border-b">
-              <td className="py-2">{[u.prenom, u.nom].filter(Boolean).join(" ") || "—"}</td>
-              <td>{u.email ?? "—"}</td>
-              <td>{u.role ?? "—"}</td>
-              <td>{u.auth_user_id ? "invité" : "non invité"}</td>
-              <td className="py-2 text-right">
-                {!u.auth_user_id && u.email && (
-                  <form action={inviteUtilisateur}>
-                    <input type="hidden" name="utilisateurId" value={u.id} />
-                    <button type="submit" className="rounded-md border px-2 py-1 text-xs">
-                      Inviter
-                    </button>
-                  </form>
-                )}
-                {u.auth_user_id && (
-                  <form action={changerRole}>
-                    <input type="hidden" name="utilisateurId" value={u.id} />
-                    <input
-                      type="hidden"
-                      name="role"
-                      value={u.role === "administrateur" ? "gestionnaire" : "administrateur"}
-                    />
-                    <button type="submit" className="rounded-md border px-2 py-1 text-xs">
-                      Passer {u.role === "administrateur" ? "gestionnaire" : "administrateur"}
-                    </button>
-                  </form>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {utilisateurs.length === 0 && (
+              <tr>
+                <td colSpan={11} className="py-6 text-center opacity-60">
+                  Aucun utilisateur.
+                </td>
+              </tr>
+            )}
+            {utilisateurs.map((u) => (
+              <tr key={u.id} className="border-b last:border-0 hover:bg-blue-100 dark:hover:bg-blue-950/40">
+                <td className="whitespace-nowrap px-2 py-1">{u.nom ?? ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.prenom ?? ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.profil != null ? PROFILS[u.profil] ?? u.profil : ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.immatriculation ?? ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.code_intervenant ?? ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.societes?.libelle ?? ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.code_intervenant ?? ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.login_legacy ?? ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.email ?? ""}</td>
+                <td className="whitespace-nowrap px-2 py-1">{u.auth_user_id ? `invité · ${u.role ?? "gestionnaire"}` : ""}</td>
+                <td className="whitespace-nowrap px-2 py-1 text-right">
+                  {estAdmin && u.profil !== 2 && !u.auth_user_id && u.email && (
+                    <form action={inviteUtilisateur}>
+                      <input type="hidden" name="utilisateurId" value={u.id} />
+                      <button type="submit" className="rounded border px-2 py-0.5 text-[11px]">
+                        Inviter
+                      </button>
+                    </form>
+                  )}
+                  {estAdmin && u.auth_user_id && (
+                    <form action={changerRole}>
+                      <input type="hidden" name="utilisateurId" value={u.id} />
+                      <input type="hidden" name="role" value={u.role === "administrateur" ? "gestionnaire" : "administrateur"} />
+                      <button type="submit" className="rounded border px-2 py-0.5 text-[11px]">
+                        Passer {u.role === "administrateur" ? "gestionnaire" : "administrateur"}
+                      </button>
+                    </form>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="text-xs opacity-70">Enr : {utilisateurs.length}</div>
     </div>
   );
 }

@@ -26,6 +26,8 @@ type SiteRow = {
   contrat_clim_redevance_secondaire: number | null;
   commentaire_general: string | null;
   rdv_a_prendre: boolean | null;
+  code_client: string | null;
+  dossier_chemin: string | null;
   retard_paiement: boolean | null;
   ne_plus_intervenir: boolean | null;
 };
@@ -110,11 +112,24 @@ export default async function SitesPage({
   ];
 
   const columns: Column<SiteRow>[] = [
+    {
+      key: "dossier_chemin",
+      label: "Ct",
+      render: (r) =>
+        r.dossier_chemin ? (
+          <span className="block max-w-[4rem] truncate text-blue-700 underline" title={r.dossier_chemin}>
+            {r.dossier_chemin}
+          </span>
+        ) : (
+          ""
+        ),
+    },
     { key: "rdv_a_prendre", label: "RDV à Prendre", align: "center", render: (r) => <input type="checkbox" readOnly checked={!!r.rdv_a_prendre} aria-label="RDV à prendre" /> },
     { key: "donneur_ordre_nom", label: "Donneur", render: (r) => r.donneur_ordre_nom ?? "" },
     { key: "intervenant_nom", label: "Intervenant", render: (r) => r.intervenant_nom ?? "" },
     { key: "zone_libelle", label: "Zone", render: (r) => r.zone_libelle ?? "" },
     { key: "numero_magasin", label: "N°", sortable: true, align: "right", render: (r) => r.numero_magasin ?? "" },
+    { key: "code_client", label: "Co", render: (r) => r.code_client ?? "" },
     { key: "client_nom", label: "Client", sortable: true, render: (r) => <Link className="hover:underline" href={`/clients/${r.client_id}`}>{r.client_nom}</Link> },
     { key: "contrat_clim_numero", label: "Contrat client", render: (r) => r.contrat_clim_numero ?? "" },
     { key: "contrat_clim_redevance", label: "Tarif 1 Cl", align: "right", render: (r) => (r.contrat_clim_redevance != null ? formatMontant(r.contrat_clim_redevance) : "") },

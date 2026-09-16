@@ -9,7 +9,7 @@ import { genererBonPdf } from "@/lib/bon-pdf";
 import { envoyerCourriel } from "@/lib/email";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError } from "@/lib/action-utils";
-import { premiereErreur } from "@/lib/zod-form";
+import { booleen, entier, nombre, premiereErreur, texte } from "@/lib/zod-form";
 
 /** Recalcule et persiste `interventions.noms_techniciens` (dénormalisé, utilisé par les listes). */
 async function recalculerNomsTechniciens(supabase: Awaited<ReturnType<typeof createClient>>, interventionId: number) {
@@ -120,54 +120,76 @@ export async function mettreAJourDemande(formData: FormData) {
 
 const RealisationSchema = z.object({
   intervention_id: z.coerce.number().int(),
-  date_realisee: z.string().optional(),
-  heure_arrivee: z.string().optional(),
-  heure_depart: z.string().optional(),
-  panne_code: z.coerce.number().int().optional().or(z.literal("")),
-  prestations_realisees: z.string().optional(),
-  commentaire_technicien: z.string().optional(),
-  devis_a_faire: z.string().optional(),
-  devis_fait: z.string().optional(),
-  registre_securite_mis_a_jour: z.string().optional(),
+  date_realisee: texte,
+  date_retour_fiche: texte,
+  numero_bon: entier,
+  retour_fiche_original: booleen,
+  retour_fiche_copie: booleen,
+  retour_fiche_numerique: booleen,
+  audit_fait: booleen,
+  photo_faite: booleen,
+  location_nacelle: booleen,
+  registre_securite_mis_a_jour: booleen,
+  controle_etancheite_annuel: booleen,
+  controle_etancheite_ponctuel: booleen,
+  fluide_id: entier,
+  quantite_gaz_kg: nombre,
+  temps_aller: texte,
+  temps_retour: texte,
+  heure_arrivee: texte,
+  heure_depart: texte,
+  masquer_heures_sur_bon: booleen,
+  nombre_techniciens: entier,
+  saisi_par_id: entier,
+  commentaire_post_intervention: texte,
+  prestations_realisees: texte,
+  commentaire_technicien: texte,
+  statut_facturation_code: entier,
+  non_facturable: booleen,
+  commentaire_cloture_panne: texte,
+  panne_code: entier,
+  panne_origine_externe: booleen,
+  devis_ne_sera_pas_fait: booleen,
+  devis_a_faire: booleen,
+  devis_fait: booleen,
+  urgence_devis: entier,
+  duplicata_traite_par_id: entier,
+  duplicata_traite: booleen,
+  commentaire_devis_interne: texte,
 });
 
+/** Onglet « Clôture de l'intervention en cours » de Form_Intervention : un seul formulaire pour tout le cadre. */
 export async function mettreAJourRealisation(formData: FormData) {
-  const { utilisateur } = await requireUtilisateur();
+  const { utilisateur, role } = await requireUtilisateur();
+  const retour = `/interventions/${formData.get("intervention_id")}?onglet=realisation`;
   const parsed = RealisationSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) {
-    redirectWithError(`/interventions/${formData.get("intervention_id")}?onglet=realisation`, premiereErreur(parsed));
-  }
-  const { intervention_id, heure_arrivee, heure_depart, panne_code, registre_securite_mis_a_jour, ...rest } = parsed.data;
+  if (!parsed.success) redirectWithError(retour, premiereErreur(parsed));
+  const { intervention_id, statut_facturation_code, ...champs } = parsed.data;
 
-  if (heure_arrivee && heure_depart && heure_depart <= heure_arrivee) {
-    redirectWithError(`/interventions/${intervention_id}?onglet=realisation`, "L'heure de départ doit être postérieure à l'heure d'arrivée.");
+  if (champs.heure_arrivee && champs.heure_depart && champs.heure_depart <= champs.heure_arrivee) {
+    redirectWithError(retour, "L'heure de départ doit être postérieure à l'heure d'arrivée.");
   }
 
   const supabase = await createClient();
-  const { data: intervention } = await supabase.from("interventions").select("date_realisee, site_id, type_code").eq("id", intervention_id).maybeSingle();
+  const { data: intervention } = await supabase.from("interventions").select("date_realisee, site_id, type_code, statut_facturation_code").eq("id", intervention_id).maybeSingle();
   if (!intervention) redirectWithError(`/interventions/${intervention_id}`, "Intervention introuvable.");
 
-  const registreCoche = registre_securite_mis_a_jour === "1";
-  const dateRealisee = parsed.data.date_realisee || intervention.date_realisee;
-  if (registreCoche && !dateRealisee) {
-    redirectWithError(`/interventions/${intervention_id}?onglet=realisation`, "La date réalisée est requise pour cocher « registre mis à jour ».");
+  const registreCoche = champs.registre_securite_mis_a_jour;
+  const dateRealisee = champs.date_realisee || intervention.date_realisee;
+  if (registreCoche && !dateRealisee) redirectWithError(retour, "La date réalisée est requise pour cocher « Mise à jour du registre de sécurité ».");
+
+  // Statuts de facturation réservés (Verification_Droit_Modif) : même règle que l'onglet facturation.
+  if (statut_facturation_code !== intervention.statut_facturation_code) {
+    const codes = [intervention.statut_facturation_code, statut_facturation_code].filter((c): c is number => c != null);
+    const { data: statuts } = codes.length ? await supabase.from("statuts_facturation").select("code, reserve_admin").in("code", codes) : { data: [] };
+    if ((statuts ?? []).some((s) => s.reserve_admin) && role !== "administrateur") redirectWithError(retour, "Ce statut de facturation est réservé à l'administrateur.");
   }
 
   const { error } = await supabase
     .from("interventions")
-    .update({
-      ...rest,
-      heure_arrivee: heure_arrivee || null,
-      heure_depart: heure_depart || null,
-      panne_code: panne_code ? Number(panne_code) : null,
-      registre_securite_mis_a_jour: registreCoche,
-      devis_a_faire: parsed.data.devis_a_faire === "1",
-      devis_fait: parsed.data.devis_fait === "1",
-      date_realisee: parsed.data.date_realisee || null,
-    })
+    .update({ ...champs, statut_facturation_code })
     .eq("id", intervention_id);
-
-  if (error) redirectWithError(`/interventions/${intervention_id}?onglet=realisation`, "La mise à jour a échoué.");
+  if (error) redirectWithError(retour, "La mise à jour a échoué.");
 
   if (registreCoche && dateRealisee) {
     const dateJour = dateRealisee.slice(0, 10);
@@ -185,7 +207,7 @@ export async function mettreAJourRealisation(formData: FormData) {
 
   await enregistrerJournal(supabase, "interventions", intervention_id, utilisateur.id, { action: "maj_realisation" });
   revalidatePath(`/interventions/${intervention_id}`);
-  redirect(`/interventions/${intervention_id}?onglet=realisation`);
+  redirect(retour);
 }
 
 export async function basculerResoluTelephone(formData: FormData) {
@@ -354,7 +376,7 @@ const FacturationSchema = z.object({
 export async function mettreAJourFacturation(formData: FormData) {
   const { utilisateur, role } = await requireUtilisateur();
   const parsed = FacturationSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirectWithError(`/interventions/${formData.get("intervention_id")}?onglet=facturation`, "Formulaire invalide.");
+  if (!parsed.success) redirectWithError(`/interventions/${formData.get("intervention_id")}?onglet=demande`, "Formulaire invalide.");
   const { intervention_id, montant_fmc, montant_sous_traitant, statut_facturation_code } = parsed.data;
 
   const supabase = await createClient();
@@ -373,7 +395,7 @@ export async function mettreAJourFacturation(formData: FormData) {
       .in("code", [intervention.statut_facturation_code, nouveauStatut].filter((c): c is number => c != null));
     const reserve = (statuts ?? []).some((s) => s.reserve_admin);
     if (reserve && role !== "administrateur") {
-      redirectWithError(`/interventions/${intervention_id}?onglet=facturation`, "Ce statut de facturation est réservé à l'administrateur.");
+      redirectWithError(`/interventions/${intervention_id}?onglet=demande`, "Ce statut de facturation est réservé à l'administrateur.");
     }
   }
 
@@ -390,11 +412,11 @@ export async function mettreAJourFacturation(formData: FormData) {
     })
     .eq("id", intervention_id);
 
-  if (error) redirectWithError(`/interventions/${intervention_id}?onglet=facturation`, "La mise à jour a échoué.");
+  if (error) redirectWithError(`/interventions/${intervention_id}?onglet=demande`, "La mise à jour a échoué.");
 
   await enregistrerJournal(supabase, "interventions", intervention_id, utilisateur.id, { action: "maj_facturation" });
   revalidatePath(`/interventions/${intervention_id}`);
-  redirect(`/interventions/${intervention_id}?onglet=facturation`);
+  redirect(`/interventions/${intervention_id}?onglet=demande`);
 }
 
 export async function ajouterTechnicien(formData: FormData) {
