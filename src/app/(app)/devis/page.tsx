@@ -51,7 +51,8 @@ export default async function DevisPage({
     .select("id, numero, statut_code, famille, site_id, client_id, montant_ht, envoye_par_id, date_envoi, fichier_chemin, intervention_origine_id, type_panne_libelle, sites(nom), clients(nom)", {
       count: "exact",
     })
-    .eq("famille", famille);
+    .eq("famille", famille)
+    .is("supprime_le", null);
 
   if (sp.client) query = query.eq("client_id", Number(sp.client));
   if (sp.site) query = query.eq("site_id", Number(sp.site));
@@ -82,7 +83,15 @@ export default async function DevisPage({
   ];
 
   const columns: Column<(typeof rows)[number]>[] = [
-    { key: "numero", label: "Numéro", render: (r) => r.numero ?? "—" },
+    {
+      key: "numero",
+      label: "Numéro",
+      render: (r) => (
+        <Link className="hover:underline" href={`/devis/${r.id}`}>
+          {r.numero ?? `#${r.id}`}
+        </Link>
+      ),
+    },
     { key: "statut_code", label: "Statut", render: (r) => <Badge tone={statutDevisTone(r.statut_code)}>{statuts?.find((s) => s.code === r.statut_code)?.libelle ?? r.statut_code}</Badge> },
     { key: "site", label: "Site", render: (r) => (r.site_id ? <Link className="hover:underline" href={`/sites/${r.site_id}`}>{r.sites?.nom}</Link> : "—") },
     { key: "client", label: "Client", render: (r) => (r.client_id ? <Link className="hover:underline" href={`/clients/${r.client_id}`}>{r.clients?.nom}</Link> : "—") },
@@ -112,7 +121,13 @@ export default async function DevisPage({
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-4 p-8">
-      <h1 className="text-2xl font-bold">Devis</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Devis</h1>
+        <Link href={`/devis/nouveau?famille=${famille}`} className="rounded-md bg-black px-3 py-2 text-sm text-white">
+          Nouveau devis
+        </Link>
+      </div>
+      {sp.info && <p className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">{sp.info}</p>}
       <Tabs tabs={FAMILLES} active={famille} searchParams={sp} />
       <FilterBar fields={filterFields} values={sp} />
       <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun devis." />
