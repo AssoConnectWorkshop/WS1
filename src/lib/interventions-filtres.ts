@@ -18,8 +18,10 @@ export function appliquerFiltresInterventions(query: any, sp: Record<string, str
   }
   if (sp.type) query = query.eq("type_code", Number(sp.type));
   if (sp.statut) {
-    query = query.eq("statut_code", Number(sp.statut));
-  } else if (!vue?.statut_code && sp.clotures !== "1") {
+    // Access (Filtre_OM_Test) : « Afficher les clôturées » étend le statut choisi à `in (<statut>, 7)`.
+    query = sp.clotures === "1" ? query.in("statut_code", [Number(sp.statut), 7]) : query.eq("statut_code", Number(sp.statut));
+  } else if (!vue?.statut_code && !sp.facturation && !vue?.statut_facturation_code && sp.clotures !== "1") {
+    // Le statut de facturation n'est posé qu'après clôture : un filtre facturation doit inclure les clôturées.
     query = query.neq("statut_code", 7);
   }
   if (sp.intervenant) query = query.eq("intervenant_id", Number(sp.intervenant));
