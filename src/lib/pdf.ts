@@ -31,7 +31,7 @@ export class Redacteur {
     return new Redacteur(doc, normale, grasse);
   }
 
-  private sauterSiBesoin(hauteur: number) {
+  sauterSiBesoin(hauteur: number) {
     if (this.y - hauteur < MARGE) {
       this.page = this.doc.addPage([PAGE.largeur, PAGE.hauteur]);
       this.y = PAGE.hauteur - MARGE;
@@ -79,6 +79,64 @@ export class Redacteur {
 
   espace(h = 8) {
     this.y -= h;
+  }
+
+  /** Texte posé à une position absolue, sans faire avancer le curseur. */
+  texteA(texte: string, x: number, y: number, { taille = 10, gras = false, alignement = "gauche" }: { taille?: number; gras?: boolean; alignement?: "gauche" | "centre" | "droite" } = {}) {
+    const police = gras ? this.grasse : this.normale;
+    const t = ansi(texte);
+    const w = police.widthOfTextAtSize(t, taille);
+    const xr = alignement === "centre" ? x - w / 2 : alignement === "droite" ? x - w : x;
+    this.page.drawText(t, { x: xr, y, size: taille, font: police, color: rgb(0.1, 0.1, 0.1) });
+  }
+
+  /** Ligne centrée sur la largeur utile, qui fait avancer le curseur. */
+  centre(texte: string, { taille = 10, gras = false, souligne = false }: { taille?: number; gras?: boolean; souligne?: boolean } = {}) {
+    this.sauterSiBesoin(taille + 4);
+    const police = gras ? this.grasse : this.normale;
+    const t = ansi(texte);
+    const w = police.widthOfTextAtSize(t, taille);
+    const x = PAGE.largeur / 2 - w / 2;
+    this.page.drawText(t, { x, y: this.y - taille, size: taille, font: police, color: rgb(0.1, 0.1, 0.1) });
+    if (souligne) this.page.drawLine({ start: { x, y: this.y - taille - 1.5 }, end: { x: x + w, y: this.y - taille - 1.5 }, thickness: 0.6, color: rgb(0.1, 0.1, 0.1) });
+    this.y -= taille + 4;
+  }
+
+  rectangle(x: number, y: number, largeur: number, hauteur: number, epaisseur = 0.8) {
+    this.page.drawRectangle({ x, y, width: largeur, height: hauteur, borderWidth: epaisseur, borderColor: rgb(0.1, 0.1, 0.1) });
+  }
+
+  /** Case à cocher dessinée (les polices standard n'ont pas de ☑). */
+  caseA(coche: boolean, x: number, y: number, taille = 8) {
+    this.rectangle(x, y, taille, taille, 0.6);
+    if (coche) {
+      this.page.drawLine({ start: { x: x + 1.5, y: y + 1.5 }, end: { x: x + taille - 1.5, y: y + taille - 1.5 }, thickness: 1, color: rgb(0.1, 0.1, 0.1) });
+      this.page.drawLine({ start: { x: x + 1.5, y: y + taille - 1.5 }, end: { x: x + taille - 1.5, y: y + 1.5 }, thickness: 1, color: rgb(0.1, 0.1, 0.1) });
+    }
+  }
+
+  /**
+   * Cadre de l'état Access : titre centré souligné, contenu, puis rectangle sur toute la largeur.
+   * Le contenu ne doit pas changer de page (hauteur minimale réservée avant de commencer).
+   */
+  cadre(titre: string | null, contenu: () => void, { hauteurMin = 0, reserve = 60 }: { hauteurMin?: number; reserve?: number } = {}) {
+    this.sauterSiBesoin(Math.max(hauteurMin, reserve));
+    const haut = this.y;
+    this.espace(4);
+    if (titre) this.centre(titre.toUpperCase(), { taille: 9, gras: true, souligne: true });
+    contenu();
+    this.espace(4);
+    if (haut - this.y < hauteurMin) this.y = haut - hauteurMin;
+    this.rectangle(MARGE, this.y, LARGEUR_TEXTE, haut - this.y);
+    this.espace(3);
+  }
+
+  piedDePage(lignes: string[]) {
+    let y = MARGE - 6;
+    for (const l of [...lignes].reverse()) {
+      this.texteA(l, PAGE.largeur / 2, y, { taille: 7.5, alignement: "centre" });
+      y += 9;
+    }
   }
 
   image(img: PDFImage, { x, largeurMax, hauteurMax }: { x: number; largeurMax: number; hauteurMax: number }) {
