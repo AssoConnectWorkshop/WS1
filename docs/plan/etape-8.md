@@ -253,5 +253,10 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   remplace le mot de passe Kadi) attribuable depuis Utilisateurs & Techniciens ; message d'erreur de
   requête affiché sous les listes et comptage estimé sur la liste générale (liste vide constatée en
   production). Migration `20260916210000_etape8_taches_gaz_comptable.sql`.
+- [x] Kanban `/taches` en glisser-déposer natif avec panneau de détail (titre en grand, colonne,
+  dates, description) ; carte « comptage estimé » ajoutée en Next. Les entrées du menu vers la liste
+  des interventions (`?vue=`) sont traduites en filtres visibles (statut, statut facturation, devis
+  à faire) : tout décocher redonne la même liste partout, comme dans Access. La liste vide en
+  production était bien due au comptage exact : elle s'affiche depuis le passage en comptage estimé.
 - [ ] À faire quand les captures arriveront : onglet « Création d'intervention », planification,
   fiche intervenant, listes de devis générales, comparaison du rapport d'intervention PDF.

@@ -11,3 +11,19 @@ export const VUE_FILTERS: Record<
   "attente-materiel": { statut_code: 2 },
   duplicata: { statut_code: 7, devis_a_faire: true },
 };
+
+/** Traduction d'une vue du menu en filtres visibles de la liste (les cases et listes reflètent le pré-filtre, décochables). */
+export function parametresVue(vue: string): Record<string, string> | null {
+  const v = VUE_FILTERS[vue];
+  if (!v) return null;
+  const p: Record<string, string> = {};
+  if (v.statut_code != null) p.statut = String(v.statut_code);
+  if (v.statut_facturation_code != null) p.facturation = String(v.statut_facturation_code);
+  if (v.devis_a_faire) p.devis_a_faire = "1";
+  return p;
+}
+
+export function lienVue(vue: string) {
+  const p = parametresVue(vue);
+  return p ? `/interventions?${new URLSearchParams(p).toString()}` : "/interventions";
+}

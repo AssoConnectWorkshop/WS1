@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { parametresVue } from "@/lib/vues-tableau-de-bord";
 import { createClient } from "@/lib/supabase/server";
 import { parseListParams, toStringParams, toArrayParam } from "@/lib/list-params";
 import { appliquerFiltresInterventions, chaineFiltres } from "@/lib/interventions-filtres";
@@ -69,6 +71,11 @@ export default async function InterventionsPage({
 }) {
   const raw = await searchParams;
   const sp = toStringParams(raw);
+  // Les entrées du menu (?vue=) deviennent des filtres visibles : même liste partout une fois tout décoché.
+  if (sp.vue) {
+    const p = parametresVue(sp.vue);
+    redirect(p ? `/interventions?${new URLSearchParams(p).toString()}` : "/interventions");
+  }
   const zonesSel = toArrayParam(raw.zones);
   const supabase = await createClient();
 
@@ -168,7 +175,6 @@ export default async function InterventionsPage({
   return (
     <div className="flex flex-col gap-3 p-4">
       <form method="GET" className="grid gap-3 rounded border p-3 lg:grid-cols-[20rem_12rem_14rem_1fr]">
-        {sp.vue && <input type="hidden" name="vue" value={sp.vue} />}
         {/* Bloc gauche : critères principaux */}
         <div className={LIGNE}>
           <span className="text-right">Client</span>

@@ -14,6 +14,7 @@ const NAV_ITEMS: { href: string; label: string; adminOnly?: boolean }[] = [
   { href: "/vehicules", label: "Véhicules" },
   { href: "/parametrage", label: "Paramétrage" },
   { href: "/taches", label: "À faire" },
+  { href: "/taches/tech", label: "Todo tech" },
 ];
 
 async function signOut() {
