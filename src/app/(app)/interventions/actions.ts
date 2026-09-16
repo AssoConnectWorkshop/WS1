@@ -4,6 +4,8 @@ import { z } from "zod";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { genererBonPdf } from "@/lib/bon-pdf";
 import { enregistrerJournal } from "@/lib/journal";
 import { requireUtilisateur, redirectWithError } from "@/lib/action-utils";
 import { premiereErreur } from "@/lib/zod-form";
@@ -525,4 +527,33 @@ export async function creerPartieSuivante(formData: FormData) {
 
   await enregistrerJournal(supabase, "interventions", created.id, utilisateur.id, { action: "partie_suivante", source_id: interventionId, n });
   redirect(`/interventions/${created.id}`);
+}
+
+/** « Générer le PDF » : archive le rapport dans Storage `bons/<année>/<id>.pdf` ; prérequis du statut 7 (analysis 02 §9). */
+export async function genererEtEnregistrerBon(formData: FormData) {
+  const { utilisateur } = await requireUtilisateur();
+  const interventionId = Number(formData.get("intervention_id"));
+  const retour = `/interventions/${interventionId}?onglet=realisation`;
+
+  let admin: ReturnType<typeof createAdminClient>;
+  try {
+    admin = createAdminClient();
+  } catch {
+    redirectWithError(retour, "Stockage non configuré (SUPABASE_SERVICE_ROLE_KEY).");
+  }
+
+  const supabase = await createClient();
+  const bon = await genererBonPdf(supabase, admin, interventionId);
+  if (!bon) redirectWithError(retour, "Intervention introuvable.");
+
+  const chemin = `${bon.annee}/${interventionId}.pdf`;
+  const { error } = await admin.storage.from("bons").upload(chemin, Buffer.from(bon.octets), { contentType: "application/pdf", upsert: true });
+  if (error) redirectWithError(retour, `L'enregistrement du PDF a échoué : ${error.message}`);
+
+  const { error: erreurMaj } = await supabase.from("interventions").update({ chemin_bon_pdf: `bons/${chemin}` }).eq("id", interventionId);
+  if (erreurMaj) redirectWithError(retour, "Le PDF est archivé mais la fiche n'a pas pu être mise à jour.");
+
+  await enregistrerJournal(supabase, "interventions", interventionId, utilisateur.id, { action: "generation_bon_pdf", chemin: `bons/${chemin}` });
+  revalidatePath(`/interventions/${interventionId}`);
+  redirect(`${retour}&info=${encodeURIComponent(`PDF archivé (bons/${chemin}).`)}`);
 }

@@ -52,4 +52,8 @@ au bureau (la tablette et le portail restent hors périmètre, voir `docs/hors-p
 
 ## État
 
-- [ ] Non commencée
+- [x] Buckets Storage privés `bons`, `certificats`, `logos` (migration, lecture/écriture par le serveur).
+- [x] 6.1 Rapport d'intervention PDF (`pdf-lib`) : rendu à la volée sur `/interventions/[id]/bon.pdf` (authentifié) et « Générer et archiver le PDF » → `bons/<année>/<id>.pdf`, `chemin_bon_pdf` renseigné (prérequis du statut 7). Contenu de l'état Access : logo (Storage `logos/donneur-<id>` ou `logos/fmc`, sinon coordonnées FMC en texte), n° de fiche, n° site et code, date, client, site, adresse, temps de trajet et temps sur site (masqués si `masquer_heures_sur_bon`), nombre de techniciens, registre de sécurité, prestations, à prévoir / reste à faire, commentaire, type, signature client (nom, image si URL), techniciens (noms, image si URL), mention obligatoire. Nom de fichier proposé « jj.mm.aaaa (Selon <devis ou DI>) ».
+- [x] 6.2 Certificat d'étanchéité : éligibilité (`certificat_etancheite_edite = false`, contrôle daté de l'année), pré-contrôles bloquants avec les messages Access (fluide connu de famille HCFC/HFC/HFO, charge > 0, GWP > 0, marque / référence / n° de série), t.éq.CO2 = kg × GWP / 1000, cases par seuils, détection permanente selon le site ; aperçu `/materiels/[id]/certificat.pdf`, « Éditer les certificats d'étanchéité (n) » sur la fiche site → Storage `certificats/<année>/<intervention>-<materiel>.pdf` puis `certificat_etancheite_edite = true`, compte rendu des échecs. Opérateur, SIRET, n° d'attestation et détecteur dans `parametres_application` (paramétrage). Mise en page équivalente au Cerfa : le fond image n'est pas superposé (coordonnées du formulaire officiel non disponibles).
+- [x] Tables `parametres_application` (éditable au paramétrage) et `journal_emails`.
+- [ ] 6.3 à 6.8 : à faire.

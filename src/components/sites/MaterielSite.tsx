@@ -248,7 +248,14 @@ export async function MaterielSite({ siteId, modifierId }: { siteId: number; mod
                 <td>{m.fluide_libelle ?? "—"}</td>
                 <td className="text-right">{formatNombre(m.charge_fluide_kg)}</td>
                 <td>{formatDate(m.date_mise_en_service)}</td>
-                <td>{oui(m.certificat_etancheite_edite)}</td>
+                <td className="whitespace-nowrap">
+                  {oui(m.certificat_etancheite_edite)}
+                  {m.date_controle_etancheite && (
+                    <a href={`/materiels/${m.id}/certificat.pdf`} target="_blank" rel="noreferrer" className="ml-1 text-xs underline">
+                      PDF
+                    </a>
+                  )}
+                </td>
                 <td className="whitespace-nowrap text-right">
                   <Link href={`/sites/${siteId}?onglet=materiel&modifier=${m.id}`} className="text-xs underline">
                     Modifier

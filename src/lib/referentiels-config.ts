@@ -92,6 +92,17 @@ export const REFERENTIELS: ReferentielConfig[] = [
   simple("types-evenement-vehicule", "types_evenement_vehicule", "Types d'événement véhicule"),
   simple("etats-vehicule", "etats_vehicule", "États véhicule"),
   simple("statuts-devis", "statuts_devis", "Statuts de devis"),
+  {
+    slug: "parametres",
+    table: "parametres_application",
+    label: "Paramètres de l'application",
+    orderBy: "cle",
+    columns: [
+      { key: "cle", label: "Clé", type: "text", required: true },
+      { key: "libelle", label: "Libellé", type: "text", required: true },
+      { key: "valeur", label: "Valeur", type: "text" },
+    ],
+  },
 ];
 
 export function getReferentiel(slug: string) {

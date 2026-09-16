@@ -15,7 +15,7 @@ import { statutInterventionTone } from "@/lib/badges";
 import { formatDate, formatMontant, formatNombre, oui } from "@/lib/format";
 import { toStringParams } from "@/lib/list-params";
 import { JOURS, LIBELLES_LOT, type Lot } from "@/lib/sites";
-import { basculerNePlusIntervenir, fermerSite, geocoderSite, rouvrirSite } from "../actions";
+import { basculerNePlusIntervenir, fermerSite, genererCertificats, geocoderSite, rouvrirSite } from "../actions";
 
 export const dynamic = "force-dynamic";
 
@@ -186,6 +186,14 @@ export default async function SitePage({
             Géocoder l&apos;adresse
           </button>
         </form>
+        {(ceAEditer ?? 0) > 0 && (
+          <form action={genererCertificats}>
+            <input type="hidden" name="site_id" value={id} />
+            <button type="submit" className={BOUTON}>
+              Éditer les certificats d&apos;étanchéité ({ceAEditer})
+            </button>
+          </form>
+        )}
         <Link href={`/sites/${id}?confirmer=ne_plus_intervenir`} className={BOUTON}>
           {site.ne_plus_intervenir ? "Reprendre les interventions" : "Ne plus intervenir"}
         </Link>
