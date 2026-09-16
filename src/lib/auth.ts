@@ -1,6 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export type Role = "gestionnaire" | "administrateur" | "comptable";
 
@@ -23,6 +24,30 @@ export type CurrentUser = {
 };
 
 /**
+ * Compte Supabase Auth créé à la main dans le tableau de bord (aucun e-mail) : à la première
+ * connexion, rattachement à la ligne `utilisateurs` non rattachée dont l'e-mail est identique.
+ * Rôle gestionnaire si la ligne n'en a pas. Écriture via le client service role (RLS).
+ */
+async function rattacherParEmail(authUserId: string, email: string): Promise<Utilisateur | null> {
+  try {
+    const admin = createAdminClient();
+    const { data: candidats } = await admin
+      .from("utilisateurs")
+      .select("id, nom, prenom, email, profil, role")
+      .is("auth_user_id", null)
+      .ilike("email", email.trim())
+      .limit(2);
+    if (!candidats || candidats.length !== 1) return null;
+    const ligne = candidats[0] as Utilisateur;
+    const role: Role = ligne.role ?? "gestionnaire";
+    const { error } = await admin.from("utilisateurs").update({ auth_user_id: authUserId, role }).eq("id", ligne.id).is("auth_user_id", null);
+    return error ? null : { ...ligne, role };
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Utilisateur courant côté serveur, en joignant `utilisateurs.auth_user_id`.
  * Retourne `null` si personne n'est authentifié. `utilisateur` est `null` si le compte
  * Supabase Auth n'est rattaché à aucune ligne `utilisateurs` (cf. étape 3, layout applicatif).
@@ -42,11 +67,13 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 
   if (!user) return null;
 
-  const { data: utilisateur } = await supabase
+  let { data: utilisateur } = await supabase
     .from("utilisateurs")
     .select("id, nom, prenom, email, profil, role")
     .eq("auth_user_id", user.id)
     .maybeSingle();
+
+  if (!utilisateur && user.email) utilisateur = await rattacherParEmail(user.id, user.email);
 
   return {
     authUser: { id: user.id, email: user.email ?? null },
