@@ -9,6 +9,13 @@ export async function requireUtilisateur() {
   return { ...current, utilisateur: current.utilisateur };
 }
 
+/** Paramétrage : écriture réservée au rôle administrateur (brief §5.6). */
+export async function requireAdministrateur(retour: string) {
+  const current = await requireUtilisateur();
+  if (current.role !== "administrateur") redirectWithError(retour, "Réservé à l'administrateur.");
+  return current;
+}
+
 export function redirectWithError(path: string, message: string): never {
   const separateur = path.includes("?") ? "&" : "?";
   redirect(`${path}${separateur}erreur=${encodeURIComponent(message)}`);
