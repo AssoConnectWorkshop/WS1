@@ -19,9 +19,9 @@ begin
     immutable
     parallel safe
     as $body$
-      select nullif(trim(regexp_replace(lower(%1$I.unaccent(%1$L || '.unaccent', coalesce(texte, ''))), '[^[:alnum:]]+', ' ', 'g')), '');
+      select nullif(trim(regexp_replace(lower(%1$I.unaccent(%2$L::regdictionary, coalesce(texte, ''))), '[^[:alnum:]]+', ' ', 'g')), '');
     $body$;
-  $f$, schema_unaccent);
+  $f$, schema_unaccent, schema_unaccent || '.unaccent');
 end $$;
 comment on function public.cle_tri is 'Clé de tri façon SQL Server French_CI_AS : sans accents, sans ponctuation, minuscules.';
 
