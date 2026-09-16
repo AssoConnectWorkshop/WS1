@@ -100,6 +100,7 @@ intervention, liste des sites, fiche site, fiche client, planification, puis le 
 | Paramétrage (`Form_Parametrage`), Utilisateurs & Techniciens, Zones | `/parametrage`, `/parametrage/utilisateurs` | oui (lots 4-5) | fait (PR lot 3-5) |
 | Modification Véhicule (`Form_99`) | `/vehicules/[id]` | oui (lot 5) | fait (PR lot 3-5) |
 | Liste des sites : colonnes « Ct » (dossier) et « Co » (code) | `/sites` | oui (lot 4, capture nette) | fait (PR lot 3-5) |
+| Liste des clients (`Listeclientaffiche`) | `/clients` | oui (lot 6) | fait |
 | Planification | `/planification` | non | attendre la capture |
 | Explorateur du serveur de fichiers (dossiers devis) | — | oui (lots 3-4, contexte) | hors code : arborescence `Commun\Commercial\A4- DEVIS\{A0- FMC Maintenance, A1- FMC Climatisation}\Devis AAAA SAV|TR` |
 
