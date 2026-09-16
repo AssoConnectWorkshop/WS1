@@ -13,17 +13,21 @@ async function requestReset(formData: FormData) {
   // Ne jamais révéler si l'e-mail existe ou non (évite l'énumération de comptes) :
   // le message affiché est identique quel que soit le résultat, y compris en cas
   // d'erreur réseau/service (le SDK peut lever plutôt que renvoyer { error }).
-  // Liste blanche EMAILS_AUTORISES : hors liste, même message affiché mais rien n'est envoyé.
-  if (!emailAutorise(email)) redirect("/reset-password?sent=1");
+  // Liste blanche EMAILS_AUTORISES : hors liste, rien n'est envoyé et on le dit (public restreint,
+  // l'anti-énumération compte moins que la clarté).
+  if (!emailAutorise(email)) redirect("/reset-password?error=non_autorise");
 
+  let echec: string | null = null;
   try {
     const supabase = await createClient();
-    await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${site}/auth/callback?next=/reset-password`,
     });
-  } catch {
-    // volontairement ignoré, cf. commentaire ci-dessus.
+    echec = error?.message ?? null;
+  } catch (e) {
+    echec = e instanceof Error ? e.message : "erreur inconnue";
   }
+  if (echec) redirect(`/reset-password?error=envoi&detail=${encodeURIComponent(echec)}`);
 
   redirect("/reset-password?sent=1");
 }
@@ -61,20 +65,23 @@ const ERROR_MESSAGES: Record<string, string> = {
   weak_password: "Le mot de passe doit contenir au moins 8 caractères.",
   mismatch: "Les deux mots de passe ne correspondent pas.",
   update_failed: "Impossible de mettre à jour le mot de passe. Redemandez un lien.",
+  non_autorise:
+    "Aucun e-mail envoyé : cette adresse n'est pas dans la liste des destinataires autorisés de l'application. Demandez à un administrateur, soit d'ajouter votre adresse à la liste blanche (variable EMAILS_AUTORISES sur Vercel), soit de vous transmettre un nouveau mot de passe depuis Paramétrage › Accès application.",
+  envoi: "Aucun e-mail envoyé : le service d'envoi a refusé la demande.",
 };
 
 export default async function ResetPasswordPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; sent?: string }>;
+  searchParams: Promise<{ error?: string; sent?: string; detail?: string }>;
 }) {
-  const { error, sent } = await searchParams;
+  const { error, sent, detail } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const errorMessage = error ? (ERROR_MESSAGES[error] ?? "Une erreur est survenue. Réessayez.") : null;
+  const errorMessage = error ? `${ERROR_MESSAGES[error] ?? "Une erreur est survenue. Réessayez."}${error === "envoi" && detail ? ` (${detail})` : ""}` : null;
 
   // Une session de récupération existe (l'utilisateur vient de cliquer le lien reçu par e-mail) :
   // on lui propose de choisir son nouveau mot de passe.
@@ -127,7 +134,7 @@ export default async function ResetPasswordPage({
         {sent && (
           <p className="rounded-md bg-green-50 p-3 text-sm text-green-700">
             Si un compte existe pour cet e-mail, un lien de réinitialisation vient de vous être
-            envoyé.
+            envoyé. Pensez à vérifier vos courriers indésirables.
           </p>
         )}
         <label className="flex flex-col gap-1 text-sm">
