@@ -5,6 +5,7 @@ import { DataTable, type Column } from "@/components/ui/DataTable";
 import { FilterBar, type FilterField } from "@/components/ui/FilterBar";
 import { formatMontant, formatNombre } from "@/lib/format";
 import { STATUT_NE_PLUS_INTERVENIR } from "@/lib/sites";
+import { CaseInstantanee } from "@/components/ui/CaseInstantanee";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,9 @@ type SiteRow = {
   rdv_a_prendre: boolean | null;
   code_client: string | null;
   dossier_chemin: string | null;
+  intervenant_id: number | null;
+  donneur_ordre_id: number | null;
+  zone_id: number | null;
   retard_paiement: boolean | null;
   ne_plus_intervenir: boolean | null;
 };
@@ -125,10 +129,10 @@ export default async function SitesPage({
           ""
         ),
     },
-    { key: "rdv_a_prendre", label: "RDV à Prendre", align: "center", render: (r) => <input type="checkbox" readOnly checked={!!r.rdv_a_prendre} aria-label="RDV à prendre" /> },
-    { key: "donneur_ordre_nom", label: "Donneur", render: (r) => r.donneur_ordre_nom ?? "" },
-    { key: "intervenant_nom", label: "Intervenant", render: (r) => r.intervenant_nom ?? "" },
-    { key: "zone_libelle", label: "Zone", render: (r) => r.zone_libelle ?? "" },
+    { key: "rdv_a_prendre", label: "RDV à Prendre", align: "center", render: (r) => <CaseInstantanee table="sites" id={r.id} champ="rdv_a_prendre" valeur={r.rdv_a_prendre} label="RDV à prendre" /> },
+    { key: "donneur_ordre_nom", label: "Donneur", render: (r) => (r.donneur_ordre_id ? <Link className="hover:underline" href={`/donneurs-ordre/${r.donneur_ordre_id}`}>{r.donneur_ordre_nom}</Link> : "") },
+    { key: "intervenant_nom", label: "Intervenant", render: (r) => (r.intervenant_id ? <Link className="hover:underline" href={`/intervenants/${r.intervenant_id}`}>{r.intervenant_nom}</Link> : "") },
+    { key: "zone_libelle", label: "Zone", render: (r) => (r.zone_id ? <Link className="hover:underline" href={`/parametrage/zones-geographiques?modifier=${r.zone_id}`}>{r.zone_libelle}</Link> : "") },
     { key: "numero_magasin", label: "N°", sortable: true, align: "right", render: (r) => r.numero_magasin ?? "" },
     { key: "code_client", label: "Co", render: (r) => r.code_client ?? "" },
     { key: "client_nom", label: "Client", sortable: true, render: (r) => <Link className="hover:underline" href={`/clients/${r.client_id}`}>{r.client_nom}</Link> },
@@ -170,6 +174,7 @@ export default async function SitesPage({
         pageSize={pageSize}
         emptyMessage="Aucun site pour ces filtres."
         erreur={error?.message}
+        hrefLigne={(r) => `/sites/${r.id}`}
       />
     </div>
   );

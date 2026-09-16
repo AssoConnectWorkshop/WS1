@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LigneOuvrable } from "@/components/ui/LigneOuvrable";
 import { createClient } from "@/lib/supabase/server";
 import { toStringParams } from "@/lib/list-params";
 import { Badge } from "@/components/ui/Badge";
@@ -51,9 +52,10 @@ export default async function VehiculesPage({ searchParams }: { searchParams: Pr
       {lignes.length === 0 ? (
         <EmptyState message="Aucun véhicule." />
       ) : (
-        <table className="w-full border-collapse text-sm">
+        <table className="w-full border-collapse text-xs">
           <thead>
             <tr className="border-b text-left">
+              <th className="py-1" />
               <th className="py-1">Immatriculation</th>
               <th>Véhicule</th>
               <th>Conducteur</th>
@@ -66,14 +68,19 @@ export default async function VehiculesPage({ searchParams }: { searchParams: Pr
             {lignes.map((v) => {
               const alertes = alertesPar.get(v.id);
               return (
-                <tr key={v.id} className="border-b">
+                <LigneOuvrable key={v.id} href={`/vehicules/${v.id}`} className="border-b hover:bg-blue-100 dark:hover:bg-blue-950/40">
+                  <td className="py-1 pr-2">
+                    <Link href={`/vehicules/${v.id}`} className="rounded border bg-white px-1.5 py-0.5 text-[11px] dark:bg-white/5">
+                      Ouvrir
+                    </Link>
+                  </td>
                   <td className="py-1">
                     <Link href={`/vehicules/${v.id}`} className="underline">
                       {v.immatriculation ?? `#${v.id}`}
                     </Link>
                   </td>
                   <td>{[v.marque, v.modele].filter(Boolean).join(" ") || "—"}</td>
-                  <td>{v.utilisateurs ? formatNom(v.utilisateurs.prenom, v.utilisateurs.nom) : "—"}</td>
+                  <td>{v.utilisateurs ? <Link href="/parametrage/utilisateurs" className="hover:underline">{formatNom(v.utilisateurs.prenom, v.utilisateurs.nom)}</Link> : "—"}</td>
                   <td>{v.etats_vehicule?.libelle ?? (v.etat_code != null ? `État ${v.etat_code}` : "—")}</td>
                   <td className="text-right">{formatNombre(v.dernier_km)}</td>
                   <td className="flex flex-wrap gap-1 py-1">
@@ -84,7 +91,7 @@ export default async function VehiculesPage({ searchParams }: { searchParams: Pr
                         </Badge>
                       ))}
                   </td>
-                </tr>
+                </LigneOuvrable>
               );
             })}
           </tbody>

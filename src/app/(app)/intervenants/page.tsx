@@ -100,7 +100,7 @@ export default async function IntervenantsPage({
         </Link>
       </div>
       <FilterBar fields={filterFields} values={sp} multiValues={{ zones: zonesSel, activites: activitesSel }} />
-      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun intervenant." />
+      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun intervenant." hrefLigne={(r) => `/intervenants/${r.id}`} />
     </div>
   );
 }

@@ -44,7 +44,7 @@ export default async function DonneursOrdrePage({
         </Link>
       </div>
       <FilterBar fields={filterFields} values={sp} />
-      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun donneur d'ordre." />
+      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun donneur d'ordre." hrefLigne={(r) => `/donneurs-ordre/${r.id}`} />
     </div>
   );
 }

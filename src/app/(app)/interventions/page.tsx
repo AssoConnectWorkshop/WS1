@@ -8,6 +8,7 @@ import { DataTable, type Column } from "@/components/ui/DataTable";
 import { Badge } from "@/components/ui/Badge";
 import { typeInterventionTone, statutInterventionTone } from "@/lib/badges";
 import { formatDate } from "@/lib/format";
+import { CaseInstantanee } from "@/components/ui/CaseInstantanee";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +26,9 @@ type InterventionRow = {
   sous_type_libelle: string | null;
   statut_code: number | null;
   statut_libelle: string | null;
+  intervenant_id: number | null;
   intervenant_nom: string | null;
+  zone_id: number | null;
   statut_facturation_libelle: string | null;
   non_facturable: boolean | null;
   date_demande: string | null;
@@ -50,10 +53,6 @@ type InterventionRow = {
 const URGENCES: Record<number, string> = { 1: "Faible", 2: "Moyenne", 3: "Forte" };
 const CHAMP = "w-full rounded border bg-white px-1.5 py-0.5 text-xs dark:bg-white/5";
 const BOUTON = "rounded border bg-white px-2 py-1 text-xs dark:bg-white/5";
-
-function Coche({ valeur, label }: { valeur: boolean | null | undefined; label: string }) {
-  return <input type="checkbox" readOnly checked={!!valeur} aria-label={label} />;
-}
 
 function Tronque({ texte, largeur = "max-w-[14rem]" }: { texte: string | null; largeur?: string }) {
   return (
@@ -124,18 +123,18 @@ export default async function InterventionsPage({
 
   const columns: Column<InterventionRow>[] = [
     { key: "statut_facturation_libelle", label: "Statut Factur", render: (r) => <Tronque texte={r.statut_facturation_libelle} largeur="max-w-[7rem]" /> },
-    { key: "non_facturable", label: "Non Fact.", align: "center", render: (r) => <Coche valeur={r.non_facturable} label="Non facturable" /> },
+    { key: "non_facturable", label: "Non Fact.", align: "center", render: (r) => <CaseInstantanee table="interventions" id={r.id} champ="non_facturable" valeur={r.non_facturable} label="Non facturable" /> },
     { key: "date_demande", label: "Date appel", sortable: true, render: (r) => formatDate(r.date_demande).replace("—", "") },
     { key: "site_date_derniere_visite_entretien", label: "Date dern. visite", render: (r) => formatDate(r.site_date_derniere_visite_entretien).replace("—", "") },
     { key: "date_prevue", label: "Date prév", sortable: true, render: (r) => formatDate(r.date_prevue).replace("—", "") },
     { key: "duplicata_traite_par_nom", label: "Duplicata à Traiter", render: (r) => r.duplicata_traite_par_nom ?? "" },
-    { key: "duplicata_traite", label: "Attente offre", align: "center", render: (r) => <Coche valeur={r.duplicata_traite} label="Traité / attente offre de prix" /> },
+    { key: "duplicata_traite", label: "Attente offre", align: "center", render: (r) => <CaseInstantanee table="interventions" id={r.id} champ="duplicata_traite" valeur={r.duplicata_traite} label="Traité / attente offre de prix" /> },
     { key: "client_nom", label: "Client", sortable: true, render: (r) => <Link className="hover:underline" href={`/clients/${r.client_id}`}>{r.client_nom}</Link> },
     { key: "reference_client", label: "N° DI Client", render: (r) => r.reference_client ?? "" },
     { key: "type_libelle", label: "Type", render: (r) => <Badge tone={typeInterventionTone(r.type_code)}>{r.type_libelle ?? "—"}</Badge> },
     { key: "objet", label: "Commentaire client", render: (r) => <Tronque texte={r.objet} /> },
     { key: "sous_type_libelle", label: "Sous Type", render: (r) => r.sous_type_libelle ?? "" },
-    { key: "devis_a_faire", label: "Devis à faire", align: "center", render: (r) => <Coche valeur={r.devis_a_faire} label="Devis à faire" /> },
+    { key: "devis_a_faire", label: "Devis à faire", align: "center", render: (r) => <CaseInstantanee table="interventions" id={r.id} champ="devis_a_faire" valeur={r.devis_a_faire} label="Devis à faire" /> },
     { key: "urgence_devis", label: "Urgence Devis", render: (r) => (r.urgence_devis ? URGENCES[r.urgence_devis] ?? String(r.urgence_devis) : "") },
     { key: "commentaire_devis", label: "Comm. Devis", render: (r) => <Tronque texte={r.commentaire_devis} largeur="max-w-[10rem]" /> },
     { key: "numero_devis_accepte", label: "N° Devis accepté", render: (r) => r.numero_devis_accepte ?? "" },
@@ -145,22 +144,22 @@ export default async function InterventionsPage({
       label: "Site",
       sortable: true,
       render: (r) => (
-        <Link className="block max-w-[16rem] truncate hover:underline" href={`/interventions/${r.id}`} title="Ouvrir l'intervention">
+        <Link className="block max-w-[16rem] truncate hover:underline" href={`/sites/${r.site_id}`} title="Ouvrir le site">
           {r.site_nom}
         </Link>
       ),
     },
     { key: "date_limite", label: "Date limite", sortable: true, render: (r) => formatDate(r.date_limite).replace("—", "") },
     { key: "date_realisee", label: "Effectuée le", sortable: true, render: (r) => formatDate(r.date_realisee).replace("—", "") },
-    { key: "intervenant_nom", label: "Intervenant", render: (r) => r.intervenant_nom ?? "" },
+    { key: "intervenant_nom", label: "Intervenant", render: (r) => (r.intervenant_id ? <Link className="hover:underline" href={`/intervenants/${r.intervenant_id}`}>{r.intervenant_nom}</Link> : "") },
     { key: "techniciens", label: "Nom Tech", render: (r) => <Tronque texte={techniciensParIntervention.get(r.id)?.join(", ") ?? null} largeur="max-w-[10rem]" /> },
-    { key: "devis_fait", label: "Devis fait", align: "center", render: (r) => <Coche valeur={r.devis_fait} label="Devis fait" /> },
+    { key: "devis_fait", label: "Devis fait", align: "center", render: (r) => <CaseInstantanee table="interventions" id={r.id} champ="devis_fait" valeur={r.devis_fait} label="Devis fait" /> },
     { key: "commentaire_interne", label: "Comm. Inter.", render: (r) => <Tronque texte={r.commentaire_interne} /> },
-    { key: "zone_libelle", label: "Zone", render: (r) => r.zone_libelle ?? "" },
+    { key: "zone_libelle", label: "Zone", render: (r) => (r.zone_id ? <Link className="hover:underline" href={`/parametrage/zones-geographiques?modifier=${r.zone_id}`}>{r.zone_libelle}</Link> : "") },
     { key: "site_ville", label: "Ville", render: (r) => r.site_ville ?? "" },
     { key: "numero_magasin", label: "N° Site", align: "right", render: (r) => r.numero_magasin ?? "" },
     { key: "numero_bon", label: "N° Bon", align: "right", render: (r) => r.numero_bon ?? "" },
-    { key: "charge_affaire_nom", label: "Traitée par", render: (r) => r.charge_affaire_nom ?? "" },
+    { key: "charge_affaire_nom", label: "Traitée par", render: (r) => (r.charge_affaire_nom ? <Link className="hover:underline" href="/parametrage/utilisateurs">{r.charge_affaire_nom}</Link> : "") },
   ];
 
   const LIGNE = "grid grid-cols-[9rem_1fr] items-center gap-x-2 gap-y-1 text-xs";
@@ -303,7 +302,7 @@ export default async function InterventionsPage({
         </div>
       </form>
 
-      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucune intervention pour ces filtres." erreur={error?.message} />
+      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucune intervention pour ces filtres." erreur={error?.message} hrefLigne={(r) => `/interventions/${r.id}`} />
 
       <div className="text-xs opacity-70">
         Enr : {count ?? 0} intervention{(count ?? 0) > 1 ? "s" : ""}

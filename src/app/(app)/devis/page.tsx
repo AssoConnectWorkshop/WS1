@@ -131,7 +131,7 @@ export default async function DevisPage({
       <Messages sp={sp} />
       <Tabs tabs={FAMILLES} active={famille} searchParams={sp} />
       <FilterBar fields={filterFields} values={sp} />
-      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun devis." />
+      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun devis." hrefLigne={(r) => `/devis/${r.id}`} />
     </div>
   );
 }

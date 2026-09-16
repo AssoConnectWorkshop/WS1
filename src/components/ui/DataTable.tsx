@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { EmptyState } from "./EmptyState";
+import { LigneOuvrable } from "./LigneOuvrable";
 
 export type Column<T> = {
   key: string;
@@ -27,6 +28,7 @@ export function DataTable<T>({
   pageSize,
   emptyMessage,
   erreur,
+  hrefLigne,
 }: {
   columns: Column<T>[];
   rows: T[];
@@ -36,6 +38,8 @@ export function DataTable<T>({
   pageSize: number;
   emptyMessage?: string;
   erreur?: string | null;
+  /** Lien d'ouverture de l'objet de la ligne : bouton « Ouvrir » en première colonne et double-clic. */
+  hrefLigne?: (row: T) => string | null | undefined;
 }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const sort = searchParams.sort;
@@ -54,6 +58,7 @@ export function DataTable<T>({
         <table className="w-full border-collapse text-xs">
           <thead>
             <tr className="border-b bg-black/[0.02] text-left dark:bg-white/[0.03]">
+              {hrefLigne && <th className="w-16 px-2 py-1" />}
               {columns.map((col) => (
                 <th
                   key={col.key}
@@ -82,7 +87,16 @@ export function DataTable<T>({
           </thead>
           <tbody>
             {rows.map((row, i) => (
-              <tr key={i} className="border-b last:border-0 hover:bg-blue-100 dark:hover:bg-blue-950/40">
+              <LigneOuvrable key={i} href={hrefLigne?.(row)} className="border-b last:border-0 hover:bg-blue-100 dark:hover:bg-blue-950/40">
+                {hrefLigne && (
+                  <td className="px-2 py-1">
+                    {hrefLigne(row) && (
+                      <Link href={hrefLigne(row)!} className="rounded border bg-white px-1.5 py-0.5 text-[11px] hover:bg-black/5 dark:bg-white/5">
+                        Ouvrir
+                      </Link>
+                    )}
+                  </td>
+                )}
                 {columns.map((col) => (
                   <td
                     key={col.key}
@@ -93,7 +107,7 @@ export function DataTable<T>({
                     {col.render(row)}
                   </td>
                 ))}
-              </tr>
+              </LigneOuvrable>
             ))}
           </tbody>
         </table>

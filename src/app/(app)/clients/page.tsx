@@ -63,7 +63,7 @@ export default async function ClientsPage({
         </Link>
       </div>
       <FilterBar fields={filterFields} values={sp} />
-      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun client." />
+      <DataTable columns={columns} rows={rows} searchParams={sp} total={count ?? 0} page={page} pageSize={pageSize} emptyMessage="Aucun client." hrefLigne={(r) => `/clients/${r.id}`} />
     </div>
   );
 }
