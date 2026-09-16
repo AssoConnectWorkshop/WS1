@@ -77,5 +77,6 @@ Tout problème rencontré (donnée incohérente, erreur de transfert, poste util
 ## État
 
 - [x] Brief rédigé.
-- [ ] 7.1 à 7.6 : à faire par l'utilisateur (accès requis absents de la session : SQL Server Docker, serveur de
+- [x] 7.1 Transfert réel exécuté le 16/09/2026 (deux passages identiques). Premier administrateur créé à la main (Authentication → Users + insertion `utilisateurs`).
+- [ ] 7.2 à 7.6 : à faire par l'utilisateur (accès requis absents de la session : SQL Server Docker, serveur de
   fichiers, Resend, Vercel, Supabase). Cocher au fil de l'eau.

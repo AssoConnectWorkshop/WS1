@@ -65,10 +65,9 @@ du transfert réel du 16/09/2026.
 
 Toutes les tables chargées, écarts source → cible limités aux orphelins (D2, D3). Volumes : 2 323 clients, 6 163 sites,
 29 511 matériels, 71 507 interventions, 101 837 fiches, 102 637 lignes d'heures, 19 822 devis, 477 planifications,
-38 véhicules. Répartition des interventions : 64 236 clôturées (7), 2 606 à planifier (1), 3 012 annulées (8),
+38 véhicules. Second passage complet le même jour : compteurs identiques sur toutes les tables (idempotence vérifiée). Répartition des interventions : 64 236 clôturées (7), 2 606 à planifier (1), 3 012 annulées (8),
 788 résolues par téléphone (10), 590 annulées en interne (20). Aucun code de référentiel inconnu signalé dans le rapport.
 
 ## À faire pour compléter ce journal
 
-1. Relancer `node index.mjs` une seconde fois et vérifier que les compteurs `table=` sont identiques (idempotence).
-2. Noter toute anomalie vue en recette (écran, donnée absurde, libellé manquant) avec l'identifiant de la ligne.
+1. Noter toute anomalie vue en recette (écran, donnée absurde, libellé manquant) avec l'identifiant de la ligne.
