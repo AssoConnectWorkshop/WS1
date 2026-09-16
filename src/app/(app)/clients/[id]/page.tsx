@@ -3,28 +3,29 @@ import { Messages } from "@/components/ui/Messages";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Tabs } from "@/components/ui/Tabs";
-import { KeyValue } from "@/components/ui/KeyValue";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Badge } from "@/components/ui/Badge";
-import { FilterBar, type FilterField } from "@/components/ui/FilterBar";
 import { Contacts } from "@/components/tiers/Contacts";
 import { Case, Champ, CHAMP } from "@/components/ui/Champ";
-import { ChampsClient } from "@/components/tiers/FormulaireClient";
 import { statutDevisTone } from "@/lib/badges";
-import { formatDate, formatMontant, oui } from "@/lib/format";
+import { formatDate, formatMontant } from "@/lib/format";
 import { toStringParams } from "@/lib/list-params";
 import { mettreAJourClient } from "../../tiers/actions";
 
 export const dynamic = "force-dynamic";
 
+/** Onglets de la fiche Access (Form_Client : Sites, Contacts, Devis) suivis des compléments de l'application. */
 const ONGLETS = [
-  { key: "fiche", label: "Fiche" },
   { key: "sites", label: "Sites" },
   { key: "contacts", label: "Contacts" },
   { key: "devis", label: "Devis" },
   { key: "planifications", label: "Planifications" },
   { key: "exports", label: "Exports Excel" },
 ];
+
+const PETIT = "w-full rounded border bg-white px-1.5 py-0.5 text-sm dark:bg-white/5";
+const BOUTON = "rounded border bg-white px-2 py-1 text-xs dark:bg-white/5";
+const LIGNE = "grid grid-cols-[9rem_1fr] items-center gap-x-2 gap-y-1 text-xs";
 
 export default async function ClientPage({
   params,
@@ -35,58 +36,94 @@ export default async function ClientPage({
 }) {
   const { id } = await params;
   const sp = toStringParams(await searchParams);
-  const onglet = ONGLETS.some((o) => o.key === sp.onglet) ? sp.onglet! : "fiche";
+  const onglet = ONGLETS.some((o) => o.key === sp.onglet) ? sp.onglet! : "sites";
 
   const supabase = await createClient();
   const { data: client } = await supabase.from("clients").select("*").eq("id", id).maybeSingle();
   if (!client) notFound();
 
   return (
-    <div className="mx-auto flex max-w-5xl flex-col gap-4 p-8">
+    <div className="flex flex-col gap-3 p-4">
       <Messages sp={sp} />
 
-      <div className="flex flex-wrap items-center gap-2">
-        {!client.actif && <Badge tone="gray">Non affiché</Badge>}
-        {client.est_client_fermeture && <Badge tone="red">Pseudo-client des sites fermés</Badge>}
-      </div>
-      <h1 className="text-xl font-semibold">{client.nom}</h1>
+      {/* En-tête Access : recherche, Créer un nouveau client, Planifier les entretiens, carte */}
+      <form method="GET" action="/clients" className="flex flex-wrap items-center gap-2 text-sm">
+        <span className="font-bold">Rechercher (N° de site ou Nom de client)</span>
+        <input name="q" className="w-64 rounded border px-1.5 py-0.5 text-sm" />
+        <Link href="/clients/nouveau" className={BOUTON}>
+          Créer un nouveau client
+        </Link>
+        <Link href={`/planification?client_id=${id}`} className={BOUTON}>
+          Planifier les entretiens
+        </Link>
+        <Link href={`/carte?client=${encodeURIComponent(client.nom ?? "")}`} className={BOUTON} title="Carte des interventions du client">
+          🌍
+        </Link>
+        <span className="ml-auto flex items-center gap-2">
+          {!client.actif && <Badge tone="gray">Non affiché</Badge>}
+          {client.est_client_fermeture && <Badge tone="red">Pseudo-client des sites fermés</Badge>}
+          <Link href="/clients" className="rounded bg-red-600 px-3 py-1 text-xs text-white" title="Fermer la fiche">
+            ✕
+          </Link>
+        </span>
+      </form>
+
+      <form action={mettreAJourClient} className="grid gap-3 lg:grid-cols-[28rem_1fr]">
+        <input type="hidden" name="client_id" value={id} />
+        <div className={LIGNE}>
+          <span className="text-right">Nom</span>
+          <div className="flex items-center gap-2">
+            <input name="nom" required defaultValue={client.nom ?? ""} className={PETIT} />
+            <Link href={`/sites/nouveau?client=${id}`} className={`${BOUTON} whitespace-nowrap`}>
+              Créer un nouveau site
+            </Link>
+          </div>
+          <span className="text-right">Adresse</span>
+          <input name="adresse" defaultValue={client.adresse ?? ""} className={PETIT} />
+          <span className="text-right">Code postal</span>
+          <div className="grid grid-cols-[6rem_auto_1fr] items-center gap-2">
+            <input name="code_postal" defaultValue={client.code_postal ?? ""} className={PETIT} />
+            <span>Ville</span>
+            <input name="ville" defaultValue={client.ville ?? ""} className={PETIT} />
+          </div>
+          <span className="text-right">Téléphone</span>
+          <input name="telephone" defaultValue={client.telephone ?? ""} className={`${PETIT} max-w-48`} />
+          <span className="text-right">Fax</span>
+          <input name="fax" defaultValue={client.fax ?? ""} className={`${PETIT} max-w-48`} />
+          <span className="text-right">Contact principal</span>
+          <input name="contact_principal" defaultValue={client.contact_principal ?? ""} className={PETIT} />
+          <span className="text-right">E-mail</span>
+          <input name="email" type="email" defaultValue={client.email ?? ""} className={PETIT} />
+          <span className="text-right">Tarif heure Main oeuvre</span>
+          <div className="grid grid-cols-[6rem_auto_1fr] items-center gap-2">
+            <input name="tarif_heure_mo" type="number" step="0.01" defaultValue={client.tarif_heure_mo ?? ""} className={PETIT} />
+            <span>Numéro Esa Clim</span>
+            <input name="numero_esabora_clim" defaultValue={client.numero_esabora_clim ?? ""} className={`${PETIT} max-w-40`} />
+          </div>
+          <span className="text-right">Tarif d&apos;un déplacement</span>
+          <div className="grid grid-cols-[6rem_auto_1fr] items-center gap-2">
+            <input name="tarif_deplacement" type="number" step="0.01" defaultValue={client.tarif_deplacement ?? ""} className={PETIT} />
+            <span>Numéro Esa Maint</span>
+            <input name="numero_esabora_maint" defaultValue={client.numero_esabora_maint ?? ""} className={`${PETIT} max-w-40`} />
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 text-xs">
+          <Champ label="Délai d'intervention (h)">
+            <input name="delai_intervention_heures" type="number" step="0.5" defaultValue={client.delai_intervention_heures ?? ""} className={`${PETIT} max-w-32`} />
+          </Champ>
+          <Case name="actif" label="Client affiché (actif)" checked={client.actif ?? true} />
+          <button type="submit" className="w-fit rounded bg-black px-3 py-1 text-xs text-white">
+            💾 Enregistrer
+          </button>
+        </div>
+      </form>
 
       <Tabs tabs={ONGLETS} active={onglet} searchParams={sp} />
 
-      {onglet === "fiche" && (
-        <div className="flex flex-col gap-6">
-          <KeyValue
-            items={[
-              { label: "Adresse", value: `${client.adresse ?? ""} ${client.code_postal ?? ""} ${client.ville ?? ""}`.trim() || "—" },
-              { label: "Contact principal", value: client.contact_principal },
-              { label: "Téléphone", value: client.telephone },
-              { label: "E-mail", value: client.email },
-              { label: "Tarif horaire MO", value: formatMontant(client.tarif_heure_mo) },
-              { label: "Tarif déplacement", value: formatMontant(client.tarif_deplacement) },
-              { label: "N° Esabora maintenance", value: client.numero_esabora_maint },
-              { label: "N° Esabora clim", value: client.numero_esabora_clim },
-              { label: "Actif", value: oui(client.actif) },
-            ]}
-          />
-          <form action={mettreAJourClient} className="flex flex-col gap-3 rounded-xl border p-4">
-            <h2 className="text-sm font-semibold opacity-70">Modifier</h2>
-            <input type="hidden" name="client_id" value={id} />
-            <ChampsClient client={client} />
-            <button type="submit" className="w-fit rounded-md bg-black px-4 py-1.5 text-sm text-white">
-              Enregistrer
-            </button>
-          </form>
-        </div>
-      )}
-
       {onglet === "sites" && <ClientSites clientId={id} numero={sp.numero} />}
-
       {onglet === "contacts" && <ClientContacts clientId={id} modifierId={sp.modifier} />}
-
       {onglet === "devis" && <ClientDevis clientId={id} />}
-
       {onglet === "planifications" && <ClientPlanifications clientId={id} />}
-
       {onglet === "exports" && <ClientExports clientId={id} />}
     </div>
   );
@@ -189,79 +226,117 @@ async function ClientExports({ clientId }: { clientId: string }) {
   );
 }
 
+/** Onglet « Sites » Access (Site sous-formulaire Client) : N° de magasin, Site, Situation, Adresse, CP, Ville. */
 async function ClientSites({ clientId, numero }: { clientId: string; numero?: string }) {
   const supabase = await createClient();
-  let query = supabase.from("sites").select("id, numero_magasin, nom, ville, ferme").eq("client_id", clientId).is("supprime_le", null).order("nom");
+  let query = supabase.from("sites").select("id, numero_magasin, nom, situation, adresse, code_postal, ville, ferme").eq("client_id", clientId).is("supprime_le", null).order("nom").order("numero_magasin");
   if (numero) query = query.eq("numero_magasin", Number(numero));
   const { data } = await query;
 
-  const filterFields: FilterField[] = [{ type: "text", name: "numero", label: "N° de magasin" }];
-
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-end justify-between gap-3">
-        <FilterBar fields={filterFields} values={{ numero }} />
-        <Link href={`/sites/nouveau?client=${clientId}`} className="whitespace-nowrap rounded-md bg-black px-3 py-2 text-sm text-white">
-          Nouveau site
-        </Link>
-      </div>
+    <div className="flex flex-col gap-2">
+      <form method="GET" className="flex items-center gap-2 text-xs">
+        <input type="hidden" name="onglet" value="sites" />
+        <span>N° de magasin</span>
+        <input name="numero" defaultValue={numero ?? ""} className="w-24 rounded border px-1.5 py-0.5" />
+        <button type="submit" className={BOUTON}>
+          Rechercher
+        </button>
+      </form>
       {data && data.length > 0 ? (
-        <ul className="flex flex-col gap-2">
-          {data.map((s) => (
-            <li key={s.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-              <Link href={`/sites/${s.id}`} className="underline">
-                {s.nom} {s.numero_magasin ? `(n°${s.numero_magasin})` : ""}
-              </Link>
-              <span className="flex items-center gap-2 opacity-70">
-                {s.ferme && <Badge tone="gray">Fermé</Badge>}
-                {s.ville}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <div className="overflow-x-auto rounded border">
+          <table className="w-full border-collapse text-xs">
+            <thead>
+              <tr className="border-b bg-black/[0.03] text-left dark:bg-white/[0.05]">
+                {["N° de magasin", "Site", "Situation", "Adresse", "CP", "Ville"].map((h) => (
+                  <th key={h} className="whitespace-nowrap px-2 py-1 font-medium">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((s) => (
+                <tr key={s.id} className="border-b last:border-0 hover:bg-blue-100 dark:hover:bg-blue-950/40">
+                  <td className="px-2 py-1 text-right">{s.numero_magasin ?? ""}</td>
+                  <td className="px-2 py-1">
+                    <Link href={`/sites/${s.id}`} className="hover:underline">
+                      {s.nom}
+                    </Link>
+                    {s.ferme && (
+                      <span className="ml-2">
+                        <Badge tone="gray">Fermé</Badge>
+                      </span>
+                    )}
+                  </td>
+                  <td className="max-w-[10rem] truncate px-2 py-1" title={s.situation ?? ""}>
+                    {s.situation ?? ""}
+                  </td>
+                  <td className="px-2 py-1">{s.adresse ?? ""}</td>
+                  <td className="px-2 py-1">{s.code_postal ?? ""}</td>
+                  <td className="px-2 py-1">{s.ville ?? ""}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <EmptyState message="Aucun site pour ce client." />
       )}
+      <div className="text-xs opacity-70">Enr : {data?.length ?? 0}</div>
     </div>
   );
 }
 
 async function ClientContacts({ clientId, modifierId }: { clientId: string; modifierId?: string }) {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("contacts")
-    .select("id, nom, prenom, civilite, fonction, email, telephone, mobile, fax, observations")
-    .eq("client_id", clientId)
-    .order("nom");
+  const { data } = await supabase.from("contacts").select("id, nom, prenom, civilite, fonction, email, telephone, mobile, fax, observations").eq("client_id", clientId).order("nom");
 
   return <Contacts contacts={data ?? []} parent={{ client_id: Number(clientId) }} modifierId={modifierId} retour={`/clients/${clientId}?onglet=contacts`} />;
 }
 
 async function ClientDevis({ clientId }: { clientId: string }) {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("devis")
-    .select("id, famille, numero, statut_code, montant_ht, date_devis")
-    .eq("client_id", clientId)
-    .is("supprime_le", null)
-    .order("date_devis", { ascending: false });
+  const [{ data }, { data: statuts }] = await Promise.all([
+    supabase.from("devis").select("id, famille, numero, statut_code, montant_ht, date_devis, date_envoi, sites(nom)").eq("client_id", clientId).is("supprime_le", null).order("date_envoi", { ascending: false, nullsFirst: false }),
+    supabase.from("statuts_devis").select("code, libelle"),
+  ]);
+  const libelle = (code: number | null) => statuts?.find((s) => s.code === code)?.libelle ?? "";
 
   if (!data || data.length === 0) return <EmptyState message="Aucun devis pour ce client." />;
 
   return (
-    <ul className="flex flex-col gap-2">
-      {data.map((d) => (
-        <li key={d.id} className="flex items-center justify-between rounded-lg border p-3 text-sm">
-          <Link href={`/devis/${d.id}`} className="capitalize underline">
-            {d.famille} · {d.numero ?? `#${d.id}`}
-          </Link>
-          <span className="flex items-center gap-2">
-            <Badge tone={statutDevisTone(d.statut_code)}>{d.statut_code}</Badge>
-            {formatMontant(d.montant_ht)} · {formatDate(d.date_devis)}
-          </span>
-        </li>
-      ))}
-    </ul>
+    <div className="overflow-x-auto rounded border">
+      <table className="w-full border-collapse text-xs">
+        <thead>
+          <tr className="border-b bg-black/[0.03] text-left dark:bg-white/[0.05]">
+            {["N° Devis", "Famille", "Site", "Etat", "Envoyé le", "Montant HT"].map((h) => (
+              <th key={h} className="whitespace-nowrap px-2 py-1 font-medium">
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {(data as unknown as { id: number; famille: string; numero: string | null; statut_code: number | null; montant_ht: number | null; date_envoi: string | null; sites: { nom: string | null } | null }[]).map((d) => (
+            <tr key={d.id} className="border-b last:border-0 hover:bg-blue-100 dark:hover:bg-blue-950/40">
+              <td className="px-2 py-1">
+                <Link href={`/devis/${d.id}`} className="underline">
+                  {d.numero ?? `#${d.id}`}
+                </Link>
+              </td>
+              <td className="px-2 py-1 capitalize">{d.famille}</td>
+              <td className="px-2 py-1">{d.sites?.nom ?? ""}</td>
+              <td className="px-2 py-1">
+                <Badge tone={statutDevisTone(d.statut_code)}>{libelle(d.statut_code)}</Badge>
+              </td>
+              <td className="px-2 py-1">{formatDate(d.date_envoi).replace("—", "")}</td>
+              <td className="px-2 py-1 text-right">{formatMontant(d.montant_ht)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

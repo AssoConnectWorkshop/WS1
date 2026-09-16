@@ -91,10 +91,16 @@ intervention, liste des sites, fiche site, fiche client, planification, puis le 
 | Liste des sites (`Form_ListeSiteGenerale`) | `/sites` | oui (CDC p.2) | fait (PR liste des sites) |
 | Fiche site (`Form_Site`) | `/sites/[id]` | oui (CDC p.2) | fait (PR fiche site) |
 | Carte (module PHP, `Form_Carte`) | `/carte` | oui (CDC p.3) | fait (PR carte) |
-| Liste des interventions | `/interventions` | non | attendre la capture |
-| Fiche intervention | `/interventions/[id]` | non | attendre la capture |
-| Fiche client | `/clients/[id]` | non | attendre la capture |
+| Liste des interventions (`Form_ListeInterventionGenerale`) | `/interventions` | oui (lot 2, deux états) | fait (PR lot 2) |
+| Fiche site, onglet Interventions | `/sites/[id]?onglet=interventions` | oui (lot 2) | fait (PR lot 2) |
+| Fiche site, onglets Devis SAV / Travaux / Contrat (`DevisListe*`) | `/sites/[id]?onglet=sav…` | oui (lot 3) | fait (PR lot 2) |
+| Fiche client (`Form_Client`) | `/clients/[id]` | oui (lot 2) | fait (PR lot 2) |
+| Fiche intervention (`Form_Intervention`), onglets Clôture et Devis SAV | `/interventions/[id]` | oui (lot 3) | à faire |
+| Rapport d'intervention (état `Test Cerfa` / bon PDF) | `/interventions/[id]/bon.pdf` | oui (lot 3) | à comparer |
+| Paramétrage (`Form_Parametrage`), Utilisateurs & Techniciens, Zones | `/parametrage`, `/parametrage/utilisateurs` | oui (lots 4-5) | à faire |
+| Modification Véhicule (`Form_99`) | `/vehicules/[id]` | oui (lot 5) | à faire |
 | Planification | `/planification` | non | attendre la capture |
+| Explorateur du serveur de fichiers (dossiers devis) | — | oui (lots 3-4, contexte) | hors code : arborescence `Commun\Commercial\A4- DEVIS\{A0- FMC Maintenance, A1- FMC Climatisation}\Devis AAAA SAV|TR` |
 
 ## Écarts non traités (à remplir)
 
@@ -125,6 +131,19 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   reproduite. Les icônes Access (cône pour « En travaux », pictogrammes de statut) sont remplacées par
   des épingles colorées uniformes. Les filtres par zone et par donneur d'ordre, absents de la
   capture, ont été retirés de la page carte (ils restent sur la liste des interventions).
+- **Liste des interventions** : « Imprimer les interventions à réaliser » et « Exporter clients »
+  pointent tous deux sur l'export Excel de la liste filtrée (pas d'état imprimable) ; « Export
+  Saisie Heures » grisé (pas d'équivalent) ; cases à cocher en deux états au lieu de trois ; la
+  suppression d'une ligne depuis la liste n'est pas reproduite ; la colonne « Date der… » de la
+  capture est interprétée comme la dernière visite d'entretien du site.
+- **Fiche site, onglet Interventions** : colonne « Nom Tech » non reprise (elle vient de la colonne
+  détournée `numdevpartenaire`, alimentée par le bouton « Renseigner Colonne Nom Tech » non
+  reproduit) ; colonnes de devis SAV / TR (Devis SAV Fait, Statut Devis, Devis TR…) non reprises.
+- **Onglets Devis SAV / Travaux / Contrat** (fiche site) : « Rendre Insertion Devis Possible »
+  ouvre la création de devis ; les fiches sont en lecture, la modification se fait sur `/devis/[id]`.
+- **Fiche client** : le bouton carte ouvre `/carte` filtrée sur le nom du client ; les onglets
+  Planifications et Exports Excel (absents d'Access, qui passe par Statistiques) sont conservés
+  après les trois onglets Access.
 - **Captures hors périmètre du CDC** (non traitées) : fiche intervention web du technicien (p.3),
   planning Outlook et planning prévisionnel Excel (p.4), trois écrans Esabora (p.5-6).
 
@@ -176,5 +195,24 @@ Comportements Access visibles sur les captures mais absents de l'application, à
   commentaire intervention, liens Devis Encours / Liste Sous Traitants, boutons Copie Titre / Copie
   Intervention). Vue `v_interventions_liste` complétée (migration
   `20260916180000_etape8_v_interventions_liste_carte.sql`).
-- [ ] Lots suivants : attendre les captures (liste des interventions, fiche intervention, fiche
-  client, planification, puis le reste).
+- [x] Lot 2 (captures fiche site onglets Site et Interventions, liste des interventions « A
+  Planifier » et « Réalisé - A Valider », fiche client) et lot 3 partiel (onglet Devis SAV de la
+  fiche site) : liste des interventions `/interventions` avec le bloc de filtres Access (Client,
+  N° Site ou Nom du site, Statut Intervention, Statut Facturation, Intervenant, Donneur d'ordres,
+  Zone multi, Afficher les clôturées, Type Inter., Entre le / et, Filtre sur date réelle,
+  Rechercher, Nouvelle intervention, Imprimer…, Recherche Entretien « Proche », Photo, Audit, MàJ
+  Registre, Contrôle d'étanchéité, Particulier, Devis à Faire, SousType Vide, Exporter clients,
+  Export Saisie Heures) et les colonnes de la capture (Statut Factur, Non Fact., Date appel, Date
+  dern. visite, Date prév, Duplicata à Traiter, Attente offre, Client, N° DI Client, Type,
+  Commentaire client, Sous Type, Devis à faire, Urgence Devis, Comm. Devis, N° Devis accepté,
+  Statut, Site, Date limite, Effectuée le, Intervenant, Nom Tech, Devis fait, Comm. Inter., Zone,
+  Ville, N° Site, N° Bon, Traitée par) ; tableaux plus denses (texte 12 px, survol bleu) ; fiche
+  site : onglet Interventions avec les colonnes Access, onglets Devis SAV / Devis Travaux /
+  Contrat de maintenance en fiches empilées avec barre de filtres et fond rouge pour les devis
+  acceptés ; fiche client : en-tête de recherche « N° de site ou Nom de client » (nombre → liste
+  des sites), champs disposés comme Access, onglet Sites en tableau (N° de magasin, Site,
+  Situation, Adresse, CP, Ville). Vue `v_interventions_liste` complétée (migration
+  `20260916190000_etape8_v_interventions_liste_generale.sql`).
+- [ ] Lot 3-5 restant : fiche intervention (onglets Clôture et Devis SAV), paramétrage et
+  utilisateurs, fiche véhicule, colonnes dossier / Code de la liste des sites, comparaison du
+  rapport d'intervention PDF.

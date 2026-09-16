@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { parseListParams, toStringParams } from "@/lib/list-params";
 import { DataTable, type Column } from "@/components/ui/DataTable";
@@ -25,6 +26,8 @@ export default async function ClientsPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const sp = toStringParams(await searchParams);
+  // Règle Form_Client.lstClient : un nombre saisi est un numéro de magasin, un texte un nom de client.
+  if (sp.q && sp.q.trim() !== "" && Number.isFinite(Number(sp.q))) redirect(`/sites?q=${encodeURIComponent(sp.q.trim())}`);
   const supabase = await createClient();
   const { page, sort, dir, from, to, pageSize } = parseListParams(sp, "nom", 50);
 
@@ -37,7 +40,7 @@ export default async function ClientsPage({
   const rows = (data ?? []) as ClientRow[];
 
   const filterFields: FilterField[] = [
-    { type: "text", name: "q", label: "Nom" },
+    { type: "text", name: "q", label: "Rechercher (N° de site ou Nom de client)" },
     { type: "checkbox", name: "tous", label: "Afficher tous (y compris inactifs)" },
   ];
 

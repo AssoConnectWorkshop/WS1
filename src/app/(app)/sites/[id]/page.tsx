@@ -10,8 +10,9 @@ import { Champ, CHAMP } from "@/components/ui/Champ";
 import { FormulaireSite, FORM_SITE } from "@/components/sites/FormulaireSite";
 import { HorairesSite } from "@/components/sites/ContratsEtHoraires";
 import { MaterielSite } from "@/components/sites/MaterielSite";
-import { statutDevisTone, statutInterventionTone, typeInterventionTone } from "@/lib/badges";
-import { formatDate, formatMontant, oui } from "@/lib/format";
+import { statutInterventionTone, typeInterventionTone } from "@/lib/badges";
+import { ListeDevisAccess, type DevisAccess } from "@/components/devis/ListeDevisAccess";
+import { formatDate, oui } from "@/lib/format";
 import { toStringParams } from "@/lib/list-params";
 import { type FamilleDevis } from "@/lib/devis";
 import { basculerNePlusIntervenir, fermerSite, genererCertificats, rouvrirSite } from "../actions";
@@ -60,7 +61,7 @@ export default async function SitePage({
       supabase.from("types_fluide").select("id, libelle").order("libelle"),
       deverrouille ? supabase.from("clients").select("id, nom").order("nom") : Promise.resolve({ data: [] as { id: number; nom: string }[] }),
       supabase.from("site_registre_securite").select("date_mise_a_jour").eq("site_id", id).order("date_mise_a_jour", { ascending: false }),
-      supabase.from("devis").select("id, famille, numero, statut_code, montant_ht, date_envoi, fichier_chemin").eq("site_id", id).is("supprime_le", null).order("date_envoi", { ascending: false }),
+      supabase.from("devis").select("id, famille, numero, statut_code, fichier_chemin, intervention_origine_id, site_id, client_id, numero_devis_partenaire, type_panne_libelle, quantite_materiel, montant_fournitures, heures_mo, tarif_heure_mo, nombre_deplacements, tarif_deplacement, montant_ht, date_envoi, envoye_par_id").eq("site_id", id).is("supprime_le", null).order("date_envoi", { ascending: false, nullsFirst: false }),
     ]);
 
   const { count: ceAEditer } = await supabase
@@ -205,7 +206,9 @@ export default async function SitePage({
 
       {onglet === "interventions" && <SiteInterventions siteId={id} />}
 
-      {(onglet === "contrat" || onglet === "sav" || onglet === "travaux") && <SiteDevis famille={onglet} devis={(devisLies ?? []).filter((d) => d.famille === onglet)} siteId={id} />}
+      {(onglet === "contrat" || onglet === "sav" || onglet === "travaux") && (
+        <ListeDevisAccess devis={(devisLies ?? []) as DevisAccess[]} famille={onglet} siteId={siteId} clientNom={client?.nom ?? null} siteNom={site.nom} filtres={sp} />
+      )}
 
       {onglet === "materiel" && <MaterielSite siteId={siteId} modifierId={sp.modifier} />}
 
@@ -246,9 +249,13 @@ type LigneIntervention = {
   statut_libelle: string | null;
   statut_facturation_libelle: string | null;
   commentaire_interne: string | null;
+  urgence_devis: number | null;
+  commentaire_devis: string | null;
 };
 
-const COLONNES_INTERVENTIONS = "id, intervenant_nom, date_limite, date_realisee, date_demande, devis_a_faire, devis_fait, numero_bon, numero_devis_accepte, reference_client, type_code, type_libelle, statut_code, statut_libelle, statut_facturation_libelle, commentaire_interne";
+const COLONNES_INTERVENTIONS =
+  "id, intervenant_nom, date_limite, date_realisee, date_demande, devis_a_faire, devis_fait, numero_bon, numero_devis_accepte, reference_client, type_code, type_libelle, statut_code, statut_libelle, statut_facturation_libelle, commentaire_interne, urgence_devis, commentaire_devis";
+const URGENCES: Record<number, string> = { 1: "Faible", 2: "Moyenne", 3: "Forte" };
 
 /** Onglet « Interventions » Access : deux feuilles de données, en cours puis clôturées (analysis 03 §2.2). */
 async function SiteInterventions({ siteId }: { siteId: string }) {
@@ -266,7 +273,7 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
           <table className="w-full border-collapse text-xs">
             <thead>
               <tr className="border-b bg-black/[0.03] text-left dark:bg-white/[0.05]">
-                {["Intervenant", "Date limite", "Effectuée le", "Date d'appel", "Devis à faire", "Devis fait", "N° Bon", "N° Devis Accepté", "N° DI", "Type Interv", "Statut Inter", "Statut Facturation", "Comm. Inter."].map((h) => (
+                {["Intervenant", "date demande", "Date limite", "effectuée le", "Type Interv", "Comm.Inter.", "N° Devis Accepté", "Statut Interv", "Statut Factu", "Devis fait", "Devis à faire", "Urgence Devis", "Comm.Devis", "N° DI", "N° Bon"].map((h) => (
                   <th key={h} className="whitespace-nowrap px-2 py-1 font-medium">
                     {h}
                   </th>
@@ -281,28 +288,32 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
                       {i.intervenant_nom ?? "—"}
                     </Link>
                   </td>
-                  <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_limite)}</td>
-                  <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_realisee)}</td>
-                  <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_demande)}</td>
-                  <td className="px-2 py-1 text-center">
-                    <input type="checkbox" readOnly checked={!!i.devis_a_faire} aria-label="Devis à faire" />
-                  </td>
-                  <td className="px-2 py-1 text-center">
-                    <input type="checkbox" readOnly checked={!!i.devis_fait} aria-label="Devis fait" />
-                  </td>
-                  <td className="px-2 py-1">{i.numero_bon ?? ""}</td>
-                  <td className="px-2 py-1">{i.numero_devis_accepte ?? ""}</td>
-                  <td className="px-2 py-1">{i.reference_client ?? ""}</td>
+                  <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_demande).replace("—", "")}</td>
+                  <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_limite).replace("—", "")}</td>
+                  <td className="whitespace-nowrap px-2 py-1">{formatDate(i.date_realisee).replace("—", "")}</td>
                   <td className="whitespace-nowrap px-2 py-1">
                     <Badge tone={typeInterventionTone(i.type_code)}>{i.type_libelle ?? "—"}</Badge>
                   </td>
+                  <td className="max-w-[12rem] truncate px-2 py-1" title={i.commentaire_interne ?? ""}>
+                    {i.commentaire_interne ?? ""}
+                  </td>
+                  <td className="px-2 py-1">{i.numero_devis_accepte ?? ""}</td>
                   <td className="whitespace-nowrap px-2 py-1">
                     <Badge tone={statutInterventionTone(i.statut_code)}>{i.statut_libelle ?? "—"}</Badge>
                   </td>
                   <td className="whitespace-nowrap px-2 py-1">{i.statut_facturation_libelle ?? ""}</td>
-                  <td className="max-w-xs truncate px-2 py-1" title={i.commentaire_interne ?? ""}>
-                    {i.commentaire_interne ?? ""}
+                  <td className="px-2 py-1 text-center">
+                    <input type="checkbox" readOnly checked={!!i.devis_fait} aria-label="Devis fait" />
                   </td>
+                  <td className="px-2 py-1 text-center">
+                    <input type="checkbox" readOnly checked={!!i.devis_a_faire} aria-label="Devis à faire" />
+                  </td>
+                  <td className="whitespace-nowrap px-2 py-1">{i.urgence_devis ? URGENCES[i.urgence_devis] ?? i.urgence_devis : ""}</td>
+                  <td className="max-w-[10rem] truncate px-2 py-1" title={i.commentaire_devis ?? ""}>
+                    {i.commentaire_devis ?? ""}
+                  </td>
+                  <td className="px-2 py-1">{i.reference_client ?? ""}</td>
+                  <td className="px-2 py-1 text-right">{i.numero_bon ?? ""}</td>
                 </tr>
               ))}
             </tbody>
@@ -318,61 +329,6 @@ async function SiteInterventions({ siteId }: { siteId: string }) {
     <div className="flex flex-col gap-4">
       <Tableau titre="Interventions en cours :" rows={enCours as LigneIntervention[] | null} vide="Aucune intervention en cours." />
       <Tableau titre="Interventions clôturées :" rows={cloturees as LigneIntervention[] | null} vide="Aucune intervention clôturée." />
-    </div>
-  );
-}
-
-type LigneDevis = { id: number; numero: string | null; statut_code: number | null; montant_ht: number | null; date_envoi: string | null; fichier_chemin: string | null };
-
-/** Onglets « Contrat de maintenance », « Devis SAV », « Devis Travaux » : la liste des devis du site pour la famille. */
-async function SiteDevis({ famille, devis, siteId }: { famille: FamilleDevis; devis: LigneDevis[]; siteId: string }) {
-  const supabase = await createClient();
-  const { data: statuts } = await supabase.from("statuts_devis").select("code, libelle");
-  const libelle = (code: number | null) => statuts?.find((s) => s.code === code)?.libelle ?? (code == null ? "—" : `Statut ${code}`);
-
-  return (
-    <div className="flex flex-col gap-2">
-      <div>
-        <Link href={`/devis/nouveau?site=${siteId}&famille=${famille}`} className={BOUTON}>
-          Nouveau devis
-        </Link>
-      </div>
-      {devis.length === 0 ? (
-        <EmptyState message="Aucun devis de cette famille pour ce site." />
-      ) : (
-        <div className="overflow-x-auto rounded border">
-          <table className="w-full border-collapse text-xs">
-            <thead>
-              <tr className="border-b bg-black/[0.03] text-left dark:bg-white/[0.05]">
-                {["N° devis", "Statut", "Date d'envoi", "Montant HT", "Fichier"].map((h) => (
-                  <th key={h} className="whitespace-nowrap px-2 py-1 font-medium">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {devis.map((d) => (
-                <tr key={d.id} className="border-b last:border-0 hover:bg-blue-50 dark:hover:bg-blue-950/30">
-                  <td className="px-2 py-1">
-                    <Link href={`/devis/${d.id}`} className="underline">
-                      {d.numero ?? `#${d.id}`}
-                    </Link>
-                  </td>
-                  <td className="px-2 py-1">
-                    <Badge tone={statutDevisTone(d.statut_code)}>{libelle(d.statut_code)}</Badge>
-                  </td>
-                  <td className="px-2 py-1">{formatDate(d.date_envoi)}</td>
-                  <td className="px-2 py-1 text-right">{formatMontant(d.montant_ht)}</td>
-                  <td className="max-w-xs truncate px-2 py-1" title={d.fichier_chemin ?? ""}>
-                    {d.fichier_chemin ?? ""}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
     </div>
   );
 }
