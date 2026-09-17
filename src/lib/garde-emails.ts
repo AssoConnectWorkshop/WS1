@@ -2,7 +2,7 @@ import "server-only";
 
 /**
  * Liste blanche des destinataires d'e-mails (réinitialisations de mot de passe, e-mails Resend).
- * `EMAILS_AUTORISES` : adresses complètes ou domaines (`@team.blue`), séparés par des virgules.
+ * `EMAILS_AUTORISES` : adresses complètes ou domaines (`@exemple.fr`), séparés par des virgules.
  * Variable absente ou vide → aucun e-mail ne part, quel que soit le déclencheur.
  */
 export function emailAutorise(adresse: string | null | undefined): boolean {
