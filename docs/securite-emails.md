@@ -14,7 +14,7 @@ partir par erreur pendant la phase de démonstration.
 ## Triple ceinture
 
 1. **Liste blanche `EMAILS_AUTORISES`** (variable Vercel) : adresses complètes ou domaines
-   (`@team.blue`), séparés par des virgules. Absente ou vide → tous les canaux ci-dessus sont
+   (`@exemple.fr`), séparés par des virgules. Absente ou vide → tous les canaux ci-dessus sont
    bloqués (`journal_emails.statut = 'bloque'` pour Resend, message d'erreur pour l'invitation,
    message neutre pour la réinitialisation).
 2. **Pas d'invitation depuis l'application** : le bouton « Inviter » a été retiré. Les comptes se
