@@ -190,7 +190,7 @@ Compteurs affichés en permanence (source : vue `ListeInterventionGenerale2`) :
 Le **client** est l'enseigne facturée. Sa fiche porte l'adresse, le contact principal et deux tarifs
 utilisés par les devis et les statistiques : le tarif horaire de main d'œuvre (`coutheuremainoeuvre`)
 et le tarif d'un déplacement (`coutdeplacement`). Un client peut être masqué des listes sans être
-supprimé (`affcli`). Deux numéros « Esabora » (logiciel tiers, probablement facturation) sont
+supprimé (`affcli`). Deux numéros « Esabora » (le logiciel de facturation de FMC, très utilisé) sont
 stockés dans les colonnes détournées `cheminpho` et `cheminpla`.
 
 Le **donneur d'ordre** est l'organisation qui commande les interventions pour un magasin. Il a ses
@@ -566,7 +566,7 @@ Seuils : HCFC en kg < 30 / < 300 / ≥ 300 ; HFC en t.éq.CO2 < 50 / < 500 / ≥
 - **FMC** : la société de maintenance (FMC Maintenance, Le Haillan) ; code intervenant `FMC` = interne ; sociétés 1, 111, 112, 113.
 - **Clim'Tech** : entité historique (ancien menu). **Bon** : bon d'intervention papier numéroté et signé.
 - **Duplicata** : file des interventions clôturées où un devis reste à produire. **GWP** : potentiel de réchauffement d'un fluide.
-- **Esabora** : logiciel tiers (facturation probable). **Fersoft** : prestataire de développement présumé.
+- **Esabora** : le logiciel de facturation de FMC, très utilisé. **Fersoft** : prestataire de développement présumé.
 
 ### Statuts d'intervention (`StatusInterv`)
 
