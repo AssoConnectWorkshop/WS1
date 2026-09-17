@@ -151,7 +151,7 @@ async function createWorkspace(n) {
       { key: 'SUPABASE_URL', value: supabaseUrl, target: ['production', 'preview'] },
       { key: 'SUPABASE_ANON_KEY', value: anonKey, target: ['production', 'preview'] },
       { key: 'SUPABASE_PROJECT_REF', value: project.id, target: ['production', 'preview'] },
-      // SUPABASE_ACCESS_TOKEN and ASSOCONNECT_* must be added manually per project
+      // SUPABASE_ACCESS_TOKEN must be added manually per project
     ],
   });
   console.log(`        ✓ ${vProject.link?.deployHooks?.[0] ?? vProject.id}`);
@@ -173,7 +173,7 @@ async function main() {
     console.log(`${ws.name}: GitHub=${ws.repoUrl}  Supabase=${ws.supabaseUrl}  Vercel=${ws.vercelId}`);
   }
   console.log('\n⚠️  Still needed per project (add manually in Vercel dashboard):');
-  console.log('   SUPABASE_ACCESS_TOKEN, ASSOCONNECT_API_KEY, ASSOCONNECT_ORGANIZATION_ULID');
+  console.log('   SUPABASE_ACCESS_TOKEN');
 }
 
 main().catch(err => { console.error(err.message); process.exit(1); });

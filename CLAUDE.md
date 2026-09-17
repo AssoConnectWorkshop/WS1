@@ -1,11 +1,10 @@
 # WS1
 
-Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · AssoConnect API · Deployed on Vercel.
+Next.js 15 App Router · TypeScript · Tailwind CSS v4 · Supabase · Deployed on Vercel.
 
 ## Stack
 - **Tailwind v4**: `@import "tailwindcss"` in globals.css — no `@tailwind` directives, no `@apply` without `@reference`.
 - **Supabase**: `@supabase/ssr` — `src/lib/supabase/server.ts` for server code, `src/lib/supabase/client.ts` for the browser.
-- **AssoConnect API**: server-only client at `src/lib/assoconnect.ts`. Base URL `https://app.assoconnect.com/api/v1`, header `X-AUTH-TOKEN`, `Accept: application/ld+json`. Rate limit: 30 req/s, CRM scope only.
 - **Config-driven**: navigation and site values in `src/config/site.ts`.
 
 ## Project: ClimAccess migration

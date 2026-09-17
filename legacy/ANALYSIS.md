@@ -132,4 +132,3 @@ import Excel, envoi d'e-mail (`sendEmail`).
 - **Next.js** : un module par domaine du tableau §3, listes filtrables côté serveur,
   fiches en Server Components, saisie en Server Actions, PDF de fiche d'intervention
   généré côté serveur, carte des sites, import Excel via upload.
-- **AssoConnect** : à discuter (aucun lien évident dans l'app actuelle).
